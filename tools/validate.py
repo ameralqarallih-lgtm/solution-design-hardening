@@ -19,7 +19,7 @@ for p in sorted((skill/'references').glob('problems-*.md')):
         for field in ('**Failure:**','**Detection:**','**Remediation and safeguards:**','**Verification:**'):
             assert field in sections[i+1], (p,sections[i],field)
 assert sorted(playbook_ids)==sorted(ids), 'Missing or duplicate playbook entries'
-for md in skill.rglob('*.md'):
+for md in root.rglob('*.md'):
     for link in re.findall(r'\]\(([^)]+)\)',md.read_text()):
         if not link.startswith(('http:','https:','#')):
             assert (md.parent/link.split('#')[0]).exists(), (md,link)

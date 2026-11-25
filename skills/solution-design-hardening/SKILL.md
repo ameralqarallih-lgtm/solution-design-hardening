@@ -3,7 +3,7 @@ name: solution-design-hardening
 description: Assess, prevent, and remediate transactional and distributed system design failures in existing or new code. Use when designing, reviewing, testing, or changing payments, database transactions, concurrency, caches, messaging, APIs, retries, background jobs, workflows, or object storage, or when asked for an architectural reliability assessment or remediation plan.
 license: MIT
 metadata:
-  version: "0.3.0"
+  version: "0.5.0"
 ---
 
 # Solution Design Hardening
@@ -71,6 +71,10 @@ Use the catalog to select applicable IDs, then read the corresponding playbook b
 - [Detection guidance](references/DETECTION-GUIDANCE.md): code signals, counterexamples and failure tests.
 - [Operational and migration guidance](references/OPERATIONS.md): signals, rollout, replay and recovery.
 - [Assessment template](assets/assessment.md) [remediation template](assets/remediation.md), and [verification template](assets/verification.md): use for full assessments.
+
+## Technology-specific implementation
+
+When a stack is identified, consult [technology routing](references/technologies/README.md) and load only the matching guides. Treat examples as illustrative; verify APIs against installed dependencies. Do not infer runtime guarantees from a framework name. For evaluation or test design, use deterministic interleavings and negative controls.
 
 ## Assessment and planning output
 

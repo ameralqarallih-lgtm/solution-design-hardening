@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.5.0 — Initial automated evaluation tooling
+
+- Add executable SQLite and deterministic cache fixtures, eleven local tests, five heuristic scanner rules and paired evaluation scoring.
+- Enrich README, CI, examples and evaluation protocol. Preserve all 160 problem IDs.
+- Agent benchmarks and real service integration tests remain pending.
+
+## v0.4.0 — Technology guidance (included in v0.5.0)
+
+- Add twelve on-demand stack guides with pitfalls and verification.
+
+
 ## 0.3.0
 
 - Preserve SDP-001–124; add SDP-125–160.
