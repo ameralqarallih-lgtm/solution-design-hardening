@@ -1,5 +1,6 @@
 import unittest, tempfile, sqlite3
 from pathlib import Path
+from contextlib import closing
 from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 from fixtures import transactions as tx
@@ -12,7 +13,7 @@ class Transactions(unittest.TestCase):
         self.path = Path(self.tmp.name)/'test.db'
         tx.setup(self.path)
     def count(self, table):
-        with sqlite3.connect(self.path) as db:
+        with closing(sqlite3.connect(self.path)) as db:
             return db.execute('SELECT count(*) FROM '+table).fetchone()[0]
     def test_vulnerable_dual_write(self):
         with self.assertRaises(RuntimeError): tx.vulnerable_order(self.path,'1',True)

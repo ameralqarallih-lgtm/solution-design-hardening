@@ -5,3 +5,7 @@ Open an issue describing a concrete failure scenario, business invariant, reprod
 ## Adaptive technology contributions
 
 Prefer capability-level guidance over duplicating product-specific instructions. Optional product profiles must identify applicable versions, authoritative documentation, configuration prerequisites, guarantee scope, counterexamples and verification tests. Include an unknown-stack or negative-control evaluation where relevant. Do not imply a product profile is mandatory or tested unless actual results are supplied.
+
+## Integration contributions
+
+Use [isolated integration experiments](integration/README.md) with synthetic data, bounded deadlines, negative controls and explicit evidence. Run `python -m unittest discover -s evals -v` before a pull request. Never mark an unexecuted infrastructure test as passed. Preserve capability-first design; new product fixtures are optional and must not become support prerequisites.

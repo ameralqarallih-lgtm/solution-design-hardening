@@ -1,0 +1,62 @@
+# Disposable local lab only. No published ports or host mounts.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: sdh_lab
+      POSTGRES_PASSWORD: sdh_lab_only
+      POSTGRES_DB: sdh_lab
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U sdh_lab -d sdh_lab']
+      interval: 2s
+      timeout: 3s
+      retries: 40
+  redis:
+    image: redis:7.4-alpine
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  rabbitmq:
+    image: rabbitmq:4.1
+    environment:
+      RABBITMQ_DEFAULT_USER: sdh_lab
+      RABBITMQ_DEFAULT_PASS: sdh_lab_only
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, check_port_connectivity]
+      interval: 3s
+      timeout: 8s
+      retries: 40
+  tests:
+    build: .
+    environment:
+      SDH_ISOLATED_LAB: '1'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    command: [python, -m, unittest, discover, -s, /lab, -p, 'test_oss.py', -v]
+  sqlserver:
+    profiles: [sqlserver]
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: '${SDH_ACCEPT_SQLSERVER_EULA:-N}'
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: 'Sdh_Lab_Only!2026'
+  sqltests:
+    profiles: [sqlserver]
+    build: .
+    environment:
+      SDH_ISOLATED_LAB: '1'
+    depends_on:
+      sqlserver:
+        condition: service_started
+    command: [python, -m, unittest, discover, -s, /lab, -p, 'test_sqlserver.py', -v]
+networks:
+  default:
+    internal: true

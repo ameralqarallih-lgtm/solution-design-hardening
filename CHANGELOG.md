@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.7.0 — Advanced Integration and Verification
+
+- Preserve the 160-problem catalog, 16 playbooks, 17 capability references and 12 optional technology profiles.
+- Add technology-independent boundary-based failure injection and verification guidance.
+- Add 12 default real-service tests for PostgreSQL, Redis and RabbitMQ, plus 3 optional SQL Server tests and a dedicated Compose CI workflow. Infrastructure runs remain pending.
+- Expand scanner from 5 to 17 candidate rules, with language gating and safe controls; add four local tests (22 total). Close SQLite fixture connections explicitly.
+- Add six agent evaluation scenarios (40 total). No actual agent benchmarks executed.
+- Update README, verification template and release documentation.
+
 ## v0.6.0 — Adaptive Technology Intelligence
 
 - Preserve all 160 problem IDs, 16 playbooks and 12 optional product profiles.

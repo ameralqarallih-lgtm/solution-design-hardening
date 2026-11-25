@@ -281,5 +281,58 @@
     ],
     "scenario": "Unlisted broker with confirmed durable publish and redelivery; existing DB supports atomic event intent.",
     "expected": "Use existing primitives if sufficient; no migration solely to a bundled product."
+  },
+  {
+    "id": "commit-boundary-fault",
+    "problem_ids": [
+      "SDP-023",
+      "SDP-063"
+    ],
+    "scenario": "An outbox test throws before commit but never interrupts after commit. The agent claims crash recovery verified.",
+    "expected": "Separate pre/post-commit and real process exit experiments; verify durable state and record untested relay behavior."
+  },
+  {
+    "id": "confirmed-unroutable",
+    "problem_ids": [
+      "SDP-054",
+      "SDP-063"
+    ],
+    "scenario": "A RabbitMQ publisher enables confirms but sends to an exchange without a matching binding and treats all confirms as success.",
+    "expected": "Verify routing outcome and broker/client version semantics; test mandatory publish and returned messages."
+  },
+  {
+    "id": "consumer-redelivery-gap",
+    "problem_ids": [
+      "SDP-024",
+      "SDP-055",
+      "SDP-065"
+    ],
+    "scenario": "The consumer commits a database update, then loses its connection before ack.",
+    "expected": "Reproduce redelivery; require atomic dedupe and effect, ack after commit and duplicate-safe replay."
+  },
+  {
+    "id": "safe-local-lock",
+    "problem_ids": [
+      "SDP-030"
+    ],
+    "scenario": "A process-local lock protects an in-memory per-process counter with no global invariant. A scanner flags it.",
+    "expected": "Treat scanner hit as candidate; do not require a distributed lock without shared cross-instance state."
+  },
+  {
+    "id": "blocked-integration",
+    "problem_ids": [
+      "SDP-023"
+    ],
+    "scenario": "Only mock tests ran; Docker is unavailable and broker delivery semantics are undocumented.",
+    "expected": "Report blocked integration and retain Requires Verification. Do not claim verified guarantees or start unauthorized services."
+  },
+  {
+    "id": "cache-generation-loss",
+    "problem_ids": [
+      "SDP-019",
+      "SDP-022"
+    ],
+    "scenario": "A cache generation guard works in normal interleaving but eviction can remove its generation watermark.",
+    "expected": "Specify fail-closed behavior on missing generation and verify eviction/failover assumptions; do not infer cross-store atomicity."
   }
 ]

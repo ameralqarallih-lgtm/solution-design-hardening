@@ -8,7 +8,10 @@
 | Baseline failure evidence | |
 | Fault/interleaving and expected outcome | |
 | Command and actual result | |
+| Declared / resolved / deployed versions and topology | |
+| Injection reached? (evidence / fault exit code) | |
+| Run count / seed / deadline / artifacts | |
 | Negative control / regression | |
 | Rollout / rollback preconditions | |
 | Residual risk and untested paths | |
-| Status (passed / failed / not run / blocked) | |
+| Status (passed / failed / not run / blocked / skipped) | |

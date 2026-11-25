@@ -3,7 +3,7 @@ name: solution-design-hardening
 description: Assess, prevent, and remediate transactional and distributed system design failures in existing or new code. Use when designing, reviewing, testing, or changing payments, database transactions, concurrency, caches, messaging, APIs, retries, background jobs, workflows, or object storage, or when asked for an architectural reliability assessment or remediation plan.
 license: MIT
 metadata:
-  version: "0.6.0"
+  version: "0.7.0"
 ---
 
 # Solution Design Hardening
@@ -100,6 +100,8 @@ For focused changes, a concise finding and fix summary is sufficient unless the 
 - Review the entire changed path including error, cancellation and recovery branches. No test result may be fabricated.
 
 ## Verification and completion
+
+For correctness-critical changes, use [integration verification and controlled failure injection](references/INTEGRATION-VERIFICATION.md). Select actual infrastructure from capability evidence, establish fault boundaries, and distinguish executed tests from illustrative or blocked tests. The optional repository lab and candidate scanner are not prerequisites or proof of product correctness.
 
 For concurrency tests, coordinate competing operations using barriers or controlled scheduling rather than sleep-based timing. Exercise real database constraints and isolation in disposable environments when permitted. Test both vulnerable and corrected paths; record environment, commands and actual outcomes. A static finding can be confirmed by a demonstrable counterexample, but a proposed fix is not verified until appropriate evidence exists. Review code changes against invariants and distinguish runtime tests from static checks.
 

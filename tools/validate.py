@@ -32,6 +32,10 @@ assert len(list(capability_dir.glob('*.md')))==17
 for profile in capability_dir.glob('*.md'):
     for heading in ('## Discover and verify','## Implementation decisions','## Counterexamples and limits','## Verification'):
         assert heading in profile.read_text(), (profile,heading)
-assert len(cases)==34
+assert len(cases)==40
+from scan import RULES
+assert len(RULES)==17 and len({r[0] for r in RULES})==17
+assert {r[1] for r in RULES}<=set(ids)
+assert (skill/'references/INTEGRATION-VERIFICATION.md').is_file()
 assert len(list((skill/'references/technologies').glob('*.md')))==13
 print(f'PASS: skill metadata, internal links, {len(ids)} sequential problem IDs and complete playbook coverage, {len(cases)} evaluation cases. No agent evaluations executed.')

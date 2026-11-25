@@ -2,7 +2,7 @@
 
 **Build software that survives concurrency, failures, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.6.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-160-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
+![Release](https://img.shields.io/badge/release-v0.7.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-160-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
@@ -73,7 +73,7 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 ## Coverage
 
-160 stable problem IDs, 16 domain playbooks, 17 capability profiles, 12 optional product profiles, and 34 scenario-based agent evaluation cases.
+160 stable problem IDs, 16 domain playbooks, 17 capability profiles, 12 optional product profiles, and 40 scenario-based agent evaluation cases.
 
 | Domain | Problem IDs |
 |---|---|
@@ -162,11 +162,31 @@ python -m unittest discover -s evals -v
 python tools/scan.py /path/to/repository
 ```
 
-The scanner is a small read-only heuristic helper with five candidate rules; its results are **not confirmed defects**. It does not print source lines or secret values. Review candidate locations manually and use the relevant playbook. It is not a full static analyzer.
+The scanner is a small read-only heuristic helper with 17 candidate rules; its results are **not confirmed defects**. It does not print source lines or secret values. Review candidate locations manually and use the relevant playbook. It is not a full static analyzer.
 
 The executable suite demonstrates vulnerable and corrected outbox, inbox and cache paths, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
 For agent comparisons, use the [evaluation protocol](evals/README.md) and `python tools/score.py results.json` to aggregate human-reviewed paired trials. Do not expose expected answers to the evaluated agent. No actual cross-agent benchmark scores have been generated yet.
+
+### Infrastructure integration lab (v0.7.0)
+
+This release adds an opt-in [disposable Docker Compose lab](integration/README.md) for real PostgreSQL, Redis and RabbitMQ tests, plus an optional SQL Server target. These are examples of verifying capabilities, not a closed list of supported products. The skill's [integration verification guide](skills/solution-design-hardening/references/INTEGRATION-VERIFICATION.md) applies to any stack.
+
+| Layer | Scope | Status at release preparation |
+|---|---|---|
+| Offline structural checks | 160 IDs, playbooks, links, 40 evaluation cases, scanner mappings | Passed |
+| Offline executable suite | 22 tests, including all 17 scanner signals and safe controls | Passed |
+| Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
+| Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
+| Actual agent benchmarks | 40 candidate scenarios | Not run |
+
+To run the default lab in a dedicated disposable project (requires Docker/Compose):
+
+```sh
+docker compose -p sdh-v070-lab -f integration/compose.yaml up --build --abort-on-container-exit --exit-code-from tests tests
+```
+
+See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab instructions](integration/README.md) for recording versions, cleanup, optional SQL Server and experiment limitations. CI includes a dedicated integration workflow. Local unit tests remain dependency-free. The scanner is heuristic, line-based and may miss cross-file or multi-line risks; a hit is never a confirmed defect. No technology is unsupported merely because a scanner rule or fixture is absent.
 
 ## Roadmap
 
@@ -177,8 +197,8 @@ For agent comparisons, use the [evaluation protocol](evals/README.md) and `pytho
 | v0.3.0 | 160 problems and targeted playbooks | Complete |
 | v0.4.0 | Technology-specific guides | Included in v0.5.0 |
 | v0.5.0 | Initial executable fixtures, heuristic scanner, evaluation scoring | Complete |
-| v0.6.0 | Adaptive Technology Intelligence | Current release candidate |
-| v0.7.0 | Real integration fixtures, expanded detection and fault injection | Planned |
+| v0.6.0 | Adaptive Technology Intelligence | Complete |
+| v0.7.0 | Real-service integration lab, expanded detection and fault injection | Current release candidate; infrastructure run pending |
 | v0.8.0 | Dependency, transaction and invariant mapping | Planned |
 | v0.9.0 | Cross-agent benchmarks and context optimization | Planned |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
