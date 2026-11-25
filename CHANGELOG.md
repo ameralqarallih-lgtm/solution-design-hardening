@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.9.0 — Architectural Intelligence
+
+- Preserve the 235-problem catalog, all 24 playbooks, adaptive technology and security references, and 27 scanner rules.
+- Add architecture modeling workflow, component/dependency and boundary candidate inventory, explicit invariant/root-cause mapping and task dependency validation.
+- Add `tools/architecture.py`, `tools/correlate.py`, model template, synthetic model example, and 15 executable local tests (45 total).
+- Add 10 agent evaluation cases (66 total), enhance assessment/remediation/verification templates and public README.
+- Static candidates are not runtime topology; analyst links are not independent causal proof. Infrastructure and actual agent benchmarks remain unexecuted.
+
 ## v0.8.0 — Comprehensive Security Hardening
 
 - Preserve SDP-001–160 and existing playbooks; add SDP-161–235 across eight security domains (235 problems, 24 playbooks).

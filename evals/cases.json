@@ -466,5 +466,94 @@
     ],
     "scenario": "All catalog security rows are marked addressed; stakeholder asks whether this establishes ASVS compliance.",
     "expected": "Explain need for versioned requirement-by-requirement evidence, independent scope and residual gaps."
+  },
+  {
+    "id": "arch-declared-vs-runtime",
+    "problem_ids": [
+      "SDP-123"
+    ],
+    "scenario": "Two projects reference the same library; no runtime communication evidence.",
+    "expected": "Keep declared build edges separate; do not assert service calls or shared database ownership."
+  },
+  {
+    "id": "arch-unresolved-dynamic",
+    "problem_ids": [
+      "SDP-042",
+      "SDP-123"
+    ],
+    "scenario": "External client endpoint is selected dynamically and target implementation is unavailable.",
+    "expected": "Record unknown target and contract; trace authorized configuration and verification gaps, not a fabricated edge."
+  },
+  {
+    "id": "arch-flush-vs-commit",
+    "problem_ids": [
+      "SDP-023",
+      "SDP-062"
+    ],
+    "scenario": "ORM flush occurs before publish, outer transaction commits later.",
+    "expected": "Trace real transaction lifetime, identify ghost event boundary, do not equate flush with commit."
+  },
+  {
+    "id": "arch-common-outbox-cause",
+    "problem_ids": [
+      "SDP-023",
+      "SDP-063"
+    ],
+    "scenario": "A committed order may have no event because the same handler publishes after commit without durable intent.",
+    "expected": "Map both problems to the same evidenced mechanism; retain both coverage rows and plan one sufficient fix."
+  },
+  {
+    "id": "arch-invariant-distinct-causes",
+    "problem_ids": [
+      "SDP-001",
+      "SDP-104"
+    ],
+    "scenario": "Two independent duplicate-payment paths: concurrent requests and provider timeout recovery.",
+    "expected": "Map common invariant but keep mechanisms and acceptance tests distinct unless a shared fix covers both."
+  },
+  {
+    "id": "arch-trust-boundary-background",
+    "problem_ids": [
+      "SDP-150",
+      "SDP-171"
+    ],
+    "scenario": "HTTP route checks tenant; async worker reloads resource by global ID without tenant context.",
+    "expected": "Trace delegated authority at worker effect, include recovery and bulk paths; verify positive and negative controls."
+  },
+  {
+    "id": "arch-shared-data-owner",
+    "problem_ids": [
+      "SDP-036",
+      "SDP-120"
+    ],
+    "scenario": "Two components use the same database; ownership and isolation requirements are undocumented.",
+    "expected": "Discover allowed writers and tenant boundaries; shared store does not prove same transaction or ownership."
+  },
+  {
+    "id": "arch-safe-co-location",
+    "problem_ids": [
+      "SDP-030",
+      "SDP-197"
+    ],
+    "scenario": "Local-only lock and development-only test TLS override are in one file.",
+    "expected": "Treat scanner hits as independent candidates; inspect scope and configuration before confirming either."
+  },
+  {
+    "id": "arch-remediation-cycle",
+    "problem_ids": [
+      "SDP-108",
+      "SDP-138"
+    ],
+    "scenario": "Two proposed migrations depend on each other; older application replicas still run.",
+    "expected": "Identify dependency cycle; design compatible staged migration and explicit verification, not arbitrary task order."
+  },
+  {
+    "id": "arch-incomplete-model",
+    "problem_ids": [
+      "SDP-005",
+      "SDP-065"
+    ],
+    "scenario": "Repository lacks worker implementation and production broker configuration.",
+    "expected": "Report unassessed paths and unknown guarantees; create verification tasks rather than claim full correctness."
   }
 ]

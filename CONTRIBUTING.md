@@ -13,3 +13,7 @@ Use [isolated integration experiments](integration/README.md) with synthetic dat
 ## Security contributions
 
 Use synthetic data, local or explicitly authorized isolated targets, and both denied and permitted test cases. Do not submit secret values, exploit traces against real services or private code. Keep mappings versioned and advisory; cite upstream documentation and distinguish tested controls from suggested requirements. Report suspected project vulnerabilities via [responsible disclosure](SECURITY.md).
+
+## Architecture tooling contributions
+
+Keep candidate discovery distinct from analyst-supported evidence. Add negative controls, unresolved-link tests, scope/secret-output tests and dependency-cycle tests for any model or parser changes. Preserve schema compatibility or document migration. Never infer a root cause from proximity alone. See [architecture tooling](tools/ARCHITECTURE.md).

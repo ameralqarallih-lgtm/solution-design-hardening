@@ -3,7 +3,8 @@
 | Field | Value |
 |---|---|
 | Finding / task / problem IDs | |
-| Business invariant and owner | |
+| Business invariant and owner / INV ID | |
+| Component, operation, flow and root-cause IDs | |
 | Scope and environment | |
 | Baseline failure evidence | |
 | Fault/interleaving and expected outcome | |

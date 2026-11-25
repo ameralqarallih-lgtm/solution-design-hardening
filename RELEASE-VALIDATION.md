@@ -1,19 +1,21 @@
-# v0.8.0 release validation
+# v0.9.0 release validation
 
-Built from the supplied v0.7.0 GitHub archive, not a live GitHub checkout. The release focuses on defensive security hardening. No production or third-party system was probed.
+Built from the supplied v0.8.0 GitHub archive, not a live checkout. This release adds evidence-based architecture modeling and two optional offline helpers. No production or third-party systems were contacted.
 
 | Check | Result |
 |---|---|
-| `python tools/validate.py` | Passed: 235 sequential IDs, 24 playbooks, internal links, 56 agent scenarios, 27 scanner mappings, security crosswalk coverage |
-| `python -m unittest discover -s evals -v` | Passed: 30 tests, including 8 new local security tests, positive fixtures for every scanner rule, safe controls and output filtering |
-| Prior catalog comparison | Passed: original 160 entries preserved as byte-for-byte prefix |
-| Prior playbook and technology references | Passed: 50 files preserved byte-for-byte |
-| `python -m compileall -q integration` | Passed: Python syntax only |
-| Security standards | Official reference versions consulted; 92 candidate crosswalk entries (75 new and 17 legacy). Individual CWE and normative control mappings not independently exhaustively verified |
-| Default PostgreSQL, Redis, RabbitMQ lab | Not run: Docker unavailable (12 tests defined) |
-| Optional SQL Server lab | Not run (3 tests defined; explicit EULA acceptance required) |
-| Real identity provider, browser, network, cryptographic and agent integration tests | Not run; local examples use synthetic SQLite or mock policies/tools |
-| AI agent benchmark | Not run (56 cases defined) |
-| GitHub Actions and publication | Not run; remote repository not modified |
+| `python tools/validate.py` | Passed: 235 sequential IDs, complete 24-playbook coverage, internal links, 66 agent scenarios, 27 scanner mappings, security crosswalk coverage, sample architecture model |
+| `python -m unittest discover -s evals -v` | Passed: 45 tests (30 inherited, 15 new architecture and correlation tests) |
+| Previous reference comparison | Passed: all 66 inherited Markdown reference files byte-for-byte unchanged, including the catalog, playbooks and security/technology references |
+| Candidate inventory fixture | Passed: polyglot and nested manifests, local declared dependencies, deterministic output, unresolved references, bounded file scope, secret-name and symlink exclusions, candidate-only grouping |
+| Model validation fixture | Passed: explicit shared mechanisms and invariants, unknown trust/transaction links, missing evidence, dangling/duplicate IDs, task dependency cycles, unmapped findings |
+| `python tools/architecture.py examples --max-files 100` | Passed: CLI smoke test |
+| `python tools/correlate.py examples/architecture-model.json` | Passed: synthetic example with two findings and two task waves |
+| Integration Python syntax | Passed: compilation only |
+| Default real-service lab (12 tests) | Not run: Docker unavailable |
+| Optional SQL Server lab (3 tests) | Not run: Docker unavailable; explicit EULA acceptance needed |
+| Real identity-provider, browser, multi-region, network and agent security verification | Not run |
+| Actual coding-agent benchmark | Not run (66 scenarios defined) |
+| GitHub Actions and remote publication | Not run; remote repository not modified |
 
-The scanner is heuristic, not a complete static security analyzer. Tests prove only the specific exercised local behavior. No formal ASVS, CIS, SLSA or other compliance assessment was performed. The MIT licensing and copyright attribution remain subject to owner confirmation. See [standards reference](skills/solution-design-hardening/references/SECURITY-STANDARDS.md) and [lab instructions](integration/README.md).
+The new discovery helper is static and heuristic, with local dependency extraction limited to .NET project references and npm local directory references. It does not derive a runtime call graph, verify transaction scopes or infer business requirements. The correlation helper validates the structure of analyst-supplied relationships, not their truth. Paths and architecture metadata can be sensitive. Local tests are not production guarantees or evidence of model effectiveness. Existing standards mappings remain advisory, not formal compliance. The proposed MIT licensing and attribution remain subject to owner confirmation.

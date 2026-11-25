@@ -1,6 +1,6 @@
 # Evaluation protocol
 
-56 scenario cases in `cases.json` are intended for agent evaluation. The executable fixture suite is separate: run `python -m unittest discover -s evals -v` from the root. It demonstrates transaction, cache and security examples using SQLite and local state or policy models, and checks the tools. These are not agent benchmark runs. See the separate [infrastructure lab](../integration/README.md) for opt-in real service experiments.
+66 scenario cases in `cases.json` are intended for agent evaluation. The executable fixture suite is separate: run `python -m unittest discover -s evals -v` from the root. It demonstrates transaction, cache and security examples using SQLite and local state or policy models, and checks the tools, including architecture discovery and model correlation. These are not agent benchmark runs. See the separate [infrastructure lab](../integration/README.md) for opt-in real service experiments.
 
 ## Paired agent evaluation
 

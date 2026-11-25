@@ -32,7 +32,7 @@ assert len(list(capability_dir.glob('*.md')))==17
 for profile in capability_dir.glob('*.md'):
     for heading in ('## Discover and verify','## Implementation decisions','## Counterexamples and limits','## Verification'):
         assert heading in profile.read_text(), (profile,heading)
-assert len(cases)==56
+assert len(cases)==66
 from scan import RULES
 assert len(RULES)==27 and len({r[0] for r in RULES})==27
 assert {r[1] for r in RULES}<=set(ids)
@@ -42,4 +42,8 @@ mapped=re.findall(r'^\| (SDP-\d{3}) \|', (skill/'references/SECURITY-STANDARDS.m
 assert len(mapped)==len(set(mapped)) and set(mapped)<=set(ids) and set(ids[160:])<=set(mapped)
 assert len(list((skill/'references').glob('problems-*.md')))==24
 assert (skill/'assets/threat-model.md').is_file()
+assert (skill/'assets/architecture-model.md').is_file()
+assert (skill/'references/ARCHITECTURAL-INTELLIGENCE.md').is_file()
+from correlate import analyze
+assert not analyze(json.loads((root/'examples/architecture-model.json').read_text()),set(ids))['unassigned_findings']
 print(f'PASS: skill metadata, internal links, {len(ids)} sequential problem IDs and complete playbook coverage, {len(cases)} evaluation cases. No agent evaluations executed.')

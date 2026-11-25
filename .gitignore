@@ -2,3 +2,6 @@ __pycache__/
 *.py[cod]
 .venv/
 results.json
+
+# Local candidate inventories may contain sensitive architecture metadata.
+architecture-candidates.json

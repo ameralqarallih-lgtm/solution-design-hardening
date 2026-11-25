@@ -1,12 +1,12 @@
 # Solution Design Hardening
 
-**Build software that survives concurrency, failures, and scale.**
+**Build secure software that survives concurrency, failures, threats, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.8.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
+![Release](https://img.shields.io/badge/release-v0.9.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
-[Quick start](#quick-start) · [Coverage](#coverage) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
+[Quick start](#quick-start) · [Coverage](#coverage) · [Architectural Intelligence](#architectural-intelligence-v090) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
 ## Why this skill exists
 
@@ -73,7 +73,7 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 ## Coverage
 
-235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, and 56 scenario-based agent evaluation cases.
+235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, and 66 scenario-based agent evaluation cases.
 
 | Domain | Problem IDs |
 |---|---|
@@ -101,6 +101,40 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 | AI and agentic application security | SDP-226–235 |
 
 Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
+
+### Architectural Intelligence (v0.9.0)
+
+Move from individual pattern detection to evidence-backed understanding of complete business operations. Discover components and declared dependencies, trace actual call paths, map transaction and trust boundaries, identify invariant owners and correlate findings only when their common failure mechanism is supported by evidence.
+
+```mermaid
+flowchart TD
+    A[Repository and deployment evidence] --> B[Component and dependency candidates]
+    B --> C[Semantic trace of business operations]
+    C --> D[Transaction boundaries and invariants]
+    C --> E[Trust boundaries and authorization]
+    D --> F[Evidence-backed findings]
+    E --> F
+    F --> G[Explicit root causes and independent risks]
+    G --> H[Dependency-aware remediation and verification]
+```
+
+| New capability | What it does | What it does not prove |
+|---|---|---|
+| Candidate component inventory | Groups project directories and assigns source locations | Actual deployment topology |
+| Declared dependencies | Resolves local .NET project and npm file/link references | Runtime call graph or shared transaction |
+| Boundary signals | Locates 12 families of likely operations | Call order, authorization or durability |
+| Business invariant and trust mapping | Agent traces effects, owners, constraints and permissions | Unobserved requirements or guarantees |
+| Root-cause correlation | Links analyst-supported mechanisms to multiple findings | Automatic causal inference from co-location |
+| Task dependency validation | Rejects dangling references and cycles, reports task waves | Approval, priority or successful remediation |
+
+Try the optional offline helpers from the repository root:
+
+```sh
+python tools/architecture.py /path/to/repository > architecture-candidates.json
+python tools/correlate.py examples/architecture-model.json
+```
+
+The first command produces candidates, the second validates an illustrative analyst-authored model. See [architecture tooling](tools/ARCHITECTURE.md) and [architectural intelligence guidance](skills/solution-design-hardening/references/ARCHITECTURAL-INTELLIGENCE.md). Full assessments include an architecture model (or an equivalent section in the assessment); focused tasks trace only relevant paths. The skill remains technology-independent even when no automated parser exists.
 
 ### Comprehensive Security Hardening (v0.8.0)
 
@@ -179,6 +213,7 @@ See [assessment example](examples/assessment-example.md) and [executable fixture
 
 ### Assessment outputs
 
+- `SOLUTION-ARCHITECTURE-MODEL.md`: component, dependency, business operation, invariant and trust-boundary evidence (or an equivalent section in the assessment).
 - `SOLUTION-DESIGN-ASSESSMENT.md`: status, evidence, severity and recommended mitigation for every problem.
 - `SOLUTION-DESIGN-REMEDIATION-PLAN.md`: prioritized tasks, dependencies, affected code, acceptance criteria, tests and rollout guidance.
 
@@ -202,15 +237,15 @@ For agent comparisons, use the [evaluation protocol](evals/README.md) and `pytho
 
 ### Infrastructure integration lab (v0.7.0)
 
-This release adds an opt-in [disposable Docker Compose lab](integration/README.md) for real PostgreSQL, Redis and RabbitMQ tests, plus an optional SQL Server target. These are examples of verifying capabilities, not a closed list of supported products. The skill's [integration verification guide](skills/solution-design-hardening/references/INTEGRATION-VERIFICATION.md) applies to any stack.
+The repository includes an opt-in [disposable Docker Compose lab](integration/README.md) for real PostgreSQL, Redis and RabbitMQ tests, plus an optional SQL Server target. These are examples of verifying capabilities, not a closed list of supported products. The skill's [integration verification guide](skills/solution-design-hardening/references/INTEGRATION-VERIFICATION.md) applies to any stack.
 
 | Layer | Scope | Status at release preparation |
 |---|---|---|
-| Offline structural checks | 235 IDs, playbooks, links, 56 evaluation cases, scanner mappings | Passed |
-| Offline executable suite | 30 tests, including all 27 scanner signals and safe controls | Passed |
+| Offline structural checks | 235 IDs, playbooks, links, 66 evaluation cases, scanner mappings | Passed |
+| Offline executable suite | 45 tests, including all 27 scanner signals and safe controls | Passed |
 | Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
-| Actual agent benchmarks | 56 candidate scenarios | Not run |
+| Actual agent benchmarks | 66 candidate scenarios | Not run |
 
 To run the default lab in a dedicated disposable project (requires Docker/Compose):
 
@@ -231,8 +266,8 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.5.0 | Initial executable fixtures, heuristic scanner, evaluation scoring | Complete |
 | v0.6.0 | Adaptive Technology Intelligence | Complete |
 | v0.7.0 | Real-service integration lab, expanded detection and fault injection | Implemented; infrastructure run pending |
-| v0.8.0 | Comprehensive Security Hardening | Current release candidate; local checks passed |
-| v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Planned |
+| v0.8.0 | Comprehensive Security Hardening | Implemented; local checks passed |
+| v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Current release candidate; local checks passed |
 | v0.10.0 | Cross-agent benchmarks and context optimization | Planned |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "components": [
+    {"id":"CMP-ORDER","name":"Order service","status":"supported","evidence_ids":["EV-1"]},
+    {"id":"CMP-BROKER","name":"Event broker","status":"candidate","evidence_ids":["EV-2"]}
+  ],
+  "evidence": [
+    {"id":"EV-1","kind":"source","locator":"Synthetic example: order handler commits order before publishing"},
+    {"id":"EV-2","kind":"source","locator":"Synthetic example: publish call after local commit"},
+    {"id":"EV-3","kind":"requirement","locator":"Synthetic example: every committed order has durable event intent"}
+  ],
+  "flows": [
+    {"id":"FLOW-1","source":"CMP-ORDER","target":"CMP-BROKER","effect":"Publish order event","failure_boundary":"After order commit, before broker publish","trust_crossing":"unknown","transaction_relation":"separate","status":"supported","evidence_ids":["EV-1","EV-2"]}
+  ],
+  "invariants": [
+    {"id":"INV-1","requirement":"Committed orders retain durable outgoing event intent","scope":"order","enforcement":"Order transaction (target state)","owner":"CMP-ORDER","flow_ids":["FLOW-1"],"status":"supported","evidence_ids":["EV-3"]}
+  ],
+  "root_causes": [
+    {"id":"RC-1","mechanism":"Order commit is not atomic with durable outgoing event intent","status":"supported","evidence_ids":["EV-1","EV-2"]}
+  ],
+  "findings": [
+    {"id":"FND-1","problem_ids":["SDP-023"],"component_ids":["CMP-ORDER"],"flow_ids":["FLOW-1"],"invariant_ids":["INV-1"],"root_cause_ids":["RC-1"],"severity":"High","status":"supported","evidence_ids":["EV-1","EV-2"]},
+    {"id":"FND-2","problem_ids":["SDP-063"],"component_ids":["CMP-ORDER"],"flow_ids":["FLOW-1"],"invariant_ids":["INV-1"],"root_cause_ids":["RC-1"],"severity":"High","status":"supported","evidence_ids":["EV-1","EV-2"]}
+  ],
+  "tasks": [
+    {"id":"REM-1","kind":"remediation","finding_ids":["FND-1","FND-2"],"depends_on":[],"acceptance":"Commit order and event intent atomically; exercise pre- and post-commit crash."},
+    {"id":"VER-1","kind":"verification","finding_ids":["FND-1","FND-2"],"depends_on":["REM-1"],"acceptance":"Verify broker identity, routing, redelivery and trust boundary in isolated environment."}
+  ]
+}
