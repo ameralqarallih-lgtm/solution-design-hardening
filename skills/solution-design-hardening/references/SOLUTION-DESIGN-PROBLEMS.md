@@ -241,3 +241,118 @@ Problems that a Solution Architect should anticipate when designing transactiona
 | SDP-158 | **Distributed provider quota breach** – Independent replicas exceed shared provider limits. | Shared quota admission |
 | SDP-159 | **Claim-check retention mismatch** – Payload expires before supported replay. | Coordinated retention |
 | SDP-160 | **Long snapshot retention pressure** – Long transactions prevent cleanup of old versions or logs. | Bounded transactions, retention monitoring |
+
+## Security extension 1. Authentication and identity
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-161 | **Authentication bypass** – An unauthenticated caller reaches protected operations. | Require validated identity at every protected entry point; explicitly inventory public routes. |
+| SDP-162 | **Session fixation** – A pre-authentication session remains usable as the authenticated session. | Rotate session identifiers on authentication and privilege changes; invalidate previous identifiers server-side. |
+| SDP-163 | **Session theft and unsafe cookies** – Session credentials are exposed or reused outside intended context. | Use Secure, HttpOnly and context-appropriate SameSite cookies; limit lifetime, revoke sessions and prevent credential leakage. |
+| SDP-164 | **Credential stuffing and brute force** – Repeated authentication attempts compromise accounts or deny service to victims. | Use risk-based per-account and per-source controls, MFA and recovery; avoid permanent attacker-triggered lockouts. |
+| SDP-165 | **Token validation failure** – Untrusted or wrong-context tokens authenticate callers. | Use maintained protocol library; validate signature, allowed algorithms, issuer, audience, expiry and intended token type; reject untrusted keys. |
+| SDP-166 | **Token revocation gap** – A revoked session or credential remains valid beyond policy. | Define revocation latency, short lifetimes and appropriate introspection or revocation state; avoid assuming self-contained tokens revoke instantly. |
+| SDP-167 | **OAuth and OIDC binding failure** – A callback, authorization code or identity assertion is accepted for the wrong client or session. | Use authorization code flow with PKCE where applicable, exact redirect allowlist, session-bound state and OIDC nonce validation; use standard library. |
+| SDP-168 | **Account enumeration** – Authentication or recovery reveals whether an account exists. | Use consistent outward responses, bounded attempts and asynchronous recovery where appropriate; avoid leaking account status. |
+| SDP-169 | **Unsafe account recovery** – Recovery credentials allow unauthorized resets or repeat use. | Use high-entropy purpose-bound single-use tokens stored safely, atomic redemption, short expiry and post-reset session policy. |
+| SDP-170 | **Workload identity impersonation** – A service accepts a spoofed workload identity or credentials from the wrong environment. | Use authenticated workload identities, short-lived credentials and explicit audience/environment trust; authorize each operation. |
+
+## Security extension 2. Authorization and business-flow security
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-171 | **Object-level authorization failure** – A valid caller accesses another principal's resource by identifier. | Enforce ownership or explicit grants at the protected data operation; derive tenant from trusted context. |
+| SDP-172 | **Function-level authorization failure** – A caller reaches privileged functions without required rights. | Deny by default; enforce permissions server-side at each privileged function and validate delegated authority. |
+| SDP-173 | **Unsafe property binding** – Client-controlled fields alter protected attributes such as roles or owner IDs. | Allowlist writable properties by operation and policy; map explicit request types and derive server-owned fields. |
+| SDP-174 | **Unauthorized property disclosure** – An authorized object response exposes fields the caller cannot see. | Apply field-level read authorization and explicit projections; omit sensitive fields before serialization. |
+| SDP-175 | **Fail-open authorization** – Policy errors or unavailable identity services permit access. | Fail closed on protected operations when authority is uncertain; define separate public or degraded behavior. |
+| SDP-176 | **Privilege administration abuse** – Permission changes allow unauthorized escalation or bypass separation of duties. | Authorize grant creation and scope; enforce privilege ceilings and approval for high-impact grants; audit changes. |
+| SDP-177 | **Sensitive business-flow abuse** – Valid automated actions exhaust limited business resources or circumvent policy. | Enforce business-specific quotas, state constraints and risk controls at authoritative boundary; avoid only IP limits. |
+| SDP-178 | **Unsafe cross-origin trust** – Browser credentials or protected responses are exposed to untrusted origins. | Allow only required origins, methods and headers; use explicit credential policy and keep server-side authorization. |
+
+## Security extension 3. Injection and untrusted content
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-179 | **SQL injection** – Untrusted values alter database query semantics. | Bind parameters for values and allowlist identifiers; avoid constructing SQL from untrusted strings. |
+| SDP-180 | **NoSQL query injection** – Untrusted structures become database operators or filters. | Validate typed inputs, construct filters server-side and allowlist permitted operators. |
+| SDP-181 | **Command injection** – Untrusted values alter operating-system command execution. | Avoid shell execution; use constrained direct APIs and validated arguments, with least privilege. |
+| SDP-182 | **Cross-site scripting** – Untrusted content is interpreted as active browser code. | Use context-aware output encoding and vetted sanitization for intended HTML; CSP is defense in depth. |
+| SDP-183 | **Server-side request forgery** – Untrusted destinations cause server requests across restricted network boundaries. | Use approved destinations or isolated fetch service, enforce address policy after resolution and redirects, bound response size/time. |
+| SDP-184 | **Cross-site request forgery** – A browser sends an authenticated state change without user intent. | Use anti-forgery controls appropriate to credential mode, origin validation and safe HTTP semantics; do not rely solely on CORS. |
+| SDP-185 | **Unsafe XML processing** – XML parsing resolves external resources or expands input unexpectedly. | Disable unneeded external entities and DTDs; use safe parser configuration and resource limits. |
+| SDP-186 | **Unsafe deserialization** – Untrusted serialized data constructs unexpected objects or executes behavior. | Use data-only serialization and explicit schema/type allowlists; verify integrity when appropriate. |
+| SDP-187 | **Path traversal and archive extraction** – Untrusted paths escape authorized directories or overwrite unrelated files. | Use trusted roots, safe path resolution and symlink-aware filesystem primitives; reject unsafe archive entries. |
+| SDP-188 | **Template injection** – Untrusted content is interpreted as template source. | Use trusted templates with data-only bindings; sandbox only as additional control. |
+| SDP-189 | **Unsafe redirect** – Untrusted destination redirects users outside intended trust boundary. | Use local paths or explicit trusted destinations; normalize and validate before redirecting. |
+| SDP-190 | **HTTP parser disagreement** – Intermediaries disagree on request boundaries or normalization. | Reject ambiguous framing at ingress, align parser behavior and patch intermediaries. |
+| SDP-191 | **Unsafe file upload** – Untrusted files become executable, public or resource-exhausting content. | Allowlist business-required types, verify content, enforce limits, store outside executable paths and quarantine when needed. |
+| SDP-192 | **Unsafe upstream API consumption** – Third-party responses bypass validation or inject unsafe data into local actions. | Validate external data against explicit contracts, bound resources and enforce local authorization before effects. |
+
+## Security extension 4. Data protection and cryptography
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-193 | **Hardcoded secrets** – Reusable credentials are embedded in code, images or defaults. | Use secret manager or injected scoped credentials; revoke exposed secrets and remove insecure defaults. |
+| SDP-194 | **Secret exposure in artifacts and history** – Credentials persist in repository history, package or build output. | Revoke and rotate first; remove exposure from artifacts/history with coordinated owner approval; prevent recurrence. |
+| SDP-195 | **Unprotected sensitive storage** – Sensitive data or snapshots are readable outside intended access boundary. | Apply appropriate encryption and restricted access, separate key authority and minimize retained data. |
+| SDP-196 | **Cleartext sensitive transport** – Sensitive data or credentials traverse untrusted links without protection. | Use authenticated encryption in transit for relevant trust boundaries; enforce transport policy and secure downgrade handling. |
+| SDP-197 | **Disabled TLS certificate validation** – A client trusts an unauthenticated endpoint. | Validate certificate chain and hostname with approved trust anchors; provision internal CA rather than disabling checks. |
+| SDP-198 | **Weak password storage** – Password records can be recovered cheaply after a breach. | Use maintained password hashing with suitable cost and unique salts; migrate legacy hashes safely. |
+| SDP-199 | **Unsafe cryptographic primitive or mode** – Encryption or signatures do not provide the required security property. | Use approved authenticated encryption/signature protocols and reviewed libraries; avoid custom cryptography. |
+| SDP-200 | **Cryptographic nonce reuse** – A key is used with repeated nonces where uniqueness is required. | Use library-supported nonce policy appropriate to algorithm; ensure uniqueness per key across replicas and recovery. |
+| SDP-201 | **Predictable security tokens** – Security-sensitive identifiers derive from predictable randomness. | Use cryptographically secure randomness of appropriate entropy; do not use timestamps or ordinary PRNG for secrets. |
+| SDP-202 | **Key lifecycle and rotation failure** – Expired or compromised keys remain trusted, or rotation breaks availability. | Use versioned keys, bounded overlap, rotation and revocation procedures; protect historical decrypt needs separately. |
+| SDP-203 | **Sensitive data lifecycle mismatch** – Data survives beyond deletion or retention policy in copies or derived stores. | Minimize copies, enforce retention and deletion propagation subject to documented legal holds and restore controls. |
+
+## Security extension 5. Distributed and infrastructure security
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-204 | **Unauthenticated internal service** – An internal endpoint trusts network location instead of identity. | Authenticate and authorize service calls at the protected boundary; use network controls as defense in depth. |
+| SDP-205 | **Unrestricted network reachability** – A compromised workload can reach unrelated sensitive services. | Allow required flows explicitly, separate trust zones and verify policy enforcement by runtime/network provider. |
+| SDP-206 | **Unauthorized message operations** – A client can publish, consume or administer unrelated queues or topics. | Separate producer/consumer identities and scope permissions to required destinations and operations. |
+| SDP-207 | **Message integrity and trust failure** – A service accepts unauthenticated or altered messages as authoritative. | Authenticate transport and publisher where required; validate envelope, schema and authorization; sign payloads when end-to-end integrity needed. |
+| SDP-208 | **Excessive workload privileges** – Runtime permissions exceed application needs, enabling unintended access. | Use least privilege, non-root where feasible, minimal capabilities and restricted mounts; document justified exceptions. |
+| SDP-209 | **Exposed management surface** – Administrative or debug endpoints are reachable by unintended clients. | Restrict network and identity access, disable unnecessary endpoints, separate administration plane. |
+| SDP-210 | **Insecure deployment defaults** – Unsafe defaults remain enabled in deployed environments. | Define secure baseline, validate on startup or admission and prevent unsafe production defaults. |
+| SDP-211 | **Cross-environment credential reuse** – Development or staging credentials grant production access. | Separate accounts, trust roots and credential scopes by environment; restrict promotion workflows. |
+| SDP-212 | **Stale API inventory** – Deprecated or shadow endpoints escape security policy and patching. | Maintain versioned inventory and retirement controls; apply security policy consistently to all reachable versions. |
+
+## Security extension 6. Software supply chain
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-213 | **Vulnerable dependency exposure** – A known vulnerable dependency is reachable in application or deployment. | Use authorized SCA, update or mitigate affected versions, document exceptions and retest compatibility. |
+| SDP-214 | **Dependency confusion** – A resolver retrieves an unintended package from an untrusted namespace or registry. | Pin trusted registries and namespaces; lock dependency resolution and verify package integrity. |
+| SDP-215 | **Artifact integrity failure** – Deployment accepts modified or unverified binaries/images. | Verify signatures or attestations against trusted identities, pin immutable digests and enforce policy at promotion. |
+| SDP-216 | **Untrusted CI execution** – Untrusted contributions can execute with privileged pipeline context. | Separate untrusted builds from privileged release jobs, use minimal token permissions and approved promotion. |
+| SDP-217 | **Pipeline credential leakage** – Build credentials are exposed in logs, caches, artifacts or long-lived tokens. | Prefer short-lived workload identity, isolated credentials, redaction and restricted artifact access. |
+| SDP-218 | **Missing build provenance** – An artifact cannot be traced to approved source and build process. | Generate and verify provenance and dependency inventory at controlled build/promotion; keep trust policy independent. |
+| SDP-219 | **Unsupported component lifecycle** – Runtime or dependency no longer receives required security fixes. | Maintain lifecycle inventory, upgrade path and time-bounded risk acceptance for unsupported components. |
+
+## Security extension 7. Security monitoring and operations
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-220 | **Missing security audit coverage** – Security-relevant actions cannot be attributed or investigated. | Record actor, action, target, outcome and correlation with minimal sensitive data; durable audit intent where required. |
+| SDP-221 | **Audit trail tampering** – Unauthorized actors can alter or remove security evidence. | Separate audit authority, restrict deletion, use append-only or tamper-evident controls appropriate to risk. |
+| SDP-222 | **Security alerting gap** – Abuse or control failure does not trigger actionable notification. | Define monitored security signals, thresholds, escalation and test alert delivery; avoid noisy alerts without ownership. |
+| SDP-223 | **Error information disclosure** – Failures reveal internal implementation or sensitive values to callers. | Return sanitized error contracts, maintain restricted diagnostics and correlation; never expose secret or stack details publicly. |
+| SDP-224 | **Security configuration drift** – Effective controls diverge from approved baseline unnoticed. | Continuously validate effective controls, review changes and alert on unauthorized deviations. |
+| SDP-225 | **Emergency credential response gap** – Compromised credentials cannot be revoked or isolated within required time. | Define emergency rotation/revocation and containment with tested dependencies and communication; preserve service recovery. |
+
+## Security extension 8. AI and agentic application security
+
+| ID | Design problem | Recommended solution / pattern |
+|---|---|---|
+| SDP-226 | **Prompt injection trust-boundary failure** – Untrusted user or retrieved content influences privileged agent behavior. | Treat content as data; enforce independent tool authorization, constrained actions and output validation outside model; no prompt-only guarantee. |
+| SDP-227 | **Excessive agent authority** – Agent credentials or tools exceed the requested task scope. | Use scoped tools, least privilege, explicit authorization and confirmation for high-impact actions; enforce in host. |
+| SDP-228 | **RAG authorization bypass** – Retrieval returns documents the caller cannot access. | Enforce document-level authorization at retrieval and revalidate access where needed; scope indexes/caches by policy. |
+| SDP-229 | **Agent memory isolation failure** – Persistent memory leaks data or instructions across tenant or task boundaries. | Scope memory to authorized identity/tenant and purpose, validate provenance and support deletion; avoid treating memory as trusted authority. |
+| SDP-230 | **Knowledge and model input poisoning** – Untrusted ingestion corrupts knowledge or model inputs used for decisions. | Validate source and content, track provenance, quarantine untrusted updates and provide version rollback. |
+| SDP-231 | **Unsafe model output execution** – Generated text becomes executable commands, code or privileged data without validation. | Treat outputs as untrusted data, schema-validate, use constrained APIs and sandbox approved execution; require authority separately. |
+| SDP-232 | **Unbounded agent execution and cost** – Agent loops or tool fan-out exhaust budgets or trigger repeated effects. | Enforce host-level budgets, cancellation, concurrency limits and idempotent effects; stop safely and report incomplete work. |
+| SDP-233 | **Untrusted tool or MCP integration** – A tool definition or result expands authority or sends data to unintended party. | Allowlist trusted servers/tools, verify identity and contracts, constrain egress and permissions; treat descriptions/results as untrusted. |
+| SDP-234 | **AI sensitive output disclosure** – Model responses reveal sensitive information from context, tools or memory. | Minimize sensitive inputs, enforce retrieval permissions, validate output and apply provider/data retention policy; never rely only on filtering. |
+| SDP-235 | **Agent-to-agent trust failure** – Peer messages are accepted as authoritative instructions without verified identity or delegation. | Authenticate peers, validate delegated scope and message schema, and independently authorize requested effects. |

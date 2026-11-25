@@ -11,4 +11,4 @@ REM-001: save business row and immutable event intent in one transaction. Verify
 
 REM-002: use a durable unique consumer-scoped inbox key in the same transaction as local effect. Verify concurrent duplicate deliveries; acknowledge after commit in the actual broker integration. Ensure dedupe retention covers replay.
 
-This is a focused assessment, not a full 160-problem coverage claim. Severity depends on the real business impact. SQLite fixtures demonstrate local transaction behavior only.
+This is a focused assessment, not a full 235-problem coverage claim. Severity depends on the real business impact. SQLite fixtures demonstrate local transaction behavior only.

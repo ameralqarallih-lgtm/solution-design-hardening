@@ -17,3 +17,7 @@ This is a qualitative review, not an exhaustive comparison or performance benchm
 ## v0.3.0
 
 Independently authored extensions build on v0.2.0. Packaging follows the [Agent Skills specification](https://agentskills.io/specification) and [official repository](https://github.com/agentskills/agentskills). No additional third-party skill text incorporated.
+
+## v0.8.0 security sources
+
+The original playbooks were expanded with independently written defensive guidance. See [security standards](skills/solution-design-hardening/references/SECURITY-STANDARDS.md) for versioned official sources and limitations. No third-party standard text or code is redistributed as part of the new guidance; risk labels and identifiers are references. Individual candidate CWE and normative control applicability require assessment-time verification.

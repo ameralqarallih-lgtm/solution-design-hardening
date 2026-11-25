@@ -15,3 +15,5 @@
 | Rollout / rollback preconditions | |
 | Residual risk and untested paths | |
 | Status (passed / failed / not run / blocked / skipped) | |
+
+For security controls record tested identity/role/tenant, trust boundary, expected denial and permitted positive control, standards version/requirement where applicable, synthetic data and isolation, actual evidence and remaining gaps. Never include secret values.

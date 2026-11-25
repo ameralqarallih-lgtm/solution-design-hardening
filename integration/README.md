@@ -10,7 +10,7 @@ Requirements: Docker with Linux containers and Compose v2, internet access for t
 docker compose -p sdh-v070-lab -f integration/compose.yaml up --build --abort-on-container-exit --exit-code-from tests tests
 ```
 
-Save the exit status and logs before cleanup. `0` means the selected test runner passed, not that all 160 problems are solved. A failed image pull, build or health check is a blocked test, not a product defect. The command executes 12 tests using PostgreSQL, Redis and RabbitMQ. CI runs the same lab on integration-file changes and manual dispatch.
+Save the exit status and logs before cleanup. `0` means the selected test runner passed, not that all 235 problems are solved. A failed image pull, build or health check is a blocked test, not a product defect. The command executes 12 tests using PostgreSQL, Redis and RabbitMQ. CI runs the same lab on integration-file changes and manual dispatch.
 
 Record the actual image IDs and dependency versions (ranges and image tags are not immutable pins):
 

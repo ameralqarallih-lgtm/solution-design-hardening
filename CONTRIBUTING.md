@@ -9,3 +9,7 @@ Prefer capability-level guidance over duplicating product-specific instructions.
 ## Integration contributions
 
 Use [isolated integration experiments](integration/README.md) with synthetic data, bounded deadlines, negative controls and explicit evidence. Run `python -m unittest discover -s evals -v` before a pull request. Never mark an unexecuted infrastructure test as passed. Preserve capability-first design; new product fixtures are optional and must not become support prerequisites.
+
+## Security contributions
+
+Use synthetic data, local or explicitly authorized isolated targets, and both denied and permitted test cases. Do not submit secret values, exploit traces against real services or private code. Keep mappings versioned and advisory; cite upstream documentation and distinguish tested controls from suggested requirements. Report suspected project vulnerabilities via [responsible disclosure](SECURITY.md).

@@ -10,7 +10,7 @@ assert re.search(r'^name: solution-design-hardening$',header,re.M)
 assert 0<len(re.search(r'^description: (.+)$',header,re.M)[1])<=1024
 assert len(s.splitlines())<500
 ids=re.findall(r'^\| (SDP-\d{3}) \|', (skill/'references/SOLUTION-DESIGN-PROBLEMS.md').read_text(),re.M)
-assert ids==[f'SDP-{i:03}' for i in range(1,161)], 'Catalog IDs missing or reordered'
+assert ids==[f'SDP-{i:03}' for i in range(1,236)], 'Catalog IDs missing or reordered'
 playbook_ids=[]
 for p in sorted((skill/'references').glob('problems-*.md')):
     sections=re.split(r'^## (SDP-\d{3}) — .+$',p.read_text(),flags=re.M)
@@ -32,10 +32,14 @@ assert len(list(capability_dir.glob('*.md')))==17
 for profile in capability_dir.glob('*.md'):
     for heading in ('## Discover and verify','## Implementation decisions','## Counterexamples and limits','## Verification'):
         assert heading in profile.read_text(), (profile,heading)
-assert len(cases)==40
+assert len(cases)==56
 from scan import RULES
-assert len(RULES)==17 and len({r[0] for r in RULES})==17
+assert len(RULES)==27 and len({r[0] for r in RULES})==27
 assert {r[1] for r in RULES}<=set(ids)
 assert (skill/'references/INTEGRATION-VERIFICATION.md').is_file()
 assert len(list((skill/'references/technologies').glob('*.md')))==13
+mapped=re.findall(r'^\| (SDP-\d{3}) \|', (skill/'references/SECURITY-STANDARDS.md').read_text(),re.M)
+assert len(mapped)==len(set(mapped)) and set(mapped)<=set(ids) and set(ids[160:])<=set(mapped)
+assert len(list((skill/'references').glob('problems-*.md')))==24
+assert (skill/'assets/threat-model.md').is_file()
 print(f'PASS: skill metadata, internal links, {len(ids)} sequential problem IDs and complete playbook coverage, {len(cases)} evaluation cases. No agent evaluations executed.')

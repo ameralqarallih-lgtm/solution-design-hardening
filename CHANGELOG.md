@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.8.0 — Comprehensive Security Hardening
+
+- Preserve SDP-001–160 and existing playbooks; add SDP-161–235 across eight security domains (235 problems, 24 playbooks).
+- Add threat modeling, versioned advisory security standards crosswalk and adaptive security capability guidance.
+- Expand scanner from 17 to 27 candidate rules, add 16 agent scenarios (56 total) and eight local teaching tests (30 total).
+- Update README, assessment/verification templates, responsible disclosure guidance and roadmap. Infrastructure and actual agent benchmarks remain unexecuted.
+
 ## v0.7.0 — Advanced Integration and Verification
 
 - Preserve the 160-problem catalog, 16 playbooks, 17 capability references and 12 optional technology profiles.

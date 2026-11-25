@@ -12,3 +12,5 @@ For each FND-ID: problem IDs, invariant, observed behavior, counterexample, affe
 
 ## Coverage
 Report total unique problems, assessed, unassessed, status counts and unresolved tasks. Full coverage means every item classified, not every risk fixed. Focused reviews must label excluded areas.
+
+Security scope: trust boundaries, protected assets, policy/identity evidence, threat IDs, versioned standards references and residual risks. See [threat model](threat-model.md). Do not infer standards compliance from problem coverage.

@@ -2,9 +2,9 @@
 
 **Build software that survives concurrency, failures, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.7.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-160-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
+![Release](https://img.shields.io/badge/release-v0.8.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
 
-An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
+An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
 [Quick start](#quick-start) · [Coverage](#coverage) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
@@ -73,7 +73,7 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 ## Coverage
 
-160 stable problem IDs, 16 domain playbooks, 17 capability profiles, 12 optional product profiles, and 40 scenario-based agent evaluation cases.
+235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, and 56 scenario-based agent evaluation cases.
 
 | Domain | Problem IDs |
 |---|---|
@@ -91,8 +91,40 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 | Deployment and resources | SDP-137–145 |
 | Observability and tenancy | SDP-146–150 |
 | Lifecycle | SDP-151–160 |
+| Authentication and identity | SDP-161–170 |
+| Authorization and business-flow security | SDP-171–178 |
+| Injection and untrusted content | SDP-179–192 |
+| Data protection and cryptography | SDP-193–203 |
+| Distributed and infrastructure security | SDP-204–212 |
+| Software supply chain | SDP-213–219 |
+| Security monitoring and operations | SDP-220–225 |
+| AI and agentic application security | SDP-226–235 |
 
 Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
+
+### Comprehensive Security Hardening (v0.8.0)
+
+Security is integrated into the same evidence-driven architecture assessment, not a separate plugin or a product-specific checklist. The release preserves the original 160 entries and adds 75 security scenarios. It covers authentication, resource/function/property authorization, input-to-interpreter boundaries, data and cryptographic protection, workload and network trust, software supply chain, security operations, and AI/agent permissions and data isolation.
+
+| Example security failure | Minimum safeguard | Verification |
+|---|---|---|
+| Object authorization failure | Enforce ownership or grants at the actual operation | Two principals: denied cross-owner and allowed own-object access |
+| Fail-open authorization | Deny protected effects on policy failure | Inject timeout; permitted normal path still works |
+| Token validation failure | Verify intended issuer, audience, type, signature and expiry | Invalid token rejected; valid token accepted |
+| Unsafe property binding | Allowlist writable fields | Attempt protected-field change; allowed field updates |
+| Supply chain integrity | Verify trusted provenance and artifact identity | Reject mismatched artifact and unapproved builder |
+| Prompt injection / excessive agency | Enforce authority outside model context | Mock untrusted instruction cannot trigger unauthorized effect |
+
+Start with [security assessment](skills/solution-design-hardening/references/SECURITY-ASSESSMENT.md), [adaptive security capabilities](skills/solution-design-hardening/references/SECURITY-CAPABILITIES.md), [standards traceability](skills/solution-design-hardening/references/SECURITY-STANDARDS.md) and the [threat model template](skills/solution-design-hardening/assets/threat-model.md). Mappings reference OWASP Top 10:2025, API Top 10:2023 and candidate CWE IDs; ASVS 5.0.0, GenAI/Agentic 2026, SSDF, SLSA, CIS and ATT&CK are separate verification inputs. Category-level coverage does not certify compliance.
+
+```text
+Use solution-design-hardening to assess security across this codebase.
+Map trust boundaries, actors and protected assets; identify applicable
+security problems with evidence and propose prioritized remediation.
+Do not modify code or probe external/production systems.
+```
+
+Local security fixtures use synthetic principals and SQLite or mock policy/tool calls. They reproduce missing object scoping and unsafe property binding, and verify scoped fixes, parameter binding, sequential token redemption, fail-closed policy and external tool authorization. They do not validate a real identity provider, web server, cryptographic protocol or agent model. See [security reporting](SECURITY.md) for responsible disclosure.
 
 ### Adaptive Technology Intelligence
 
@@ -115,7 +147,7 @@ flowchart TD
 
 | Layer | Responsibility |
 |---|---|
-| Universal problems | 160 stable failure scenarios and 16 playbooks |
+| Universal problems | 235 stable failure scenarios and 24 playbooks |
 | Discovery | Component-specific manifest, dependency, configuration and topology evidence |
 | Capability mapping | 17 reusable technology-independent domains |
 | Product profiles | 12 optional accelerators, not prerequisites |
@@ -162,9 +194,9 @@ python -m unittest discover -s evals -v
 python tools/scan.py /path/to/repository
 ```
 
-The scanner is a small read-only heuristic helper with 17 candidate rules; its results are **not confirmed defects**. It does not print source lines or secret values. Review candidate locations manually and use the relevant playbook. It is not a full static analyzer.
+The scanner is a small read-only heuristic helper with 27 candidate rules; its results are **not confirmed defects**. It does not print source lines or secret values. Review candidate locations manually and use the relevant playbook. It is not a full static analyzer.
 
-The executable suite demonstrates vulnerable and corrected outbox, inbox and cache paths, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
+The executable suite demonstrates vulnerable and corrected outbox, inbox, cache, object access and property binding paths, plus bounded security teaching examples, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
 For agent comparisons, use the [evaluation protocol](evals/README.md) and `python tools/score.py results.json` to aggregate human-reviewed paired trials. Do not expose expected answers to the evaluated agent. No actual cross-agent benchmark scores have been generated yet.
 
@@ -174,11 +206,11 @@ This release adds an opt-in [disposable Docker Compose lab](integration/README.m
 
 | Layer | Scope | Status at release preparation |
 |---|---|---|
-| Offline structural checks | 160 IDs, playbooks, links, 40 evaluation cases, scanner mappings | Passed |
-| Offline executable suite | 22 tests, including all 17 scanner signals and safe controls | Passed |
+| Offline structural checks | 235 IDs, playbooks, links, 56 evaluation cases, scanner mappings | Passed |
+| Offline executable suite | 30 tests, including all 27 scanner signals and safe controls | Passed |
 | Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
-| Actual agent benchmarks | 40 candidate scenarios | Not run |
+| Actual agent benchmarks | 56 candidate scenarios | Not run |
 
 To run the default lab in a dedicated disposable project (requires Docker/Compose):
 
@@ -198,9 +230,10 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.4.0 | Technology-specific guides | Included in v0.5.0 |
 | v0.5.0 | Initial executable fixtures, heuristic scanner, evaluation scoring | Complete |
 | v0.6.0 | Adaptive Technology Intelligence | Complete |
-| v0.7.0 | Real-service integration lab, expanded detection and fault injection | Current release candidate; infrastructure run pending |
-| v0.8.0 | Dependency, transaction and invariant mapping | Planned |
-| v0.9.0 | Cross-agent benchmarks and context optimization | Planned |
+| v0.7.0 | Real-service integration lab, expanded detection and fault injection | Implemented; infrastructure run pending |
+| v0.8.0 | Comprehensive Security Hardening | Current release candidate; local checks passed |
+| v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Planned |
+| v0.10.0 | Cross-agent benchmarks and context optimization | Planned |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 
 ## Contributing

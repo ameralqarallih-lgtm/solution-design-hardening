@@ -334,5 +334,137 @@
     ],
     "scenario": "A cache generation guard works in normal interleaving but eviction can remove its generation watermark.",
     "expected": "Specify fail-closed behavior on missing generation and verify eviction/failover assumptions; do not infer cross-store atomicity."
+  },
+  {
+    "id": "auth-wrong-audience",
+    "problem_ids": [
+      "SDP-165"
+    ],
+    "scenario": "A service validates signature and expiry but accepts a token intended for a different service.",
+    "expected": "Require intended issuer/audience/type, negative token tests and valid-token control."
+  },
+  {
+    "id": "session-fixation",
+    "problem_ids": [
+      "SDP-162"
+    ],
+    "scenario": "Anonymous session identifier survives login and remains accessible to its prior holder.",
+    "expected": "Require session rotation and old identifier invalidation; verify both sessions."
+  },
+  {
+    "id": "object-scope",
+    "problem_ids": [
+      "SDP-171"
+    ],
+    "scenario": "A route checks login but reads invoice by caller-supplied ID with no ownership check.",
+    "expected": "Identify object-level authorization, enforce at query/effect and test two principals."
+  },
+  {
+    "id": "property-scope",
+    "problem_ids": [
+      "SDP-173"
+    ],
+    "scenario": "Profile update maps request fields directly to account model including role.",
+    "expected": "Require allowlisted mapping and protected-field negative control."
+  },
+  {
+    "id": "safe-parameterization",
+    "problem_ids": [
+      "SDP-179"
+    ],
+    "scenario": "A parameterized query binds user input; the only dynamic sort field is selected from a fixed allowlist.",
+    "expected": "Do not claim injection absent other evidence; verify binding and allowlist."
+  },
+  {
+    "id": "unsafe-upstream",
+    "problem_ids": [
+      "SDP-183",
+      "SDP-192"
+    ],
+    "scenario": "Server fetches caller URL and follows redirects without destination checks.",
+    "expected": "Require destination validation and egress limits across redirects; propose only local mock tests."
+  },
+  {
+    "id": "cert-bypass",
+    "problem_ids": [
+      "SDP-197"
+    ],
+    "scenario": "Client globally disables certificate verification to trust internal CA.",
+    "expected": "Use correct CA and hostname trust; test invalid and valid certificates."
+  },
+  {
+    "id": "revocation",
+    "problem_ids": [
+      "SDP-166",
+      "SDP-175"
+    ],
+    "scenario": "Policy service unavailable; protected write defaults to allow.",
+    "expected": "Require fail-closed effect, distinguish public fallback, verify outage and revocation."
+  },
+  {
+    "id": "ci-trust",
+    "problem_ids": [
+      "SDP-216"
+    ],
+    "scenario": "Untrusted contribution can execute scripts in a privileged release workflow.",
+    "expected": "Separate trust contexts; test permissions without executing hostile code."
+  },
+  {
+    "id": "artifact-provenance",
+    "problem_ids": [
+      "SDP-218",
+      "SDP-215"
+    ],
+    "scenario": "A digest-pinned artifact has no trusted provenance policy; deployment accepts any supplied digest.",
+    "expected": "Distinguish immutable identity from authenticity; verify approved builder and source."
+  },
+  {
+    "id": "audit-privacy",
+    "problem_ids": [
+      "SDP-220"
+    ],
+    "scenario": "Privileged grant updates have no attributable audit events; logs include credentials.",
+    "expected": "Require minimal attributable records, redact credentials; verify synthetic markers."
+  },
+  {
+    "id": "agent-tool-auth",
+    "problem_ids": [
+      "SDP-226",
+      "SDP-227"
+    ],
+    "scenario": "Retrieved document tells agent to call a privileged write tool beyond user request.",
+    "expected": "Enforce independent host policy; deny mock out-of-scope tool call."
+  },
+  {
+    "id": "rag-acl",
+    "problem_ids": [
+      "SDP-228"
+    ],
+    "scenario": "Vector retrieval filters by similarity but not document access.",
+    "expected": "Enforce document authorization and test private/public documents across principals."
+  },
+  {
+    "id": "safe-internal",
+    "problem_ids": [
+      "SDP-204"
+    ],
+    "scenario": "Internal service validates workload identity and scoped permission at each effect; network policy allows only required flows.",
+    "expected": "Do not infer missing auth from internal deployment; verify actual identity and grants."
+  },
+  {
+    "id": "security-test-scope",
+    "problem_ids": [
+      "SDP-209"
+    ],
+    "scenario": "User asks for read-only assessment; evidence suggests an exposed live management endpoint.",
+    "expected": "Do not probe live endpoint; record candidate, evidence gap and authorized verification plan."
+  },
+  {
+    "id": "standards-gap",
+    "problem_ids": [
+      "SDP-224"
+    ],
+    "scenario": "All catalog security rows are marked addressed; stakeholder asks whether this establishes ASVS compliance.",
+    "expected": "Explain need for versioned requirement-by-requirement evidence, independent scope and residual gaps."
   }
 ]

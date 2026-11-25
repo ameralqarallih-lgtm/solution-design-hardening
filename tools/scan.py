@@ -21,6 +21,16 @@ RULES = [
  ('unbounded-metric-label','SDP-146',r'\b(?:WithLabels|labels|WithLabelValues)\s*\([^\n]*(?:user_id|userId|request_id|requestId|trace_id|traceId)','Check metric dimension cardinality and whether values are bounded.',{'.cs','.py','.go','.java','.js','.ts'}),
  ('blind-offset-commit','SDP-065',r'\b(?:enable_auto_commit|enable\.auto\.commit|enableAutoCommit)\s*[\'\"]?\s*[:=]\s*(?:true|True)\b','Verify offset commit timing against durable effect and client semantics.',{'.py','.js','.ts','.java','.yaml','.yml','.properties'}),
  ('infinite-retry','SDP-087',r'\b(?:RetryForever(?:Async)?|WaitAndRetryForever(?:Async)?)\s*\(','Check outer deadline, cancellation and retry budget.',{'.cs'}),
+ ('tls-verify-disabled', 'SDP-197', '\\bverify\\s*=\\s*False\\b|DangerousAcceptAnyServerCertificateValidator|\\brejectUnauthorized\\s*:\\s*false\\b', 'Confirm client context and trust configuration; use correct certificate and hostname verification.', {'.cs', '.js', '.py', '.ts'}),
+ ('shell-execution', 'SDP-181', '\\bshell\\s*=\\s*True\\b|\\bos\\.system\\s*\\(', 'Trace untrusted arguments; a fixed trusted command is not necessarily injectable.', {'.py'}),
+ ('native-deserialization', 'SDP-186', '\\bpickle\\.loads?\\s*\\(|\\bBinaryFormatter\\b', 'Establish data provenance and trust; avoid native object deserialization for untrusted input.', {'.cs', '.py'}),
+ ('unsafe-html-sink', 'SDP-182', '\\bdangerouslySetInnerHTML\\b|\\.innerHTML\\s*=', 'Trace content and context-specific sanitization before reporting XSS.', {'.js', '.jsx', '.ts', '.tsx'}),
+ ('privileged-container', 'SDP-208', '^\\s*privileged\\s*:\\s*true\\b', 'Verify actual workload privileges and justified exceptions.', {'.yaml', '.yml'}),
+ ('wildcard-cors', 'SDP-178', '\\bAllowAnyOrigin\\s*\\(|\\ballow_origins\\s*=\\s*\\[\\s*[\\\'\\"]\\*[\\\'\\"]\\s*\\]', 'Check credential mode and resource policy; public APIs can intentionally allow all origins.', {'.cs', '.py'}),
+ ('debug-enabled', 'SDP-210', '\\bDEBUG\\s*=\\s*True\\b|\\bdebug\\s*=\\s*True\\b', 'Check effective environment; isolated development settings may be appropriate.', {'.py'}),
+ ('anonymous-route', 'SDP-161', '\\[AllowAnonymous\\b|\\.AllowAnonymous\\s*\\(', 'Check whether route is intentionally public and has no protected effects.', {'.cs'}),
+ ('token-validation-setting', 'SDP-165', '\\bValidateIssuerSigningKey\\s*=\\s*false\\b|[\\\'\\"]verify_signature[\\\'\\"]\\s*:\\s*False\\b', 'Check actual token validation flow; inspecting untrusted claims without authenticating is not necessarily a defect.', {'.cs', '.py'}),
+ ('weak-digest', 'SDP-199', '\\bhashlib\\.(?:md5|sha1)\\s*\\(|\\bMD5\\.Create\\s*\\(', 'Verify whether digest is used for a security property; nonsecurity checksums may be valid.', {'.cs', '.py'}),
 ]
 # Do not inspect arbitrary secret/config files or generated content.
 SKIP={'.git','node_modules','vendor','bin','obj','.venv','venv','dist','build','__pycache__','target','coverage'}
