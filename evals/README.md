@@ -143,6 +143,14 @@ python tools/benchmark.py run benchmark-runs/activation --allow-external-executi
 
 Use the same adapter configured for the host's normal automatic discovery, not forced skill activation. Save `[]` in an empty grade JSON file and run `benchmark_report.py` with that file to report activation metrics without quality grading. Unknown/missing activation remains separately counted. Activation results are adapter-reported and require independent trace review. Do not infer activation merely because a response mentions a pattern. The relevance labels are deliberately simple probes, not a complete production relevance taxonomy.
 
+For a signed-in Codex CLI with the model below available, use the included [native adapter](codex_native_adapter.py). It installs the snapshot under `.agents/skills` in a fresh work directory and records the CLI trace. A successful recorded read of the installed skill body counts as activation. A rejected or failed read counts as unknown. A completed turn with no matching read is reported as no observed activation under this adapter.
+
+```sh
+python tools/benchmark.py prepare benchmark-runs/activation-codex --agent codex --model gpt-6.2-sol --settings "native discovery with a read-only sandbox" --suite activation --trials 1
+python tools/benchmark.py run benchmark-runs/activation-codex --timeout 180 --allow-external-execution --adapter python evals/codex_native_adapter.py --model gpt-6.2-sol --trace-dir benchmark-runs/activation-codex/trace.private
+python tools/benchmark_report.py benchmark-runs/activation-codex
+```
+
 ## Release regression and context optimization
 
 Repeat a fixed suite against each tagged version using the same procedure and compare matched runs. Use `python tools/context.py SDP-023 SDP-024 SDP-171` to inspect selected playbook byte counts; bytes are not tokens and not measured model savings. Read all related references needed for correctness. The core skill must preserve full assessment coverage and safety while reducing unnecessary loading.

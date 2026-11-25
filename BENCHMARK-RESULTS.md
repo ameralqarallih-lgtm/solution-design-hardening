@@ -42,4 +42,25 @@ The default `integration/compose.yaml` lab ran in an isolated Compose project wi
 
 ## Release follow-up
 
-Adjudicate the safety flags and safe controls, exercise a second live model and native skill activation, and record acceptance criteria before promoting a stable release. The complete local review packet, raw responses, and diagnostic attempts are retained outside the tracked source.
+Stable promotion requires the full 18-pair pilot on two live models, an independent review of the rubric decisions, and passing default infrastructure tests. The skill condition must show zero confirmed unsafe remedies and zero false alarms on the labeled safe controls in each pilot. Native skill activation also needs a trace-backed check. The complete local review packets, raw responses, and diagnostic attempts are retained outside the tracked source.
+
+### Independent review and repeat pilots
+
+A second reviewer graded the original 36 responses without condition labels or previous scores. The reviewers agreed on 31 of 36 safety overrides. The reconciled review records three unsafe remedies. It counts the payment branch that commits its local claim after a provider charge, the local transaction check that assumes pre-transaction validation ensures consistency, and the outbox answer that relies on a successful commit and reliable broker to cover the intervening crash. Four disputed alternatives reduced detection or remediation scores because they omitted guarantees or targeted a hypothetical reverse order. Both reviewers flagged all six local-counter responses for inventing a need for cross-process coordination.
+
+The revised skill leads with the stated operation order and invariant scope. It makes a successful provider call followed by a lost response, a commit followed by an interrupted publish, and a stale cache fill after invalidation explicit. It also asks for a scoped non-finding when the stated local boundary already suffices.
+
+| Run, 18 pairs each | Baseline score / 8 | Skill score / 8 | Unsafe remedies, baseline / skill | Safe-control false alarms, baseline / skill |
+|---|---:|---:|---:|---:|
+| Original Ollama pilot, reconciled review | 3.111 | 3.333 | 2 / 1 | 4 / 6 |
+| First revised Ollama pilot | 1.944 | 5.000 | 7 / 5 | 4 / 0 |
+| Final revised Ollama pilot | 2.611 | 4.333 | 5 / 7 | 4 / 0 |
+| Codex CLI with `gpt-6.2-sol` and pre-follow-up guidance | 7.833 | 7.944 | 0 / 0 | 0 / 0 |
+
+The two Ollama repeats used the original sampling settings and six labeled cases. Both cleared the skill condition's safe controls. The final repeat identified stale refill in all three skill responses for that case, and two proposed a version-aware fill test. The outbox and payment responses still claimed a local transaction could cover the independent effect, and one cache remedy still allowed the stale refill. The final candidate therefore missed the safety gate. Independent model grades remain provisional. Sampling and reviewer differences limit comparisons across runs.
+
+The second live provider was Codex CLI `0.171.0-alpha.13.2` using the signed-in ChatGPT account. All 36 responses completed using the built-in fixed-prompt adapter and the same six cases, order seed and repeats. The Codex run used its own model and default generation settings. It detected all 15 labeled positive opportunities in each condition. Independent review recorded one overclaim about downstream invoice authorization under skill guidance.
+
+### Native Codex activation
+
+The [native adapter](evals/codex_native_adapter.py) completed eight installed-skill probes and eight baseline probes with the same Codex build and model in a read-only sandbox. The four irrelevant tasks had no observed skill reads. The four relevant tasks produced trace evidence of an attempted read of the installed `SKILL.md`. The Windows host rejected those commands, so their activation remains unknown. Repeating the outbox probe inside the project workspace produced the same rejection. A trace with successful file reads is still needed to verify native activation.

@@ -4,6 +4,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from benchmark import make_plan,prepare,execute,review_packet,invoke,read,ROOT
 from benchmark_report import report,markdown
 from context import select
+from codex_native_adapter import activation
 
 CASES=read(ROOT/'evals/cases.json')
 GOLD=read(ROOT/'evals/gold-findings.json')
@@ -60,5 +61,18 @@ class BenchmarkTests(unittest.TestCase):
         cases=read(ROOT/'evals/activation-cases.json'); p=make_plan(cases,[c['id'] for c in cases],1,99,['baseline','skill'],'a','m','s'); p.update(suite='activation',activation_labels={c['id']:c['relevant'] for c in cases}); raw=[dict(run_id=r['run_id'],status='ok',activation=('yes' if p['activation_labels'][r['case_id']] else 'no') if r['condition']=='skill' else 'unknown') for r in p['runs']]; raw[next(i for i,r in enumerate(p['runs']) if r['condition']=='skill' and p['activation_labels'][r['case_id']])]['activation']='unknown'; result=report(p,raw,[],{})['activation_evaluation']['skill']; self.assertEqual(result['tp'],3); self.assertEqual(result['tn'],4); self.assertEqual(result['unknown_or_unavailable'],1); self.assertEqual(result['false_activation_rate'],0)
     def test_invalid_context_id(self):
         with self.assertRaises(ValueError): select(['SDP-999'])
+
+    def test_native_activation_requires_host_evidence(self):
+        turn = {"type": "turn.completed"}
+        text = {"type": "item.completed", "item": {"type": "agent_message",
+                                                   "text": "I used solution-design-hardening."}}
+        command = r"Get-Content .agents\skills\solution-design-hardening\SKILL.md"
+        denied = f"ERROR: {command} rejected: blocked by policy"
+        read = {"type": "item.completed", "item": {"type": "command_execution", "command": command,
+                                                   "exit_code": 0,
+                                                   "aggregated_output": "# Solution Design Hardening\n"}}
+        self.assertEqual(activation([text, turn], "")[0], "no")
+        self.assertEqual(activation([text, turn], denied)[0], "unknown")
+        self.assertEqual(activation([read, turn], "")[0], "yes")
 
 if __name__=='__main__': unittest.main()

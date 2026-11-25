@@ -387,7 +387,7 @@ The scanner is a small read-only heuristic helper with 27 candidate rules; its r
 
 The executable suite demonstrates vulnerable and corrected outbox, inbox, cache, object access and property binding paths, plus bounded security teaching examples, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
-For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. The first live pilot covers local Ollama, with cross-agent validation pending. [Pilot results](BENCHMARK-RESULTS.md).
+For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. Live fixed-prompt pilots have run on local Ollama and Codex CLI. [Pilot results](BENCHMARK-RESULTS.md).
 
 ![Local tests by release, reaching 78 defined checks](docs/assets/local-tests.svg)
 
@@ -407,7 +407,7 @@ The repository includes an opt-in [disposable Docker Compose lab](integration/RE
 | Local regression suite | 79 tests covering adapters, reporting, 27 scanner signals and safe controls | 78 passed, 1 platform-specific skip on Windows |
 | Default infrastructure lab | 12 tests for database process exits, reservations, Redis stale refill, RabbitMQ redelivery and relay replay | 12 passed |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
-| Actual agent benchmarks | Local Ollama pilot of six scenarios and three repeats | 36 responses, 18 provisionally graded pairs |
+| Actual agent benchmarks | Six-scenario paired pilots on Ollama and Codex CLI | 36 responses per pilot, independently reviewed with provisional model grades |
 
 To run the default lab in a dedicated disposable project (requires Docker/Compose):
 
@@ -442,8 +442,8 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | Stable catalog, playbooks, standards mappings and internal links | Passed offline structural checks |
 | Local tool and teaching-fixture regression suite | 78 passed, 1 platform-specific skip on Windows |
 | Real-service integration and failure recovery | 12 default tests passed. Optional SQL Server remains pending. |
-| Baseline vs skill quality, precision and recall | One Ollama pilot completed. Human adjudication and a second model are pending. |
-| Cross-agent activation and context cost | Pending real host traces and actual usage |
+| Baseline vs skill quality, precision and recall | Ollama and Codex CLI pilots complete. Ollama still has unsafe remedies, and grades remain provisional. |
+| Cross-agent activation and context cost | Usage recorded on Ollama and Codex CLI. The Windows host rejected the relevant native skill reads. |
 | Competing-skill comparisons | Pending licensed, isolated, fair evaluation |
 | Community validation and compatibility | Pending |
 
