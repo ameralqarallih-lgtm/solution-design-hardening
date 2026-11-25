@@ -1,7 +1,10 @@
 """Prepare reproducible, paired, opt-in coding-agent evaluations (Python stdlib)."""
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
+import math
+import os
 import random
 import shutil
 import subprocess
@@ -20,8 +23,36 @@ def read(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
+def write_text(path, content):
+    path = Path(path)
+    with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as temp:
+        pending = Path(temp.name)
+    try:
+        pending.write_text(content, encoding='utf-8')
+        pending.replace(path)
+    finally:
+        pending.unlink(missing_ok=True)
+
+
 def write(path, obj):
-    Path(path).write_text(json.dumps(obj, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+    write_text(path, json.dumps(obj, indent=2, ensure_ascii=False) + '\n')
+
+
+@contextmanager
+def run_lock(out):
+    """An OS-held lock is released even if the runner is interrupted."""
+    with (out / '.benchmark.lock').open('a+b') as lock:
+        lock.seek(0)
+        try:
+            if os.name == 'nt':
+                import msvcrt
+                msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise ValueError('Another benchmark process is using this experiment.') from None
+        yield
 
 
 def digest(data):
@@ -67,7 +98,8 @@ def make_plan(cases, ids, trials, seed, conditions, agent, model, settings):
                 conditions=conditions, case_ids=ids, trials=trials, runs=rows)
 
 
-def prepare(out, cases, ids, trials, seed, agent, model, settings, competitor=None, suite='scenario'):
+def prepare(out, cases, ids, trials, seed, agent, model, settings, competitor=None, suite='scenario',
+            automation=None):
     plan = make_plan(cases, ids, trials, seed, ['baseline','skill']+(['competitor'] if competitor else []), agent, model, settings)
     skill = ROOT/'skills/solution-design-hardening'
     sources = {'skill':skill}
@@ -79,10 +111,16 @@ def prepare(out, cases, ids, trials, seed, agent, model, settings, competitor=No
     plan['suite']=suite
     plan['activation_labels']={c['id']:c['relevant'] for c in cases} if suite=='activation' else {}
     plan['gold_sha256'] = digest(json.dumps(gold,sort_keys=True).encode())
+    if automation is not None:
+        rubric = {case['id']: case['expected'] for case in cases if case['id'] in ids}
+        plan['automation'] = automation
+        plan['rubric_sha256'] = digest(json.dumps(rubric, sort_keys=True).encode())
     out.mkdir(parents=True, exist_ok=False)
     for k,v in sources.items():
         shutil.copytree(v, out/'skill-snapshots'/k)
     write(out/'gold.private.json',gold)
+    if automation is not None:
+        write(out/'rubric.private.json', rubric)
     write(out/'plan.private.json', plan)
     return plan
 
@@ -126,15 +164,29 @@ def invoke(command, workspace, timeout):
 
 
 def execute(out, command, timeout=180):
-    if not command or timeout<=0:
+    if not command or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError('adapter command and positive timeout required')
     plan=read(out/'plan.private.json')
+    if plan.get('automation'):
+        raise ValueError('This experiment uses a built-in adapter. Resume it with evaluate --resume.')
     for condition,expected in plan['skill_hashes'].items():
         if skill_digest(out/'skill-snapshots'/condition)!=expected:
             raise ValueError('skill snapshot changed')
     results=out/'raw.private'
     results.mkdir(exist_ok=True)
-    for row in plan['runs']:
+    pending = [row for row in plan['runs'] if not (results / (row['run_id'] + '.json')).exists()]
+    if not pending:
+        return
+    executable = shutil.which(command[0])
+    if not executable:
+        raise ValueError('Adapter executable was not found. Put it on PATH or use an absolute path.')
+    command = [str(Path(executable).resolve()), *command[1:]]
+    if len(command) > 1 and command[1].endswith('.py') and not command[1].startswith('-'):
+        script = Path(command[1]).resolve()
+        if not script.is_file():
+            raise ValueError('Adapter script was not found. Use the path to a real adapter or run evaluate.')
+        command[1] = str(script)
+    for row in pending:
         target=results/(row['run_id']+'.json')
         if target.exists():
             continue # failures retained; do not selectively rerun in the same trial
@@ -163,23 +215,41 @@ def review_packet(out):
 
 
 def main():
+    from benchmark_adapters import AdapterError
+    from benchmark_automation import add_commands, compare, doctor, evaluate
+
     parser=argparse.ArgumentParser(description=__doc__)
     sub=parser.add_subparsers(dest='action',required=True)
     p=sub.add_parser('prepare'); p.add_argument('out',type=Path); p.add_argument('--agent',required=True); p.add_argument('--model',required=True); p.add_argument('--settings',required=True); p.add_argument('--cases',nargs='+'); p.add_argument('--trials',type=int,default=1); p.add_argument('--seed',type=int,default=42); p.add_argument('--competitor',type=Path); p.add_argument('--suite',choices=('scenario','activation'),default='scenario')
     p=sub.add_parser('run'); p.add_argument('out',type=Path); p.add_argument('--timeout',type=float,default=180); p.add_argument('--allow-external-execution',action='store_true'); p.add_argument('--adapter',nargs=argparse.REMAINDER,required=True)
     p=sub.add_parser('review'); p.add_argument('out',type=Path)
+    add_commands(sub)
     a=parser.parse_args()
-    if a.action=='prepare':
-        cases=read(ROOT/'evals'/('cases.json' if a.suite=='scenario' else 'activation-cases.json'))
-        plan=prepare(a.out,cases,a.cases or [c['id'] for c in cases],a.trials,a.seed,a.agent,a.model,a.settings,a.competitor,a.suite)
-        print(f'Prepared {len(plan["runs"])} runs; no agent invoked.')
-    elif a.action=='run':
-        if not a.allow_external_execution:
-            parser.error('explicit --allow-external-execution required; adapter may incur costs and has local process permissions')
-        execute(a.out,a.adapter,a.timeout)
-        print('Adapter attempts recorded; inspect status and grade independently.')
-    else:
-        write(a.out/'review.json',review_packet(a.out)); print('Review packet created; responses may reveal condition.')
+    try:
+        if a.action == 'doctor':
+            return doctor(a)
+        if a.action == 'evaluate':
+            return evaluate(a)
+        if a.action == 'compare':
+            return compare(a)
+        if a.action=='prepare':
+            cases=read(ROOT/'evals'/('cases.json' if a.suite=='scenario' else 'activation-cases.json'))
+            plan=prepare(a.out,cases,a.cases or [c['id'] for c in cases],a.trials,a.seed,a.agent,a.model,a.settings,a.competitor,a.suite)
+            print(f'Prepared {len(plan["runs"])} runs; no agent invoked.')
+        elif a.action=='run':
+            if not a.allow_external_execution:
+                parser.error('explicit --allow-external-execution required; adapter may incur costs and has local process permissions')
+            with run_lock(a.out):
+                execute(a.out,a.adapter,a.timeout)
+            print('Adapter attempts recorded; inspect status and grade independently.')
+        else:
+            with run_lock(a.out):
+                write(a.out/'review.json',review_packet(a.out))
+            print('Review packet created; responses may reveal condition.')
+    except (AdapterError, ValueError, OSError) as error:
+        parser.exit(2, f'Benchmark error: {error}\n')
+    except KeyboardInterrupt:
+        parser.exit(130, 'Benchmark interrupted. Completed attempts are available for resume.\n')
 
 if __name__=='__main__':
-    main()
+    raise SystemExit(main())

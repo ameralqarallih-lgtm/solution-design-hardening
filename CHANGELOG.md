@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.11.0 — Automated Benchmarking and Agent Integration
+
+- Add built-in adapters for Claude Code, Codex and GitHub Copilot CLI, plus Chat Completions adapters for OpenAI, Ollama, LiteLLM, LM Studio and compatible endpoints.
+- Add `doctor` preflight, opt-in connectivity probes, single-command `evaluate`, reusable JSON configuration, progress, resume and attempt-preserving retries.
+- Generate review packets, grading templates and Markdown, JSON and SVG reports. Support independent provisional model grades, human overrides and matched experiment summaries.
+- Record available host usage and cost alongside wall time. Preserve the custom adapter and trace-based activation protocols.
+- Fix UTF-8 structural validation on Windows. Add 17 local benchmark regressions. Live-provider evaluation and infrastructure tests remain pending.
+
 ## v0.10.0 — Benchmarking and Optimization
 
 - Preserve all 235 problems, 24 playbooks, 66 scenario cases, 27 scanner rules and all 67 inherited reference files.

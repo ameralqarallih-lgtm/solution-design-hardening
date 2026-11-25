@@ -7,9 +7,71 @@
 - **8 separate activation probes** in `activation-cases.json`: four relevant and four unrelated tasks.
 - Local executable tests check tools and synthetic failure fixtures, not model performance. The [infrastructure lab](../integration/README.md) is separate.
 
-No actual coding-agent benchmark results are included. The benchmark runner is an opt-in generic adapter interface, not a preconfigured Claude Code, Codex or Copilot integration.
+Live coding-agent benchmark results are pending. The built-in runner and custom adapter protocol share the paired experiment format and evaluation rubric.
 
-## Reproducible evaluation protocol
+## Built-in benchmark commands
+
+Run from the repository root with Python 3.10+. Start with the zero-model-call smoke test.
+
+```sh
+python tools/benchmark.py doctor
+python tools/benchmark.py evaluate benchmark-runs/smoke --agent mock --cases outbox-crash
+```
+
+The smoke test creates one baseline response and one skill response, a grading template and three report files. The results are labeled synthetic.
+
+| Agent argument | Provider or CLI | Model access and configuration |
+|---|---|---|
+| `codex` | Codex CLI | Install `codex` on PATH and sign in. |
+| `claude-code` | Claude Code CLI | Install `claude` on PATH and sign in or configure its supported authentication. |
+| `copilot` | GitHub Copilot CLI | Install `copilot` on PATH and sign in or set a supported GitHub token. |
+| `ollama` | Ollama Chat Completions | Start the local server and choose a model from `ollama list`. Default URL `http://127.0.0.1:11434/v1`. |
+| `litellm` | LiteLLM Chat Completions | Use the served model alias. Default URL `http://127.0.0.1:4000/v1`. If protected, pass `--api-key-env LITELLM_API_KEY`. |
+| `lm-studio` | LM Studio Chat Completions | Start the local server and use a served model ID. Default URL `http://127.0.0.1:1234/v1`. |
+| `openai` | OpenAI Chat Completions | Set `OPENAI_API_KEY` and select a Chat Completions model. |
+| `openai-compatible` | Other Chat Completions endpoint | Set `--base-url` or `OPENAI_BASE_URL` and, if needed, `--api-key-env`. |
+
+API base URLs point to the API prefix, typically ending in `/v1`. The runner appends `/chat/completions`. Use `--api-key-env` with an environment variable name. Use HTTPS for remote credentialed endpoints.
+
+`doctor` checks CLI versions, required flags, and available local login or credential signals. For a live connectivity check, pass `--probe --allow-external-execution` with one agent and model. A live probe sends one short request and can incur charges. For example, in PowerShell set `$env:BENCHMARK_MODEL` to an accessible Codex model before running the following commands.
+
+```powershell
+python tools/benchmark.py doctor --agent codex --model "$env:BENCHMARK_MODEL" --probe --allow-external-execution
+python tools/benchmark.py evaluate benchmark-runs/codex-pilot --agent codex --model "$env:BENCHMARK_MODEL" --suite pilot --trials 3 --allow-external-execution
+```
+
+`pilot` selects six cases, including two safe controls. `scenario` selects all 66 cases. Pass `--cases` to select specific IDs. For reproducibility, pin the model and CLI version where possible, choose the trial count and seed in advance, and use the same case set for each agent. `--config` accepts a JSON object with `agent`, `model`, `base_url`, `api_key_env`, `suite`, `cases`, `trials`, `seed`, `timeout`, `settings` and the optional judge fields `judge_model`, `judge_base_url` and `judge_api_key_env`. Command-line values override the config. Keep key values in environment variables.
+
+Built-in scenario runs supply the same scenario text to both conditions. The skill condition also receives `SKILL.md`, `DETECTION-GUIDANCE.md` and `PATTERN-GUIDANCE.md` from the hashed snapshot. The reference set is the same for all cases. Host-native discovery and the effects of the full reference library require separately configured custom-adapter experiments. CLI attempts use fresh temporary workspaces and restrictive tool settings. Run on a dedicated test account or isolated host when you need to control managed configuration, inherited permissions and subprocesses.
+
+### Resume and retry
+
+```sh
+python tools/benchmark.py evaluate benchmark-runs/codex-pilot --resume --allow-external-execution
+python tools/benchmark.py evaluate benchmark-runs/codex-pilot --resume --retry-failed --retries 1 --allow-external-execution
+```
+
+Resume uses the saved experiment configuration and skips completed attempts. `--retry-failed` reopens failed runs while preserving their prior attempts. `--retries N` permits up to N additional attempts for a retryable transport failure during the invocation. Authentication and invalid configuration stop the run with an actionable status. Because retries can affect results, apply the same pre-registered retry policy when comparing experiments and inspect coverage for each condition.
+
+### Grade and report
+
+Pass `--judge-model` to grade successful responses using a different model through a Chat Completions endpoint. For a CLI agent the judge uses the OpenAI endpoint by default. For an API agent it uses that agent's endpoint. Use `--judge-base-url` and `--judge-api-key-env` to select a separate endpoint and its key. Judge calls receive the scenario, expected behavior, gold labels when available, and the response. The review packet omits the condition assignment. The response can still reveal skill use.
+
+Automated grades are saved to `grades.provisional.json`. For manual grading or adjudication, work from `grades.template.json` and `review.json`, save completed rows in `grades.json` and remove unfilled rows. A human grade takes precedence for its run ID. Refresh the reports as follows.
+
+```sh
+python tools/benchmark_report.py benchmark-runs/codex-pilot
+```
+
+The Markdown and JSON reports distinguish human from provisional model grades, show missing pairs, and include available host-reported tokens, elapsed wall time and provider-reported USD cost for evaluated attempts. Missing billing data appears as unavailable. The SVG charts execution coverage and includes paired scores when grades exist. Run `compare` after completing two or more experiments with matching cases, trials, seed and skill snapshot.
+
+```sh
+python tools/benchmark.py compare benchmark-runs/comparison benchmark-runs/codex-pilot benchmark-runs/claude-pilot
+```
+
+Provider command and API references. [Codex non-interactive mode](https://developers.openai.com/codex/noninteractive) · [Claude Code CLI](https://code.claude.com/docs/en/cli-reference) · [GitHub Copilot CLI](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference) · [OpenAI Chat Completions](https://developers.openai.com/api/reference/resources/chat) · [Ollama compatibility](https://docs.ollama.com/api/openai-compatibility) · [LiteLLM Gateway](https://docs.litellm.ai/docs/proxy/quick_start) · [LM Studio Chat Completions](https://lmstudio.ai/docs/developer/openai-compat/chat-completions)
+
+## Custom adapter and independent review protocol
 
 Use the same agent build, model snapshot, settings, permissions, tool availability, case prompts and fresh session policy across conditions. Disable other skills and personal/global instructions where feasible; audit isolation and record any unavoidable differences. Keep the evaluation repository, expected answers, labels and corrected fixtures outside agent access. Avoid network access except the authorized model service. Use a disposable account/environment with no production credentials. Pre-register case selection, repeats, thresholds, settings and competitors before running; use new sessions, random condition order and multiple trials. Record adapter version/hash separately. Do not choose only favorable results or discard failures.
 
@@ -70,7 +132,7 @@ For cases not in `gold-findings.json`, omit `true_positives` and `false_positive
 python tools/benchmark_report.py benchmark-runs/pilot /absolute/path/to/grades.json
 ```
 
-Produces `report.json` and `report.md`. Inspect planned, attempted, successful and graded counts, complete/incomplete pairs, paired mean delta, wins/ties/losses, rubric means, safety violations, micro precision/recall, safe-control false-alarm rate, and matched token/wall-time metrics. Precision = TP/(TP+FP); recall = TP/(TP+FN). Zero denominators and missing metrics are N/A. Scores use complete pairs; failed/missing attempts are reported separately and may bias complete-pair averages. Metrics do not establish causality or statistical superiority. Report uncertainty, repeated-case dependence, selection bias and reviewer agreement separately. The JSON report retains hashes/settings; publish only sanitized results and actual environment details. Do not publish raw traces or private content without review.
+Produces `report.json`, `report.md` and `report.svg`. Omit the grades argument for an execution-only report or to use the default grade files if present. Inspect planned, attempted, successful and graded counts, complete/incomplete pairs, paired mean delta, wins/ties/losses, rubric means, safety violations, micro precision/recall, safe-control false-alarm rate, and matched token/wall-time metrics. Precision = TP/(TP+FP); recall = TP/(TP+FN). Zero denominators and missing metrics are N/A. Scores use complete pairs; failed/missing attempts are reported separately and may bias complete-pair averages. Metrics do not establish causality or statistical superiority. Report uncertainty, repeated-case dependence, selection bias and reviewer agreement separately. The JSON report retains hashes/settings; publish only sanitized results and actual environment details. Do not publish raw traces or private content without review.
 
 ### 5. Evaluate activation separately
 

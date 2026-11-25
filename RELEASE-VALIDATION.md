@@ -1,18 +1,17 @@
-# v0.10.0 release validation
+# v0.11.0 release validation
 
-Built from the supplied v0.9.0 GitHub archive, not a live checkout. This release introduces benchmark tooling and context routing. It does not claim measured model effectiveness or production guarantees.
+v0.11.0 builds on the supplied v0.10.0 release archive. The Windows validation run used Python 3.12 and the local Codex CLI `0.171.0-alpha.13.2` for command-line checks.
 
 | Check | Result |
 |---|---|
-| `python tools/validate.py` | Passed: 235 sequential IDs, 24 playbooks, internal links, 66 scenario cases, 27 scanner rules, 16 labeled cases, 8 activation probes, reference routing |
-| `python -m unittest discover -s evals -v` | Passed: 61 tests (45 inherited, 16 new benchmark/context tests) |
-| Inherited references and cases | Passed: all 67 reference files and 66 scenario cases unchanged byte-for-byte |
-| Benchmark plan and adapter tests | Passed: deterministic paired plans, identical prompts, optional competitor, isolated temporary input workspace, response-only review packet, snapshot tamper detection, timeout and malformed output handling |
-| Report and context tests | Passed: precision/recall, negative controls, incomplete pairs, unknown usage, safety override, invalid grades, activation unknowns, selective routing |
-| End-to-end CLI smoke test | Passed with synthetic adapter only; no model invoked, no actual grades or usage |
-| Documentation charts | Five local SVG charts parsed as XML; Markdown relative links validated. GitHub rendering not independently tested |
-| Infrastructure lab | 15 test definitions inherited; not executed (Docker unavailable) |
-| Actual coding-agent benchmark | Not run; no agent adapter or model credentials configured |
-| Remote GitHub publication and Actions | Not run; remote repository not modified |
+| `python tools/validate.py` | Passed for 235 sequential IDs, 24 playbooks, internal links, 66 scenario cases, 27 scanner rules, 16 labeled cases, 8 activation probes and reference routing. |
+| `python -m unittest discover -s evals` | 78 tests collected, 77 passed, and 1 skipped because this Windows environment could not create symlinks. The suite includes 17 new benchmark regressions. |
+| Inherited files | SHA-256 comparison matched all 77 reference, skill asset and evaluation-data files from the supplied archive. |
+| Built-in CLI and HTTP adapters | Synthetic fixtures exercised response parsing, usage and cost, authentication errors and adapter preflight. The installed Codex CLI accepted the startup flags and reported signed-out status. |
+| End-to-end benchmark | The synthetic adapter produced two responses, the review packet, grading template, and Markdown, JSON and valid SVG reports. |
+| Grading and recovery | Tests exercised unavailable and invalid grades, human overrides, failed-attempt history, resume, retry, reconciliation in reports and matching experiment summaries. |
+| Live agent and judge requests | Pending. Local Claude Code and Copilot CLIs were unavailable, and local Codex was signed out. HTTP coverage used a local fixture. |
+| Infrastructure lab | 15 test definitions retained. Docker was unavailable on PATH for this run. |
+| Publication | Local release candidate. GitHub publishing and release tagging require maintainer approval. |
 
-The benchmark runner is a generic adapter interface, not an agent-specific integration or OS security sandbox. External execution is explicitly opt-in and can incur costs. Host isolation, subprocess-tree termination, permissions, budgets and fresh-session enforcement are adapter/operator responsibilities. Reviewer blinding is best-effort; responses may reveal condition. Gold labels cover 16 of 66 cases only; results depend on independent human grading and representative case selection. Activation and token data require actual host evidence. Complete-pair summaries can be biased by missing results. No statistical superiority or formal security compliance is claimed. Context routing measures selected UTF-8 file sizes, not model token savings. The proposed MIT licensing and attribution remain subject to owner confirmation.
+The built-in pilot evaluates fixed prompt guidance. Use a trace-capable custom adapter for native skill activation. Model grades are provisional and review packets can reveal the condition through response content. Precision and recall apply to the 16 labeled cases. Incomplete pairs and retry outcomes can affect comparisons. Validate live provider behavior and infrastructure before deciding whether to promote the release candidate.

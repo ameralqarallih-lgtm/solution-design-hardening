@@ -2,13 +2,13 @@
 
 **Build secure software that survives concurrency, failures, threats, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.10.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local tests](https://img.shields.io/badge/local%20tests-61%20passed-brightgreen) ![Agent benchmarks](https://img.shields.io/badge/agent%20benchmarks-not%20run-lightgrey)
+![Release candidate](https://img.shields.io/badge/release_candidate-v0.11.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local checks](https://img.shields.io/badge/local%20checks-passing-brightgreen) ![Agent benchmarks](https://img.shields.io/badge/agent%20benchmarks-pending-lightgrey)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
-[Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#benchmarking-and-optimization-v0100) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
+[Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
-> **v0.10.0 — Benchmarking and Optimization.** Release candidate: all 61 local tests passed; real infrastructure tests and actual agent benchmarks are pending. No superiority or production-readiness claim is made.
+> **v0.11.0 — Automated Benchmarking and Agent Integration.** Run paired scenario evaluations with built-in agent adapters, optional model grading, and automatically generated reports. Live-provider benchmarks and infrastructure validation are pending.
 
 | 235 problems | 24 playbooks | 17 capability profiles | 12 optional product guides |
 |:---:|:---:|:---:|:---:|
@@ -270,62 +270,56 @@ python tools/discover.py /path/to/repository
 
 The helper is offline and read-only. It recognizes selected manifest filenames and limited toolchain version metadata; it does not resolve dependencies, inspect deployed services or prove capabilities. Missing signals do not imply an unsupported stack.
 
-## Benchmarking and Optimization (v0.10.0)
+## Automated Benchmarking and Agent Integration (v0.11.0)
 
-This release introduces reproducible evaluation infrastructure, not measured agent superiority. The catalog and existing scenario cases remain unchanged. Compare a baseline agent against the skill under identical prompts and settings, and optionally include another skill. Randomize condition order, start fresh sessions, and separate reviewer inputs from condition metadata.
+The built-in runner uses the same synthetic scenario and model settings in each pair. The skill condition adds a fixed set of reference files. The runner randomizes condition order, starts fresh sessions, and keeps condition metadata out of the review packet.
 
 ```mermaid
 flowchart TD
-    A[Fixed case, model and settings] --> P[Randomized paired plan]
-    P --> B[Baseline]
-    P --> S[Solution Design Hardening]
-    P --> C[Optional competitor]
+    A[Agent preflight] --> P[Randomized paired plan]
+    P --> B[Baseline scenario]
+    P --> S[Scenario with skill guidance]
     B --> R[Responses and host metrics]
     S --> R
-    C --> R
-    R --> V[Best-effort blinded human review]
-    V --> M[Paired report and missing-data accounting]
-    M --> G[Regression decision and further testing]
+    R --> H[Human review]
+    R --> J[Optional independent model grader]
+    H --> M[Paired report and missing-data accounting]
+    J --> M
 ```
 
 | Benchmark feature | What is available | Evidence status |
 |---|---|---|
-| Repeatable scenario trials | 66 cases, seeded order, same prompt per condition | Runner tested with synthetic adapter |
-| Precision and recall | 16 labeled cases, including 5 safe controls | Metrics tested; agent data not collected |
-| Activation | 8 separate probes (4 relevant, 4 unrelated) | Reporting tested; host activation not measured |
-| Comparative evaluation | Baseline, skill, optional competing skill | Adapter required; no competing-skill results |
-| Remediation and verification | Independent 0–2 rubric per dimension, safety override | Scoring tested; no actual grades |
-| Efficiency | Matched actual token counts (when available), elapsed time | Reporting tested; no model usage measured |
-| Regression readiness | Skill, catalog and prompt fingerprints | No cross-version benchmark results |
+| Repeatable scenario trials | 66 cases, seeded order, resumable runs and configurable retries | Exercised with synthetic responses |
+| Precision and recall | 16 labeled cases, including 5 safe controls | Scoring tested locally |
+| Activation | 8 separate probes (4 relevant, 4 unrelated) via trace-capable custom adapters | Live traces pending |
+| Paired quality | Independent 0–2 rubric per dimension, safety override, model grades subject to human review | Human overrides and incomplete pairs tested |
+| Efficiency | Elapsed time, available token counts and provider-reported USD cost | Parser and local HTTP fixture tested |
+| Reporting | Markdown, JSON, SVG and side-by-side matched experiment comparison | Generated and checked locally |
 
 ### Release comparison
 
-| Capability | v0.9.0 | v0.10.0 |
-|---|---:|---:|
-| Design and security problems | 235 | 235 |
-| Playbooks / capability profiles | 24 / 17 | 24 / 17 |
-| Heuristic scanner rules | 27 | 27 |
-| Scenario-based evaluation cases | 66 | 66 |
-| Explicitly labeled detection cases | 0 | 16 |
-| Activation probes | 0 | 8 |
-| Executable local tests | 45 | 61 |
-| Paired human rubric scoring | Yes | Enhanced |
-| Reproducible run preparation and adapter | No | Yes |
-| Optional competing-skill condition | No | Yes |
-| Matched precision, recall and usage metrics | No | Yes |
-| Selective playbook routing helper | No | Yes |
-| Actual model benchmark results | Not run | Not run |
+| Capability | v0.10.0 | v0.11.0 |
+|---|---|---|
+| Agent execution | User-provided command | Built-in CLI and API adapters plus custom commands |
+| Scenario suites | Full catalog or custom cases | Six-case pilot, full catalog or custom cases |
+| Grade intake | Human-authored JSON | Template, human grades and optional provisional model grades |
+| Failed attempts | Retained, with new trials for repeats | Retained history with explicit resume and retry options |
+| Reports | Markdown and JSON | Markdown, JSON, SVG and matched experiment comparison |
 
 ### Run a pilot
 
 ```sh
-python tools/benchmark.py prepare benchmark-runs/pilot --agent my-agent --model my-model --settings "fresh sessions; read-only" --cases duplicate-payment local-transaction outbox-crash cache-race object-scope safe-local-lock --trials 3 --seed 42
-python tools/benchmark.py run benchmark-runs/pilot --allow-external-execution --adapter python /absolute/path/to/your_adapter.py
-python tools/benchmark.py review benchmark-runs/pilot
-python tools/benchmark_report.py benchmark-runs/pilot /absolute/path/to/grades.json
+python tools/benchmark.py doctor
+python tools/benchmark.py evaluate benchmark-runs/smoke --agent mock --cases outbox-crash
 ```
 
-The six-case, three-repeat pilot prepares 36 runs across two conditions. The runner requires a trusted user-provided adapter and explicit execution approval; temporary workspaces are not OS sandboxes. Review cost, credentials, process isolation and permission scope before running. No proprietary agent API integration or automated LLM judge is bundled. See the complete [evaluation protocol and adapter contract](evals/README.md), [scenario catalog](evals/cases.json), [labeled cases](evals/gold-findings.json), and [activation probes](evals/activation-cases.json).
+The smoke run produces two synthetic responses and an ungraded report. For a live Codex pilot, set `BENCHMARK_MODEL` to a model identifier available to your account. Three repeats of the six-case pilot schedule 36 evaluations. Use a new output directory for each new design.
+
+```sh
+python tools/benchmark.py evaluate benchmark-runs/codex-pilot --agent codex --model "$BENCHMARK_MODEL" --suite pilot --trials 3 --allow-external-execution
+```
+
+CLI adapters cover Codex, Claude Code and GitHub Copilot CLI. Chat Completions adapters cover Ollama, LiteLLM, LM Studio, OpenAI and compatible endpoints. Set `--judge-model` to use an independent grader or complete `grades.template.json` as `grades.json` for human review. The runner writes `report.md`, `report.json` and `report.svg`. See the [benchmark guide](evals/README.md) for provider setup, PowerShell model syntax, retry behavior and the custom adapter protocol.
 
 ### Context optimization without sacrificing safety
 
@@ -393,9 +387,9 @@ The scanner is a small read-only heuristic helper with 27 candidate rules; its r
 
 The executable suite demonstrates vulnerable and corrected outbox, inbox, cache, object access and property binding paths, plus bounded security teaching examples, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
-For agent comparisons, use the new benchmark runner and [evaluation protocol](evals/README.md). Legacy `python tools/score.py results.json` remains available. No actual cross-agent benchmark scores have been generated yet.
+For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. Cross-agent model benchmark scores are pending.
 
-![Local tests by release, reaching 61](docs/assets/local-tests.svg)
+![Local tests by release, reaching 78 defined checks](docs/assets/local-tests.svg)
 
 ![Defined agent scenario cases by release, reaching 66](docs/assets/evaluation-growth.svg)
 
@@ -410,7 +404,7 @@ The repository includes an opt-in [disposable Docker Compose lab](integration/RE
 | Layer | Scope | Status at release preparation |
 |---|---|---|
 | Offline structural checks | 235 IDs, playbooks, links, 66 evaluation cases, scanner mappings | Passed |
-| Offline executable suite | 61 tests, including 16 new benchmark/context tests, all 27 scanner signals and safe controls | Passed |
+| Local regression suite | 78 tests covering adapters, reporting, 27 scanner signals and safe controls | 77 passed, 1 platform-specific skip on Windows |
 | Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
 | Actual agent benchmarks | 66 candidate scenarios and 8 activation probes | Not run |
@@ -436,15 +430,17 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.7.0 | Real-service integration lab, expanded detection and fault injection | Implemented; infrastructure run pending |
 | v0.8.0 | Comprehensive Security Hardening | Implemented; local checks passed |
 | v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Implemented; local checks passed |
-| v0.10.0 | Benchmark runner, paired scoring, labeled cases, activation probes, context routing | Current release candidate; local checks passed, model runs pending |
+| v0.10.0 | Benchmark runner, paired scoring, labeled cases, activation probes, context routing | Implemented |
+| v0.11.0 | Built-in adapters, preflight, retries, grading and automated reports | Local validation complete |
+| v1.0.0-RC1 | Empirical model benchmarks and infrastructure integration runs | Planned |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 
 ## Release readiness and v1.0.0 gates
 
-| Gate | v0.10.0 status |
+| Gate | v0.11.0 status |
 |---|---|
 | Stable catalog, playbooks, standards mappings and internal links | Passed offline structural checks |
-| Local tool and teaching-fixture regression suite | 61 tests passed |
+| Local tool and teaching-fixture regression suite | 77 passed, 1 platform-specific skip on Windows |
 | Real-service integration and failure recovery | 15 tests defined; not executed here |
 | Baseline vs skill quality, precision and recall | Pending real model runs and independent grading |
 | Cross-agent activation and context cost | Pending real host traces and actual usage |
@@ -458,7 +454,7 @@ Before declaring v1.0.0, pre-register acceptance thresholds, run the infrastruct
 | Location | Purpose |
 |---|---|
 | [skills/solution-design-hardening](skills/solution-design-hardening/SKILL.md) | Installable skill, 24 playbooks, adaptive capability/security references and templates |
-| [tools](tools/ARCHITECTURE.md) | Offline scanner, discovery, architecture, correlation, context and benchmark tools |
+| [tools](tools/ARCHITECTURE.md) | Offline scanner, discovery, architecture, correlation and context tools, plus opt-in benchmark tooling |
 | [evals](evals/README.md) | Scenario catalog, gold labels, activation probes, tests and mock adapter |
 | [integration](integration/README.md) | Optional disposable infrastructure lab |
 | [examples](examples/assessment-example.md) | Illustrative assessment and architectural model |
