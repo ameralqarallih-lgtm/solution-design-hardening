@@ -67,14 +67,18 @@ def event_records(raw):
 
 
 def openai_result(data, cost=None):
-    message = data["choices"][0]["message"]
+    choice = data["choices"][0]
+    message = choice["message"]
     usage = data.get("usage") or {}
     details = usage.get("prompt_tokens_details") or {}
-    return successful(message.get("content"), {
+    result = successful(message.get("content"), {
         "input_tokens": usage.get("prompt_tokens"),
         "output_tokens": usage.get("completion_tokens"),
         "cached_input_tokens": details.get("cached_tokens"),
     }, cost=cost, model=data.get("model"))
+    if choice.get("finish_reason") == "length":
+        result["output_limit_reached"] = True
+    return result
 
 
 def cli_result(agent, raw):

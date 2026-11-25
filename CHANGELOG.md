@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.0-RC1 — Empirical validation
+
+- Complete the six-case Ollama pilot with 36 responses and 18 provisionally graded pairs. Record safety flags, false alarms, score differences, and observed usage.
+- Run the default Docker lab and verify all 12 PostgreSQL, Redis and RabbitMQ tests.
+- Surface provider-reported output-limit signals in benchmark reports and add a local regression.
+- Keep human adjudication, broader host validation and the stable release pending.
+
 ## v0.11.0 — Automated Benchmarking and Agent Integration
 
 - Add built-in adapters for Claude Code, Codex and GitHub Copilot CLI, plus Chat Completions adapters for OpenAI, Ollama, LiteLLM, LM Studio and compatible endpoints.

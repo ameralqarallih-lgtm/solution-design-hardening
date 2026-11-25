@@ -171,6 +171,14 @@ class AutomationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Adapter script was not found"):
             benchmark.execute(self.out, [sys.executable, str(self.root / "missing.py")])
 
+    def test_report_counts_provider_output_limits(self):
+        clipped = {**result(), "output_limit_reached": True}
+        with patch.object(Agent, "run", side_effect=[clipped, result()]):
+            self.assertEqual(self.evaluate(), 0)
+        report = read(self.out / "report.json")
+        self.assertEqual(sum(item["output_limits_reached"] for item in report["conditions"].values()), 1)
+        self.assertIn("Output limits reached", (self.out / "report.md").read_text(encoding="utf-8"))
+
     def test_lock_rejects_concurrent_writer_and_releases(self):
         self.out.mkdir()
         with run_lock(self.out), self.assertRaisesRegex(ValueError, "Another benchmark"):
@@ -252,7 +260,8 @@ class AdapterTests(unittest.TestCase):
                 self.send_header("Content-Type", "application/json")
                 self.send_header("x-litellm-response-cost", "0.000125")
                 self.end_headers()
-                self.wfile.write(json.dumps({"model": "fixture", "choices": [{"message": {"content": "ready"}}],
+                self.wfile.write(json.dumps({"model": "fixture", "choices": [
+                    {"message": {"content": "ready"}, "finish_reason": "length"}],
                                              "usage": {"prompt_tokens": 10, "completion_tokens": 1,
                                                        "prompt_tokens_details": {"cached_tokens": 4}}}).encode())
 
@@ -267,6 +276,7 @@ class AdapterTests(unittest.TestCase):
                     self.assertEqual(value["status"], "ok", value)
                     self.assertEqual(value["usage"]["cached_input_tokens"], 4)
                     self.assertEqual(value["cost_usd"], 0.000125)
+                    self.assertTrue(value["output_limit_reached"])
                     self.assertNotIn("synthetic-test-key", json.dumps(value))
                     denied = Agent("openai-compatible", "fixture", endpoint).run("test auth", ROOT, 2)
                     self.assertEqual(denied["status"], "auth_error")

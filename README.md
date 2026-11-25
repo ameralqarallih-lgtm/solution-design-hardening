@@ -2,13 +2,13 @@
 
 **Build secure software that survives concurrency, failures, threats, and scale.**
 
-![Release candidate](https://img.shields.io/badge/release_candidate-v0.11.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local checks](https://img.shields.io/badge/local%20checks-passing-brightgreen) ![Agent benchmarks](https://img.shields.io/badge/agent%20benchmarks-pending-lightgrey)
+![Release candidate](https://img.shields.io/badge/release_candidate-v1.0.0--RC1-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local checks](https://img.shields.io/badge/local%20checks-passing-brightgreen) ![Agent benchmark](https://img.shields.io/badge/Ollama%20pilot-provisionally%20graded-teal)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
 [Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
-> **v0.11.0 — Automated Benchmarking and Agent Integration.** Run paired scenario evaluations with built-in agent adapters, optional model grading, and automatically generated reports. Live-provider benchmarks and infrastructure validation are pending.
+> **v1.0.0-RC1 — Empirical validation.** The local Ollama pilot completed 36 responses, and the default Docker lab passed 12 tests. The provisional rubric found safety flags and false alarms in both model conditions. [Read the pilot results](BENCHMARK-RESULTS.md).
 
 | 235 problems | 24 playbooks | 17 capability profiles | 12 optional product guides |
 |:---:|:---:|:---:|:---:|
@@ -387,7 +387,7 @@ The scanner is a small read-only heuristic helper with 27 candidate rules; its r
 
 The executable suite demonstrates vulnerable and corrected outbox, inbox, cache, object access and property binding paths, plus bounded security teaching examples, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
-For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. Cross-agent model benchmark scores are pending.
+For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. The first live pilot covers local Ollama, with cross-agent validation pending. [Pilot results](BENCHMARK-RESULTS.md).
 
 ![Local tests by release, reaching 78 defined checks](docs/assets/local-tests.svg)
 
@@ -404,10 +404,10 @@ The repository includes an opt-in [disposable Docker Compose lab](integration/RE
 | Layer | Scope | Status at release preparation |
 |---|---|---|
 | Offline structural checks | 235 IDs, playbooks, links, 66 evaluation cases, scanner mappings | Passed |
-| Local regression suite | 78 tests covering adapters, reporting, 27 scanner signals and safe controls | 77 passed, 1 platform-specific skip on Windows |
-| Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
+| Local regression suite | 79 tests covering adapters, reporting, 27 scanner signals and safe controls | 78 passed, 1 platform-specific skip on Windows |
+| Default infrastructure lab | 12 tests for database process exits, reservations, Redis stale refill, RabbitMQ redelivery and relay replay | 12 passed |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
-| Actual agent benchmarks | 66 candidate scenarios and 8 activation probes | Not run |
+| Actual agent benchmarks | Local Ollama pilot of six scenarios and three repeats | 36 responses, 18 provisionally graded pairs |
 
 To run the default lab in a dedicated disposable project (requires Docker/Compose):
 
@@ -432,17 +432,17 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Implemented; local checks passed |
 | v0.10.0 | Benchmark runner, paired scoring, labeled cases, activation probes, context routing | Implemented |
 | v0.11.0 | Built-in adapters, preflight, retries, grading and automated reports | Local validation complete |
-| v1.0.0-RC1 | Empirical model benchmarks and infrastructure integration runs | Planned |
+| v1.0.0-RC1 | Empirical model benchmarks and infrastructure integration runs | Local pilot and default lab complete |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 
 ## Release readiness and v1.0.0 gates
 
-| Gate | v0.11.0 status |
+| Gate | v1.0.0-RC1 status |
 |---|---|
 | Stable catalog, playbooks, standards mappings and internal links | Passed offline structural checks |
-| Local tool and teaching-fixture regression suite | 77 passed, 1 platform-specific skip on Windows |
-| Real-service integration and failure recovery | 15 tests defined; not executed here |
-| Baseline vs skill quality, precision and recall | Pending real model runs and independent grading |
+| Local tool and teaching-fixture regression suite | 78 passed, 1 platform-specific skip on Windows |
+| Real-service integration and failure recovery | 12 default tests passed. Optional SQL Server remains pending. |
+| Baseline vs skill quality, precision and recall | One Ollama pilot completed. Human adjudication and a second model are pending. |
 | Cross-agent activation and context cost | Pending real host traces and actual usage |
 | Competing-skill comparisons | Pending licensed, isolated, fair evaluation |
 | Community validation and compatibility | Pending |
@@ -459,6 +459,7 @@ Before declaring v1.0.0, pre-register acceptance thresholds, run the infrastruct
 | [integration](integration/README.md) | Optional disposable infrastructure lab |
 | [examples](examples/assessment-example.md) | Illustrative assessment and architectural model |
 | [Release validation](RELEASE-VALIDATION.md) | Actual release-preparation checks and unexecuted work |
+| [Benchmark results](BENCHMARK-RESULTS.md) | Model settings, paired results, known failure patterns and infrastructure evidence |
 | [Changelog](CHANGELOG.md) | Version history and milestones |
 
 ## Contributing

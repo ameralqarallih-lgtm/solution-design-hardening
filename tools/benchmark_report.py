@@ -54,6 +54,8 @@ def report(plan, raw, grades, gold, history=()):
         costs = [attempt['cost_usd'] for attempt in events if 'cost_usd' in attempt]
         results[c].update(
             attempts=len(events),
+            output_limits_reached=sum(observed.get(run, {}).get('output_limit_reached', False)
+                                      for run in ids),
             latest_statuses=dict(Counter(observed.get(run, {}).get('status', 'pending') for run in ids)),
             observed_cost_usd=sum(costs) if costs else None,
             attempts_with_cost=len(costs),
@@ -106,12 +108,13 @@ def markdown(r):
             lines += ['', f"Provisional judge model {r['judge_model']}."]
         if r.get('unresolved_grading_errors'):
             lines += ['', f"Unresolved automated grading errors **{r['unresolved_grading_errors']}**."]
-    lines += ['', '| Condition | Latest outcomes | Total attempts | Observed cost (USD) | Attempts with cost |',
-              '|---|---|---:|---:|---:|']
+    lines += ['', '| Condition | Latest outcomes | Total attempts | Output limits reached | Observed cost (USD) | Attempts with cost |',
+              '|---|---|---:|---:|---:|---:|']
     for condition, item in r['conditions'].items():
         outcomes = ', '.join(f'{status} {count}' for status, count in sorted(item['latest_statuses'].items()))
         cost = item['observed_cost_usd']
         lines.append(f'| {condition} | {outcomes} | {item["attempts"]} | '
+                     f'{item["output_limits_reached"]} | '
                      f'{format(cost, ".6f") if cost is not None else "N/A"} | {item["attempts_with_cost"]} |')
     for c,v in r['comparisons'].items():
         lines += ['',f'## Baseline vs {c}','',f"Complete pairs: {v['complete_pairs']}; incomplete: {v['incomplete_pairs']}; mean delta (out of 8): {fmt(v['mean_paired_delta_out_of_8'])}.", '', '| Metric | Baseline | Comparison |', '|---|---:|---:|']

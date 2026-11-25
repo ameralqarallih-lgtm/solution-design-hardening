@@ -3,7 +3,7 @@ name: solution-design-hardening
 description: Assess, prevent, and remediate transactional and distributed system design failures in existing or new code. Use when designing, reviewing, testing, or changing payments, database transactions, concurrency, caches, messaging, APIs, retries, background jobs, workflows, object storage, identity, authorization, injection, cryptography, supply chain, infrastructure security, or AI/agent trust boundaries; use for architecture, security and reliability assessment, dependency and transaction mapping, root-cause correlation, remediation and verification.
 license: MIT
 metadata:
-  version: "0.11.0"
+  version: "1.0.0-RC1"
 ---
 
 # Solution Design Hardening
