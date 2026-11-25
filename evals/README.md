@@ -1,6 +1,6 @@
 # Evaluation protocol
 
-26 scenario cases in `cases.json` are intended for agent evaluation. The executable fixture suite is separate: run `python -m unittest discover -s evals -v` from the root. It demonstrates three defect families using SQLite and a cache state model, and checks the tools. These are not agent benchmark runs.
+34 scenario cases in `cases.json` are intended for agent evaluation. The executable fixture suite is separate: run `python -m unittest discover -s evals -v` from the root. It demonstrates three defect families using SQLite and a cache state model, and checks the tools. These are not agent benchmark runs.
 
 ## Paired agent evaluation
 

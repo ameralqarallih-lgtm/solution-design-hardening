@@ -3,7 +3,7 @@ name: solution-design-hardening
 description: Assess, prevent, and remediate transactional and distributed system design failures in existing or new code. Use when designing, reviewing, testing, or changing payments, database transactions, concurrency, caches, messaging, APIs, retries, background jobs, workflows, or object storage, or when asked for an architectural reliability assessment or remediation plan.
 license: MIT
 metadata:
-  version: "0.5.0"
+  version: "0.6.0"
 ---
 
 # Solution Design Hardening
@@ -72,9 +72,11 @@ Use the catalog to select applicable IDs, then read the corresponding playbook b
 - [Operational and migration guidance](references/OPERATIONS.md): signals, rollout, replay and recovery.
 - [Assessment template](assets/assessment.md) [remediation template](assets/remediation.md), and [verification template](assets/verification.md): use for full assessments.
 
-## Technology-specific implementation
+## Adaptive technology intelligence
 
-When a stack is identified, consult [technology routing](references/technologies/README.md) and load only the matching guides. Treat examples as illustrative; verify APIs against installed dependencies. Do not infer runtime guarantees from a framework name. For evaluation or test design, use deterministic interleavings and negative controls.
+For each relevant component, follow [technology discovery](references/technology/DISCOVERY.md), [capability mapping](references/technology/CAPABILITY-MAPPING.md), and [version verification](references/technology/VERSION-VERIFICATION.md). Discover actual usage and topology; distinguish declared, resolved and deployed versions. Load capability references first and [optional product profiles](references/technologies/README.md) only when relevant. For unlisted or proprietary stacks follow [unknown technology handling](references/technology/UNKNOWN-TECHNOLOGY.md); no profile is required for assessment.
+
+Verify guarantees at their actual scope and configuration, not from product names. Prefer installed APIs and version-matched official sources when accessible; never fabricate unsupported features. If evidence is insufficient, mark Requires Verification and specify the missing evidence or isolated test before implementing a correctness-critical change. Use the [technology inventory](assets/technology-inventory.md) for full assessments (embed in the assessment or write separately when requested). For focused tasks record only relevant discoveries and unknowns. Do not introduce a technology simply because a profile exists. The optional repository discovery helper is not required for skill activation.
 
 ## Assessment and planning output
 

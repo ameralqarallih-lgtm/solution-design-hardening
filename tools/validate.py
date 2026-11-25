@@ -27,4 +27,11 @@ cases=json.loads((root/'evals/cases.json').read_text())
 assert len({c['id'] for c in cases})==len(cases)
 for c in cases:
     assert c['scenario'] and c['expected'] and set(c['problem_ids'])<=set(ids)
+capability_dir=skill/'references/technology/capabilities'
+assert len(list(capability_dir.glob('*.md')))==17
+for profile in capability_dir.glob('*.md'):
+    for heading in ('## Discover and verify','## Implementation decisions','## Counterexamples and limits','## Verification'):
+        assert heading in profile.read_text(), (profile,heading)
+assert len(cases)==34
+assert len(list((skill/'references/technologies').glob('*.md')))==13
 print(f'PASS: skill metadata, internal links, {len(ids)} sequential problem IDs and complete playbook coverage, {len(cases)} evaluation cases. No agent evaluations executed.')

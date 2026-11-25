@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.6.0 — Adaptive Technology Intelligence
+
+- Preserve all 160 problem IDs, 16 playbooks and 12 optional product profiles.
+- Add 17 capability references, discovery, version verification, unknown-stack workflow and inventory template.
+- Add offline manifest inventory helper and seven tests.
+- Add eight agent evaluation scenarios (34 total); no agent benchmarks executed.
+- Update README, contribution guidance and roadmap. Real infrastructure integration remains planned for v0.7.0.
+
 ## v0.5.0 — Initial automated evaluation tooling
 
 - Add executable SQLite and deterministic cache fixtures, eleven local tests, five heuristic scanner rules and paired evaluation scoring.

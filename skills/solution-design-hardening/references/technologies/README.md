@@ -1,6 +1,6 @@
 # Technology routing
 
-Load only guides matching the actual stack. These supplement, not replace, the problem-specific playbooks. Confirm installed versions before recommending APIs.
+These optional product profiles are illustrative accelerators, not a supported-technology list. First follow [capability mapping](../technology/CAPABILITY-MAPPING.md). Load only guides matching the actual stack. For unlisted products follow [unknown technology](../technology/UNKNOWN-TECHNOLOGY.md). These supplement, not replace, the problem-specific playbooks. Confirm installed versions before recommending APIs.
 
 - [ASP.NET Core / EF Core / resilience](dotnet.md)
 - [Java / Spring / JPA](java.md)

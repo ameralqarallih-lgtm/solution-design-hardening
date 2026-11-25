@@ -209,5 +209,77 @@
     ],
     "scenario": "Reader holds snapshot for hours under high write load.",
     "expected": "Monitor retained versions/log pressure; bound transaction while preserving semantics."
+  },
+  {
+    "id": "unknown-queue",
+    "problem_ids": [
+      "SDP-054",
+      "SDP-065"
+    ],
+    "scenario": "Custom queue client exposes send/complete with no version or documented guarantees; handler writes to DB then completes.",
+    "expected": "Do not assume delivery semantics; request contract, verify commit/ack crash and mark unknown."
+  },
+  {
+    "id": "floating-image",
+    "problem_ids": [
+      "SDP-108",
+      "SDP-137"
+    ],
+    "scenario": "Container image database:latest and old client lockfile; no running version evidence.",
+    "expected": "Distinguish declared/client/deployed versions; do not prescribe version-specific features without evidence."
+  },
+  {
+    "id": "polyglot-scope",
+    "problem_ids": [
+      "SDP-023",
+      "SDP-104"
+    ],
+    "scenario": "One service has SQL transaction support; another uses proprietary HTTP storage.",
+    "expected": "Keep inventories separate; do not infer cross-service atomicity; verify second store capabilities."
+  },
+  {
+    "id": "disabled-capability",
+    "problem_ids": [
+      "SDP-030",
+      "SDP-125"
+    ],
+    "scenario": "Database docs support synchronous replication but deployed config shows asynchronous replicas.",
+    "expected": "Use effective config, account for lag and loss; do not claim zero RPO."
+  },
+  {
+    "id": "unknown-safe-local",
+    "problem_ids": [
+      "SDP-005",
+      "SDP-034"
+    ],
+    "scenario": "Unlisted local embedded store with documented and tested atomic transaction across two writes, no external effect.",
+    "expected": "Accept evidence within scope; no mandatory Saga or migration."
+  },
+  {
+    "id": "offline-version",
+    "problem_ids": [
+      "SDP-046",
+      "SDP-047"
+    ],
+    "scenario": "No web access and proprietary lease library types show acquire/release but no fencing contract.",
+    "expected": "Do not fabricate API; request local evidence or test; do not claim stale writer safety."
+  },
+  {
+    "id": "multiple-roles",
+    "problem_ids": [
+      "SDP-011",
+      "SDP-153"
+    ],
+    "scenario": "Same key-value product serves derived cache and authoritative idempotency store with different retention settings.",
+    "expected": "Map roles independently; inspect durability and TTL separately."
+  },
+  {
+    "id": "profile-bias",
+    "problem_ids": [
+      "SDP-023",
+      "SDP-054"
+    ],
+    "scenario": "Unlisted broker with confirmed durable publish and redelivery; existing DB supports atomic event intent.",
+    "expected": "Use existing primitives if sufficient; no migration solely to a bundled product."
   }
 ]

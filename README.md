@@ -2,7 +2,7 @@
 
 **Build software that survives concurrency, failures, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.5.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-160-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
+![Release](https://img.shields.io/badge/release-v0.6.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-160-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
@@ -73,7 +73,7 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 ## Coverage
 
-160 stable problem IDs, 16 domain playbooks, 12 stack-specific guides, and 26 scenario-based agent evaluation cases.
+160 stable problem IDs, 16 domain playbooks, 17 capability profiles, 12 optional product profiles, and 34 scenario-based agent evaluation cases.
 
 | Domain | Problem IDs |
 |---|---|
@@ -94,9 +94,44 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
 
-### Technology guidance
+### Adaptive Technology Intelligence
 
-.NET / EF Core, Java / Spring, Node.js, Python, SQL Server, PostgreSQL, MongoDB, Redis, RabbitMQ, Kafka, Kubernetes and S3-compatible object storage. Each guide includes detection, implementation, counterexamples, verification and an upstream documentation link. These guides supplement the technology-independent core and are not tested integrations.
+**No fixed supported-technology list.** Discover the stack dynamically, identify the capabilities required by the business invariant, verify version and configuration, then select the simplest supported implementation. Unlisted or proprietary technologies follow the same workflow; unverifiable guarantees remain open verification tasks.
+
+```mermaid
+flowchart TD
+    A[Business invariant] --> B[Discover component and versions]
+    B --> C[Map required capabilities]
+    C --> D[Load relevant capability profile]
+    D --> E{Optional product profile exists?}
+    E -->|Yes| F[Consult product profile]
+    E -->|No| G[Inspect installed APIs and official docs]
+    F --> H[Verify version and effective configuration]
+    G --> H
+    H --> I{Sufficient evidence?}
+    I -->|Yes| J[Design and test proportionate fix]
+    I -->|No| K[Requires Verification]
+```
+
+| Layer | Responsibility |
+|---|---|
+| Universal problems | 160 stable failure scenarios and 16 playbooks |
+| Discovery | Component-specific manifest, dependency, configuration and topology evidence |
+| Capability mapping | 17 reusable technology-independent domains |
+| Product profiles | 12 optional accelerators, not prerequisites |
+| Verification | Separate declared, resolved and deployed versions; verify effective guarantees |
+
+The [capability index](skills/solution-design-hardening/references/technology/CAPABILITY-MAPPING.md) includes databases, caching, messaging, streaming, workflows, workers, storage, runtimes, data access, coordination, orchestration, serverless, identity, APIs, search and observability. Existing profiles for .NET, Java, Node.js, Python, SQL Server, PostgreSQL, MongoDB, Redis, RabbitMQ, Kafka, Kubernetes and S3-compatible storage remain available. None is a claim of tested product compatibility.
+
+**Example:** An unfamiliar queue with a `complete()` API is not assumed to behave like RabbitMQ. The agent verifies acknowledgment, durability and replay semantics and tests the failure boundary after the consumer commit. If it cannot establish those guarantees, it records Requires Verification rather than inventing an API or recommending unnecessary migration.
+
+Use the [technology inventory template](skills/solution-design-hardening/assets/technology-inventory.md) for traceable evidence. Optional manifest discovery:
+
+```sh
+python tools/discover.py /path/to/repository
+```
+
+The helper is offline and read-only. It recognizes selected manifest filenames and limited toolchain version metadata; it does not resolve dependencies, inspect deployed services or prove capabilities. Missing signals do not imply an unsupported stack.
 
 ## Examples
 
@@ -141,8 +176,11 @@ For agent comparisons, use the [evaluation protocol](evals/README.md) and `pytho
 | v0.2.0 | Stable IDs, assessment methodology, evaluation cases | Complete |
 | v0.3.0 | 160 problems and targeted playbooks | Complete |
 | v0.4.0 | Technology-specific guides | Included in v0.5.0 |
-| v0.5.0 | Initial executable fixtures, heuristic scanner, evaluation scoring | Release candidate |
-| v0.6.0 | Real service integration fixtures, broaden scanner coverage, agent evaluations | Planned |
+| v0.5.0 | Initial executable fixtures, heuristic scanner, evaluation scoring | Complete |
+| v0.6.0 | Adaptive Technology Intelligence | Current release candidate |
+| v0.7.0 | Real integration fixtures, expanded detection and fault injection | Planned |
+| v0.8.0 | Dependency, transaction and invariant mapping | Planned |
+| v0.9.0 | Cross-agent benchmarks and context optimization | Planned |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 
 ## Contributing
