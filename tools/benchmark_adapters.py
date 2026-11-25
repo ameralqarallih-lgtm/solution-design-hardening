@@ -321,7 +321,7 @@ class Agent:
         start = time.monotonic()
         try:
             if self.name == "mock":
-                result = successful("SYNTHETIC ADAPTER SMOKE TEST — no model invoked.")
+                result = successful("SYNTHETIC ADAPTER SMOKE TEST - no model invoked.")
             elif self.is_api:
                 result = self.api_request(prompt, timeout)
             else:

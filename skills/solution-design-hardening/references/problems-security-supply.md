@@ -1,8 +1,8 @@
-# Software supply chain — problem playbook
+# Software supply chain - problem playbook
 
 Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappings](SECURITY-STANDARDS.md). These are defensive investigation leads; confirm trust boundaries, reachability and effective controls. Use only authorized isolated tests with synthetic data.
 
-## SDP-213 — Vulnerable dependency exposure
+## SDP-213 - Vulnerable dependency exposure
 
 - **Failure:** A known vulnerable dependency is reachable in application or deployment.
 - **Detection:** Inspect resolved dependency and image inventory, advisories, reachability and vendor fixes.
@@ -10,7 +10,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Verify resolved version and applicable advisory after fix; test affected behavior, not just manifest edit.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-214 — Dependency confusion
+## SDP-214 - Dependency confusion
 
 - **Failure:** A resolver retrieves an unintended package from an untrusted namespace or registry.
 - **Detection:** Inspect registry configuration, private scope mapping and resolution policy.
@@ -18,7 +18,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use isolated fake registry metadata; verify resolver policy selects only approved source.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-215 — Artifact integrity failure
+## SDP-215 - Artifact integrity failure
 
 - **Failure:** Deployment accepts modified or unverified binaries/images.
 - **Detection:** Inspect digest pinning, artifact signatures and admission verification; distinguish identity from authenticity.
@@ -26,7 +26,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Modify synthetic artifact or use untrusted signing identity; reject; approved artifact accepted.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-216 — Untrusted CI execution
+## SDP-216 - Untrusted CI execution
 
 - **Failure:** Untrusted contributions can execute with privileged pipeline context.
 - **Detection:** Inspect triggers, workflow permissions, checkout source, script execution and secret access.
@@ -34,7 +34,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use a synthetic untrusted contribution context; assert no release credentials or write authority are available.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-217 — Pipeline credential leakage
+## SDP-217 - Pipeline credential leakage
 
 - **Failure:** Build credentials are exposed in logs, caches, artifacts or long-lived tokens.
 - **Detection:** Inspect token lifetime, scopes, masking and artifact boundaries without revealing values.
@@ -42,7 +42,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Run synthetic marker through isolated build; verify no disclosure and credential expires or is revoked.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-218 — Missing build provenance
+## SDP-218 - Missing build provenance
 
 - **Failure:** An artifact cannot be traced to approved source and build process.
 - **Detection:** Inspect attestations, SBOM, builder identity, source commit and artifact digest linkage.
@@ -50,7 +50,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Check synthetic attestation subject, builder and commit; reject mismatched artifact or untrusted builder.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-219 — Unsupported component lifecycle
+## SDP-219 - Unsupported component lifecycle
 
 - **Failure:** Runtime or dependency no longer receives required security fixes.
 - **Detection:** Compare deployed versions to vendor support lifecycle and ownership.

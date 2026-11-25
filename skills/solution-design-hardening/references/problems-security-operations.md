@@ -1,8 +1,8 @@
-# Security monitoring and operations — problem playbook
+# Security monitoring and operations - problem playbook
 
 Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappings](SECURITY-STANDARDS.md). These are defensive investigation leads; confirm trust boundaries, reachability and effective controls. Use only authorized isolated tests with synthetic data.
 
-## SDP-220 — Missing security audit coverage
+## SDP-220 - Missing security audit coverage
 
 - **Failure:** Security-relevant actions cannot be attributed or investigated.
 - **Detection:** Trace authentication, access denials, grant changes and administrative actions to audit events.
@@ -10,7 +10,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Exercise synthetic security actions; verify attributable records and no secrets; cross-reference SDP-157.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-221 — Audit trail tampering
+## SDP-221 - Audit trail tampering
 
 - **Failure:** Unauthorized actors can alter or remove security evidence.
 - **Detection:** Inspect audit write/delete privileges, retention, integrity and independent access.
@@ -18,7 +18,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Attempt modification through low-privilege test identity; deny or detect tampering; authorized retention works.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-222 — Security alerting gap
+## SDP-222 - Security alerting gap
 
 - **Failure:** Abuse or control failure does not trigger actionable notification.
 - **Detection:** Inspect detection rules, ownership, severity, routing and delivery failure handling.
@@ -26,7 +26,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Emit synthetic security event and verify alert arrives at test sink within target; deduplication works.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-223 — Error information disclosure
+## SDP-223 - Error information disclosure
 
 - **Failure:** Failures reveal internal implementation or sensitive values to callers.
 - **Detection:** Inspect exception handlers, debug responses, API errors and error correlation.
@@ -34,7 +34,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Trigger synthetic failure with marker; response contains safe error only and authorized log supports diagnosis.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-224 — Security configuration drift
+## SDP-224 - Security configuration drift
 
 - **Failure:** Effective controls diverge from approved baseline unnoticed.
 - **Detection:** Inspect policy version, environment overrides, runtime evidence and ownership.
@@ -42,7 +42,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Change disposable policy and verify drift detected; approved change reconciles with audit trail.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-225 — Emergency credential response gap
+## SDP-225 - Emergency credential response gap
 
 - **Failure:** Compromised credentials cannot be revoked or isolated within required time.
 - **Detection:** Inspect emergency revocation paths, ownership, dependency caches and runbooks.

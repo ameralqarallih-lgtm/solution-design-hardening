@@ -1,8 +1,8 @@
-# Storage — problem playbook
+# Storage - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-092 — Orphaned File
+## SDP-092 - Orphaned File
 
 - **Failure:** A file is uploaded successfully, but its database record fails to save.
 - **Detection:** Object upload succeeds before metadata failure.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail DB write after upload; orphan eventually reclaimed without deleting live object.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-093 — Missing File
+## SDP-093 - Missing File
 
 - **Failure:** A database record references a file that was never uploaded.
 - **Detection:** Metadata visible before object durable or verified.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail upload after metadata insert; no ready record points to missing object.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-094 — Dual Write (Database + Object Storage)
+## SDP-094 - Dual Write (Database + Object Storage)
 
 - **Failure:** Database metadata and file storage become inconsistent.
 - **Detection:** DB and object operations assumed one transaction.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail every boundary; live metadata and object converge safely.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-095 — Concurrent File Modification
+## SDP-095 - Concurrent File Modification
 
 - **Failure:** Multiple users overwrite the same file.
 - **Detection:** Unconditional overwrite of shared object key.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two writers update same object; no silent overwrite.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-096 — Incomplete File Upload
+## SDP-096 - Incomplete File Upload
 
 - **Failure:** Network interruption leaves a partially uploaded file.
 - **Detection:** Partial upload exposed as complete or abandoned indefinitely.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Interrupt upload then resume; only complete verified object becomes visible.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-097 — File Corruption
+## SDP-097 - File Corruption
 
 - **Failure:** Stored content differs from the original file.
 - **Detection:** No end-to-end integrity check or assumes ETag is checksum.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Corrupt payload; integrity check rejects or flags it.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-098 — Duplicate File Storage
+## SDP-098 - Duplicate File Storage
 
 - **Failure:** Identical files consume unnecessary storage.
 - **Detection:** Dedup deletes shared object on one reference removal.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two records reference same content; delete one; other remains readable.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-099 — Unauthorized File Access
+## SDP-099 - Unauthorized File Access
 
 - **Failure:** Users access files belonging to other users or tenants.
 - **Detection:** Object URL or key accepted without authorization.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Request another tenant's key and expired URL; access denied as required.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-100 — Deleted File Recovery
+## SDP-100 - Deleted File Recovery
 
 - **Failure:** Accidental deletion permanently removes important documents.
 - **Detection:** Permanent deletion without retention or restore verification.

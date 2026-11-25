@@ -1,13 +1,13 @@
 # Changelog
 
-## v1.0.0-RC1 — Empirical validation
+## v1.0.0-RC1 - Empirical validation
 
 - Complete the six-case Ollama pilot with 36 responses and 18 provisionally graded pairs. Record safety flags, false alarms, score differences, and observed usage.
 - Run the default Docker lab and verify all 12 PostgreSQL, Redis and RabbitMQ tests.
 - Surface provider-reported output-limit signals in benchmark reports and add a local regression.
 - Keep human adjudication, broader host validation and the stable release pending.
 
-## v0.11.0 — Automated Benchmarking and Agent Integration
+## v0.11.0 - Automated Benchmarking and Agent Integration
 
 - Add built-in adapters for Claude Code, Codex and GitHub Copilot CLI, plus Chat Completions adapters for OpenAI, Ollama, LiteLLM, LM Studio and compatible endpoints.
 - Add `doctor` preflight, opt-in connectivity probes, single-command `evaluate`, reusable JSON configuration, progress, resume and attempt-preserving retries.
@@ -15,7 +15,7 @@
 - Record available host usage and cost alongside wall time. Preserve the custom adapter and trace-based activation protocols.
 - Fix UTF-8 structural validation on Windows. Add 17 local benchmark regressions. Live-provider evaluation and infrastructure tests remain pending.
 
-## v0.10.0 — Benchmarking and Optimization
+## v0.10.0 - Benchmarking and Optimization
 
 - Preserve all 235 problems, 24 playbooks, 66 scenario cases, 27 scanner rules and all 67 inherited reference files.
 - Add reproducible paired benchmark plans, optional competitor snapshots, trusted adapter execution, best-effort blinded review packets and explicit attempt/missing-data accounting.
@@ -23,7 +23,7 @@
 - Add context strategy and offline reference routing; no measured token savings claimed.
 - Add 16 local benchmark/context tests (61 total), a synthetic adapter, rich README with five SVG charts and Mermaid diagrams. Actual agent runs and real-service integration remain pending.
 
-## v0.9.0 — Architectural Intelligence
+## v0.9.0 - Architectural Intelligence
 
 - Preserve the 235-problem catalog, all 24 playbooks, adaptive technology and security references, and 27 scanner rules.
 - Add architecture modeling workflow, component/dependency and boundary candidate inventory, explicit invariant/root-cause mapping and task dependency validation.
@@ -31,14 +31,14 @@
 - Add 10 agent evaluation cases (66 total), enhance assessment/remediation/verification templates and public README.
 - Static candidates are not runtime topology; analyst links are not independent causal proof. Infrastructure and actual agent benchmarks remain unexecuted.
 
-## v0.8.0 — Comprehensive Security Hardening
+## v0.8.0 - Comprehensive Security Hardening
 
 - Preserve SDP-001–160 and existing playbooks; add SDP-161–235 across eight security domains (235 problems, 24 playbooks).
 - Add threat modeling, versioned advisory security standards crosswalk and adaptive security capability guidance.
 - Expand scanner from 17 to 27 candidate rules, add 16 agent scenarios (56 total) and eight local teaching tests (30 total).
 - Update README, assessment/verification templates, responsible disclosure guidance and roadmap. Infrastructure and actual agent benchmarks remain unexecuted.
 
-## v0.7.0 — Advanced Integration and Verification
+## v0.7.0 - Advanced Integration and Verification
 
 - Preserve the 160-problem catalog, 16 playbooks, 17 capability references and 12 optional technology profiles.
 - Add technology-independent boundary-based failure injection and verification guidance.
@@ -47,7 +47,7 @@
 - Add six agent evaluation scenarios (40 total). No actual agent benchmarks executed.
 - Update README, verification template and release documentation.
 
-## v0.6.0 — Adaptive Technology Intelligence
+## v0.6.0 - Adaptive Technology Intelligence
 
 - Preserve all 160 problem IDs, 16 playbooks and 12 optional product profiles.
 - Add 17 capability references, discovery, version verification, unknown-stack workflow and inventory template.
@@ -55,13 +55,13 @@
 - Add eight agent evaluation scenarios (34 total); no agent benchmarks executed.
 - Update README, contribution guidance and roadmap. Real infrastructure integration remains planned for v0.7.0.
 
-## v0.5.0 — Initial automated evaluation tooling
+## v0.5.0 - Initial automated evaluation tooling
 
 - Add executable SQLite and deterministic cache fixtures, eleven local tests, five heuristic scanner rules and paired evaluation scoring.
 - Enrich README, CI, examples and evaluation protocol. Preserve all 160 problem IDs.
 - Agent benchmarks and real service integration tests remain pending.
 
-## v0.4.0 — Technology guidance (included in v0.5.0)
+## v0.4.0 - Technology guidance (included in v0.5.0)
 
 - Add twelve on-demand stack guides with pitfalls and verification.
 
@@ -75,11 +75,11 @@
 - No agent benchmarks executed; technology-specific guides remain future work.
 
 
-## 0.2.0 — publication candidate
+## 0.2.0 - publication candidate
 - Preserve original 100 scenarios with stable IDs; add 24 distinct failure scenarios.
 - Strengthen evidence boundaries, invariant discovery, concurrency testing and operational recovery.
 - Add detection guidance, reporting templates, evaluation cases, offline validator and CI.
 - Add publication documentation, proposed MIT license and source review notes.
 
-## 0.1.0 — original private draft
+## 0.1.0 - original private draft
 - Initial catalog and assessment, implementation and preventive review workflow.

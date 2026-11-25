@@ -1,8 +1,8 @@
-# Financial — problem playbook
+# Financial - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-001 — Duplicate Charge
+## SDP-001 - Duplicate Charge
 
 - **Failure:** A customer is charged multiple times due to retries or network failures.
 - **Detection:** Charge called before durable operation claim; retry uses new provider key.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Lose provider response after charge and retry concurrently; assert one provider charge and one ledger effect.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-002 — Inconsistent Financial Balance
+## SDP-002 - Inconsistent Financial Balance
 
 - **Failure:** Money is deducted from one account without being credited to another.
 - **Detection:** Debit and credit committed separately or unbalanced journal allowed.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Crash between legs; assert neither posts or both post and journal balances.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-003 — Double Spending
+## SDP-003 - Double Spending
 
 - **Failure:** The same available balance is spent through concurrent transactions.
 - **Detection:** Balance read then unconditional debit.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two spends exceeding combined balance; only admissible spend commits.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-004 — Lost Update
+## SDP-004 - Lost Update
 
 - **Failure:** Two transactions update the same record, overwriting each other's changes.
 - **Detection:** Read-modify-write without version predicate.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two readers update same version; no silent overwrite.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-005 — Partial Transaction Failure
+## SDP-005 - Partial Transaction Failure
 
 - **Failure:** Some operations succeed while others fail.
 - **Detection:** Multiple durable effects with no recovery state.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail each step after prior commit; recover or compensate to valid state.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-006 — Uncertain Transaction Status
+## SDP-006 - Uncertain Transaction Status
 
 - **Failure:** A payment succeeds, but the client receives a timeout.
 - **Detection:** Timeout mapped to definitive payment failure.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Drop successful provider response; reconcile without second payment.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-007 — Financial Record Manipulation
+## SDP-007 - Financial Record Manipulation
 
 - **Failure:** Historical financial transactions are modified or deleted.
 - **Detection:** Posted journal editable via ordinary CRUD.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Attempt edit/delete via API and DB role; reversal preserves history.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-008 — Balance Calculation Drift
+## SDP-008 - Balance Calculation Drift
 
 - **Failure:** Stored balances become inconsistent with transaction history.
 - **Detection:** Stored balance independently changed from journal.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Inject projection drift; reconciliation detects and repairs without changing journal.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-009 — Concurrent Resource Reservation
+## SDP-009 - Concurrent Resource Reservation
 
 - **Failure:** Multiple users reserve the same seat, room or inventory item.
 - **Detection:** Availability check separated from reservation write.
@@ -74,7 +74,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Competing clients claim last slot; at most one succeeds.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-010 — Abandoned Reservation
+## SDP-010 - Abandoned Reservation
 
 - **Failure:** Reserved resources are never released after an incomplete transaction.
 - **Detection:** Expired reservations never release or release confirmed reservation.

@@ -1,8 +1,8 @@
-# Injection and untrusted content — problem playbook
+# Injection and untrusted content - problem playbook
 
 Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappings](SECURITY-STANDARDS.md). These are defensive investigation leads; confirm trust boundaries, reachability and effective controls. Use only authorized isolated tests with synthetic data.
 
-## SDP-179 — SQL injection
+## SDP-179 - SQL injection
 
 - **Failure:** Untrusted values alter database query semantics.
 - **Detection:** Trace request data into raw SQL, interpolation and dynamic identifiers; ORM alone is not proof.
@@ -10,7 +10,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use synthetic metacharacter inputs and verify they remain data; inspect query binding and permitted sorting.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-180 — NoSQL query injection
+## SDP-180 - NoSQL query injection
 
 - **Failure:** Untrusted structures become database operators or filters.
 - **Detection:** Trace request objects into document queries and aggregation operators.
@@ -18,7 +18,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Pass unexpected nested operators as synthetic input; reject without widening results.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-181 — Command injection
+## SDP-181 - Command injection
 
 - **Failure:** Untrusted values alter operating-system command execution.
 - **Detection:** Trace input into shell execution, argument construction and interpreter calls.
@@ -26,7 +26,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Mock execution and verify untrusted text remains one inert argument or is rejected; no external commands needed.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-182 — Cross-site scripting
+## SDP-182 - Cross-site scripting
 
 - **Failure:** Untrusted content is interpreted as active browser code.
 - **Detection:** Inspect HTML rendering, unsafe DOM sinks, rich text and templating contexts.
@@ -34,7 +34,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Render synthetic marker content in browser test; verify inert text and permitted formatting.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-183 — Server-side request forgery
+## SDP-183 - Server-side request forgery
 
 - **Failure:** Untrusted destinations cause server requests across restricted network boundaries.
 - **Detection:** Trace URLs, redirects, DNS resolution and user-controlled connectors; inspect egress policy.
@@ -42,7 +42,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use local fake allowed and denied destinations; verify denied requests never reach the target, including redirects.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-184 — Cross-site request forgery
+## SDP-184 - Cross-site request forgery
 
 - **Failure:** A browser sends an authenticated state change without user intent.
 - **Detection:** Identify ambient cookie credentials and state-changing routes, including GET and alternate methods.
@@ -50,7 +50,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Submit a synthetic cross-origin state change with ambient session; reject; intended request succeeds.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-185 — Unsafe XML processing
+## SDP-185 - Unsafe XML processing
 
 - **Failure:** XML parsing resolves external resources or expands input unexpectedly.
 - **Detection:** Inspect parser options, DTD/entity resolution and size/depth limits.
@@ -58,7 +58,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use isolated parser tests with fake resolver and bounded input; external resolution never occurs.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-186 — Unsafe deserialization
+## SDP-186 - Unsafe deserialization
 
 - **Failure:** Untrusted serialized data constructs unexpected objects or executes behavior.
 - **Detection:** Trace untrusted payloads into native object deserializers and polymorphic type selection.
@@ -66,7 +66,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Supply unsupported synthetic type and malformed data; reject without invoking constructors or side effects.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-187 — Path traversal and archive extraction
+## SDP-187 - Path traversal and archive extraction
 
 - **Failure:** Untrusted paths escape authorized directories or overwrite unrelated files.
 - **Detection:** Inspect joins, canonicalization, symlinks, archive entry paths and race windows.
@@ -74,7 +74,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** In temporary directories test outside-root and symlink cases; confirm permitted files still work.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-188 — Template injection
+## SDP-188 - Template injection
 
 - **Failure:** Untrusted content is interpreted as template source.
 - **Detection:** Trace user content into template compilation or dynamic expression evaluation.
@@ -82,7 +82,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Render synthetic expression-like input as text; confirm no interpreter action occurs.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-189 — Unsafe redirect
+## SDP-189 - Unsafe redirect
 
 - **Failure:** Untrusted destination redirects users outside intended trust boundary.
 - **Detection:** Inspect return URLs, login callbacks and redirect handling.
@@ -90,7 +90,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Verify external and malformed destination rejected; legitimate local return works.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-190 — HTTP parser disagreement
+## SDP-190 - HTTP parser disagreement
 
 - **Failure:** Intermediaries disagree on request boundaries or normalization.
 - **Detection:** Review gateway/backend HTTP versions, framing validation and normalization contracts.
@@ -98,7 +98,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use authorized isolated proxy fixtures with malformed framing; verify rejection and no downstream request ambiguity.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-191 — Unsafe file upload
+## SDP-191 - Unsafe file upload
 
 - **Failure:** Untrusted files become executable, public or resource-exhausting content.
 - **Detection:** Inspect content validation, object naming, serving headers, storage isolation and scan workflow.
@@ -106,7 +106,7 @@ Use [security assessment guidance](SECURITY-ASSESSMENT.md) and [standards mappin
 - **Verification:** Use benign mismatched-type and oversized fixtures; verify no execution or public access before approval.
 - **Decision:** Record scope, existing protection, expected denial and permitted behavior; if runtime or policy is unknown, mark Requires Verification.
 
-## SDP-192 — Unsafe upstream API consumption
+## SDP-192 - Unsafe upstream API consumption
 
 - **Failure:** Third-party responses bypass validation or inject unsafe data into local actions.
 - **Detection:** Trace external response parsing, schema validation, redirects and trusted fields.

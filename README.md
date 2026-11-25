@@ -8,7 +8,7 @@ An open-source, evidence-driven AI coding skill for discovering, preventing, fix
 
 [Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
-> **v1.0.0-RC1 — Empirical validation.** The local Ollama pilot completed 36 responses, and the default Docker lab passed 12 tests. The provisional rubric found safety flags and false alarms in both model conditions. [Read the pilot results](BENCHMARK-RESULTS.md).
+> **v1.0.0-RC1 - Empirical validation.** The local Ollama pilot completed 36 responses, and the default Docker lab passed 12 tests. The provisional rubric found safety flags and false alarms in both model conditions. [Read the pilot results](BENCHMARK-RESULTS.md).
 
 | 235 problems | 24 playbooks | 17 capability profiles | 12 optional product guides |
 |:---:|:---:|:---:|:---:|
@@ -45,7 +45,7 @@ flowchart TD
 
 ## Why this skill exists
 
-A system may pass ordinary functional tests and still charge customers twice, lose committed events, overwrite newer data, or collapse under retries. Architecture hardening means reasoning about business invariants across real transaction boundaries, concurrent requests, external dependencies, crashes and recovery — not simply checking that a design pattern or library is present.
+A system may pass ordinary functional tests and still charge customers twice, lose committed events, overwrite newer data, or collapse under retries. Architecture hardening means reasoning about business invariants across real transaction boundaries, concurrent requests, external dependencies, crashes and recovery - not simply checking that a design pattern or library is present.
 
 | Failure scenario | Example mitigation | What must be verified |
 |---|---|---|

@@ -1,8 +1,8 @@
-# Database — problem playbook
+# Database - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-023 — Dual Write (Database + Message Broker)
+## SDP-023 - Dual Write (Database + Message Broker)
 
 - **Failure:** Database commits successfully, but the corresponding event is not published.
 - **Detection:** Database commit and broker publish separate operations.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Crash before publish and after broker confirm before mark; event eventually processed once in effect.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-024 — Duplicate Event Processing
+## SDP-024 - Duplicate Event Processing
 
 - **Failure:** The same event is delivered and processed multiple times.
 - **Detection:** Consumer dedupe check separate from mutation.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Deliver identical event concurrently and after crash; one business mutation.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-025 — Dirty Read
+## SDP-025 - Dirty Read
 
 - **Failure:** A transaction reads another transaction's uncommitted data.
 - **Detection:** READ UNCOMMITTED or equivalent reads drive decisions.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Hold uncommitted update then roll back; reader never acts on dirty value.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-026 — Non-Repeatable Read
+## SDP-026 - Non-Repeatable Read
 
 - **Failure:** Reading the same record twice produces different values within one transaction.
 - **Detection:** Repeated reads assume stable row under read committed.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Update between reads; transaction observes required stable view or detects conflict.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-027 — Phantom Read
+## SDP-027 - Phantom Read
 
 - **Failure:** New records appear between repeated queries within a transaction.
 - **Detection:** Range count used for invariant without predicate protection.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Concurrent inserts into checked range; invariant survives.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-028 — Write Skew
+## SDP-028 - Write Skew
 
 - **Failure:** Concurrent transactions independently satisfy conditions but collectively violate a business rule.
 - **Detection:** Disjoint writes depend on shared snapshot predicate.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two transactions independently pass predicate; at least one aborts if combined invalid.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-029 — Database Deadlock
+## SDP-029 - Database Deadlock
 
 - **Failure:** Transactions wait on each other's locks until interrupted.
 - **Detection:** Opposite lock acquisition order or long transactions.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Force opposing lock order; bounded recovery without duplicate external effects.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-030 — Race Condition
+## SDP-030 - Race Condition
 
 - **Failure:** The result depends on the execution order of concurrent operations.
 - **Detection:** Shared mutable state or check-then-act across threads/processes.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Force competing interleaving; invariant holds across processes.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-031 — Replication Lag
+## SDP-031 - Replication Lag
 
 - **Failure:** A read replica returns outdated data after a successful write.
 - **Detection:** Post-write read routed to lagging replica.
@@ -74,7 +74,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Delay replica apply; caller sees own write or explicit pending state.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-032 — Split-Brain
+## SDP-032 - Split-Brain
 
 - **Failure:** Multiple database nodes incorrectly believe they are the primary.
 - **Detection:** Two primaries accept writes after partition.
@@ -82,7 +82,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Partition old primary then promote new; stale primary cannot commit.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-033 — Database Hotspot
+## SDP-033 - Database Hotspot
 
 - **Failure:** Excessive transactions target a specific record or partition.
 - **Detection:** Single row/partition serialized under skewed workload.
@@ -90,7 +90,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Skew traffic and inspect lock waits; correctness unchanged at target load.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-034 — Cross-Database Transaction
+## SDP-034 - Cross-Database Transaction
 
 - **Failure:** A business transaction spans multiple independent databases.
 - **Detection:** Independent DB commits assumed atomic.
@@ -98,7 +98,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Crash between database commits; recover to defined valid state.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-035 — Database Connection Exhaustion
+## SDP-035 - Database Connection Exhaustion
 
 - **Failure:** Requests consume all available database connections.
 - **Detection:** Connections held across remote calls or unbounded pool per replica.
@@ -106,7 +106,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Saturate dependency and scale replicas; connection count bounded and recovery occurs.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-036 — Inconsistent Distributed Data
+## SDP-036 - Inconsistent Distributed Data
 
 - **Failure:** Independent services maintain conflicting versions of business data.
 - **Detection:** Multiple services mutate same logical field without authority.
@@ -114,7 +114,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Apply delayed conflicting update; owner wins by defined policy.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-037 — Orphaned Records
+## SDP-037 - Orphaned Records
 
 - **Failure:** Related records remain after incomplete operations or deletions.
 - **Detection:** Child created without valid parent or deletion leaves dangling references.

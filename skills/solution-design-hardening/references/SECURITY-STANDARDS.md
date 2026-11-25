@@ -23,22 +23,22 @@ Start with applicable assets, actors and trust boundaries. Use the catalog to fi
 
 | Problem | OWASP web / API risk categories | Candidate CWE |
 |---|---|---|
-| SDP-007 | A08:2025 | — |
-| SDP-018 | A08:2025 | — |
-| SDP-051 | A06:2025, API4:2023 | — |
-| SDP-073 | A06:2025, API4:2023 | — |
+| SDP-007 | A08:2025 | - |
+| SDP-018 | A08:2025 | - |
+| SDP-051 | A06:2025, API4:2023 | - |
+| SDP-073 | A06:2025, API4:2023 | - |
 | SDP-078 | A07:2025 | CWE-294 |
 | SDP-099 | A01:2025, API1:2023 | CWE-862 |
 | SDP-112 | A08:2025 | CWE-345 |
-| SDP-120 | A01:2025, API1:2023 | — |
+| SDP-120 | A01:2025, API1:2023 | - |
 | SDP-131 | A01:2025 | CWE-367 |
-| SDP-132 | A01:2025 | — |
-| SDP-133 | A07:2025 | — |
+| SDP-132 | A01:2025 | - |
+| SDP-133 | A07:2025 | - |
 | SDP-134 | A01:2025 | CWE-441 |
 | SDP-135 | A09:2025 | CWE-532 |
 | SDP-136 | A06:2025, API4:2023 | CWE-770 |
-| SDP-150 | A01:2025 | — |
-| SDP-156 | A04:2025 | — |
+| SDP-150 | A01:2025 | - |
+| SDP-156 | A04:2025 | - |
 | SDP-157 | A09:2025 | CWE-778 |
 | SDP-161 | A07:2025, API2:2023 | CWE-287 |
 | SDP-162 | A07:2025, API2:2023 | CWE-384 |

@@ -1,8 +1,8 @@
-# Api — problem playbook
+# Api - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-069 — Duplicate API Submission
+## SDP-069 - Duplicate API Submission
 
 - **Failure:** Users submit the same request multiple times.
 - **Detection:** Repeated POST creates multiple records.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Repeat and concurrently submit same operation; one record/effect.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-070 — Timeout Ambiguity
+## SDP-070 - Timeout Ambiguity
 
 - **Failure:** A client cannot determine whether a timed-out operation completed.
 - **Detection:** Timeout interpreted as failure and new operation created.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Drop response after commit; query resolves original result.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-071 — Long-Running Request
+## SDP-071 - Long-Running Request
 
 - **Failure:** Operations exceed HTTP or gateway timeout limits.
 - **Detection:** HTTP request holds resources through long job.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Disconnect client and restart API; job completes or reports durable failure.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-072 — Concurrent API Updates
+## SDP-072 - Concurrent API Updates
 
 - **Failure:** Multiple clients overwrite the same resource.
 - **Detection:** PUT/PATCH ignores resource version.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Two clients edit same version; second gets conflict instead of silent overwrite.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-073 — API Request Flooding
+## SDP-073 - API Request Flooding
 
 - **Failure:** Excessive requests overwhelm backend services.
 - **Detection:** No bounded request admission or per-identity quotas.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Burst per identity and across identities; capacity and fairness maintained.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-074 — N+1 Request Problem
+## SDP-074 - N+1 Request Problem
 
 - **Failure:** Retrieving a collection generates an additional request for every item.
 - **Detection:** Loop issues one query/RPC per item.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Increase item count; calls scale by batches not individual items.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-075 — Overfetching
+## SDP-075 - Overfetching
 
 - **Failure:** APIs return unnecessary data.
 - **Detection:** Endpoint returns unused or sensitive fields by default.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Compare payload size and fields for representative clients; no restricted fields.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-076 — Underfetching
+## SDP-076 - Underfetching
 
 - **Failure:** Clients require multiple API calls to retrieve related information.
 - **Detection:** Client must issue many sequential dependent requests.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Measure network calls and latency; failure semantics remain explicit.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-077 — Pagination Drift
+## SDP-077 - Pagination Drift
 
 - **Failure:** Records are skipped or duplicated when data changes between page requests.
 - **Detection:** Offset pages shift under concurrent insert/delete.
@@ -74,7 +74,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Insert/delete between pages; no unintended duplicates or omissions under contract.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-078 — Request Replay Attack
+## SDP-078 - Request Replay Attack
 
 - **Failure:** Previously valid requests are maliciously resubmitted.
 - **Detection:** Signed or authenticated action can be replayed.
@@ -82,7 +82,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Replay valid request within and outside window; unauthorized repeat rejected.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-079 — Partial Bulk Operation Failure
+## SDP-079 - Partial Bulk Operation Failure
 
 - **Failure:** Some items succeed while others fail.
 - **Detection:** Batch retries repeat successful items or hides partial results.
@@ -90,7 +90,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail midway then retry batch; successful items not repeated.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-080 — API Fan-Out Failure
+## SDP-080 - API Fan-Out Failure
 
 - **Failure:** An aggregated response fails because one dependency is unavailable.
 - **Detection:** Parallel aggregation fails whole response on optional dependency.

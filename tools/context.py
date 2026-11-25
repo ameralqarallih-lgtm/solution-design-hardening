@@ -2,11 +2,12 @@
 import argparse,json,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]/'skills/solution-design-hardening'
+PLAYBOOK_HEADING = re.compile(r'^## (SDP-\d{3}) [-\u2014] .+$', re.M)
 
 def select(ids, root=ROOT):
     index={}
     for path in sorted((root/'references').glob('problems-*.md')):
-        for m in re.finditer(r'^## (SDP-\d{3}) — .+$',path.read_text(encoding='utf-8'),re.M):
+        for m in PLAYBOOK_HEADING.finditer(path.read_text(encoding='utf-8')):
             if m[1] in index: raise ValueError('duplicate problem ID')
             index[m[1]]=path
     if not ids or not set(ids)<=index.keys(): raise ValueError('explicit known IDs required')

@@ -1,8 +1,8 @@
-# Deployment Resources — problem playbook
+# Deployment Resources - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-137 — Configuration drift
+## SDP-137 - Configuration drift
 
 - **Failure:** Replicas use incompatible safety settings.
 - **Detection:** Replica configuration differs on consistency-critical settings.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Start mismatched replicas; invalid config rejected or explicitly quarantined.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-138 — Incompatible rollback
+## SDP-138 - Incompatible rollback
 
 - **Failure:** Old application cannot handle migrated data.
 - **Detection:** Rollback deploys old binary after irreversible schema/data change.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Apply migration then run supported rollback; no corrupt reads/writes.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-139 — Migration lock contention
+## SDP-139 - Migration lock contention
 
 - **Failure:** DDL blocks live workload.
 - **Detection:** DDL holds blocking lock during normal traffic.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Run migration with representative concurrent traffic; lock impact within budget.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-140 — Concurrent migration execution
+## SDP-140 - Concurrent migration execution
 
 - **Failure:** Multiple replicas apply schema changes concurrently.
 - **Detection:** Every replica runs migration independently at startup.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Start replicas simultaneously; migration executes safely once in effect.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-141 — Thread pool starvation
+## SDP-141 - Thread pool starvation
 
 - **Failure:** Blocking work exhausts execution threads.
 - **Detection:** Blocking I/O or sync waits exhaust request execution threads.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Slow I/O under concurrency; thread use bounded and healthy requests progress.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-142 — Resource handle leak
+## SDP-142 - Resource handle leak
 
 - **Failure:** Failure paths retain connections or streams.
 - **Detection:** Connections/streams not disposed on exceptions or cancellation.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Repeat failed/canceled operations; handle counts return to baseline.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-143 — Unbounded memory growth
+## SDP-143 - Unbounded memory growth
 
 - **Failure:** Accumulated state or tasks exhaust memory.
 - **Detection:** Unbounded collection or in-flight tasks grow under sustained load.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Run sustained load; memory stabilizes and overload handled.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-144 — Autoscaling feedback mismatch
+## SDP-144 - Autoscaling feedback mismatch
 
 - **Failure:** Scaling signal ignores actual bottleneck.
 - **Detection:** Autoscaler reacts to CPU while queue age or dependency saturation dominates.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Burst queue workload with low CPU; scale safely and drain backlog.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-145 — Cancellation resource leak
+## SDP-145 - Cancellation resource leak
 
 - **Failure:** Canceled requests leave expensive work running.
 - **Detection:** Timeout cancels caller but expensive work continues consuming capacity.

@@ -1,6 +1,9 @@
 """Offline structural validation, not agent evaluation. Python 3 standard library."""
 from pathlib import Path
 import re,json
+
+from context import PLAYBOOK_HEADING, select
+
 root=Path(__file__).resolve().parents[1]
 skill=root/'skills/solution-design-hardening'
 s=(skill/'SKILL.md').read_text(encoding='utf-8')
@@ -13,7 +16,7 @@ ids=re.findall(r'^\| (SDP-\d{3}) \|', (skill/'references/SOLUTION-DESIGN-PROBLEM
 assert ids==[f'SDP-{i:03}' for i in range(1,236)], 'Catalog IDs missing or reordered'
 playbook_ids=[]
 for p in sorted((skill/'references').glob('problems-*.md')):
-    sections=re.split(r'^## (SDP-\d{3}) — .+$',p.read_text(encoding='utf-8'),flags=re.M)
+    sections=PLAYBOOK_HEADING.split(p.read_text(encoding='utf-8'))
     for i in range(1,len(sections),2):
         playbook_ids.append(sections[i])
         for field in ('**Failure:**','**Detection:**','**Remediation and safeguards:**','**Verification:**'):
@@ -56,6 +59,5 @@ assert all(isinstance(v,list) and len(set(v))==len(v) and all(isinstance(x,str) 
 activation=json.loads((root/'evals/activation-cases.json').read_text(encoding='utf-8'))
 assert len(activation)==8 and len({c['id'] for c in activation})==8 and sum(c['relevant'] for c in activation)==4
 assert all(c['prompt'] and type(c['relevant']) is bool for c in activation)
-from context import select
 assert len(select(ids)['playbooks'])==24
 print('PASS: 16 labeled detection cases, 8 activation probes and complete reference routing.')

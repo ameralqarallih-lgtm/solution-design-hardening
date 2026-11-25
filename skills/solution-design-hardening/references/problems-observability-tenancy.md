@@ -1,8 +1,8 @@
-# Observability Tenancy — problem playbook
+# Observability Tenancy - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-146 — Metrics cardinality explosion
+## SDP-146 - Metrics cardinality explosion
 
 - **Failure:** Unbounded labels overload monitoring.
 - **Detection:** Unbounded unique labels create metrics cardinality explosion.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Generate unique request IDs; metric series count remains bounded.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-147 — Telemetry backpressure
+## SDP-147 - Telemetry backpressure
 
 - **Failure:** Unavailable exporter blocks application.
 - **Detection:** Synchronous telemetry export blocks business requests or buffers indefinitely.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Disable telemetry backend; service remains available and loss observable.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-148 — Broken trace propagation
+## SDP-148 - Broken trace propagation
 
 - **Failure:** Async work loses causal context.
 - **Detection:** Trace context dropped across asynchronous boundaries or reused incorrectly.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Follow request through broker and worker; trace links correct without cross-request mix.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-149 — Tenant migration race
+## SDP-149 - Tenant migration race
 
 - **Failure:** Writes lost during tenant relocation.
 - **Detection:** Tenant-specific data moves during active writes with no cutover protocol.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Write during tenant move; all acknowledged changes present in new location.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-150 — Background tenant context loss
+## SDP-150 - Background tenant context loss
 
 - **Failure:** Worker applies operation to wrong tenant.
 - **Detection:** Shared bulk operation ignores tenant context on background execution.

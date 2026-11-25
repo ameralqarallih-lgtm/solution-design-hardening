@@ -1,8 +1,8 @@
-# Workflow — problem playbook
+# Workflow - problem playbook
 
 Signals are investigation leads, not findings. Confirm the business invariant and actual runtime guarantees. Tests are proposals until executed in an isolated environment. Use the simplest sufficient safeguard; do not introduce a pattern merely because it is listed.
 
-## SDP-081 — Duplicate Scheduled Job
+## SDP-081 - Duplicate Scheduled Job
 
 - **Failure:** Multiple application instances execute the same scheduled job.
 - **Detection:** Every replica runs same cron effect.
@@ -10,7 +10,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Start two replicas for same occurrence; one intended effect.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-082 — Overlapping Job Execution
+## SDP-082 - Overlapping Job Execution
 
 - **Failure:** A scheduled job starts before its previous execution finishes.
 - **Detection:** Scheduler starts new run while old run holds resources.
@@ -18,7 +18,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Pause first run past next schedule; overlap follows policy safely.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-083 — Stuck Workflow
+## SDP-083 - Stuck Workflow
 
 - **Failure:** A workflow remains indefinitely in an intermediate state.
 - **Detection:** Workflow pending forever without timeout or owner.
@@ -26,7 +26,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Suppress completion event; workflow reaches explicit recoverable state.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-084 — Lost Job Progress
+## SDP-084 - Lost Job Progress
 
 - **Failure:** A worker crashes before completing a long-running operation.
 - **Detection:** Progress only in memory or checkpoint before effect.
@@ -34,7 +34,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Crash between effect and checkpoint; resume without loss/duplication.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-085 — Partial Workflow Completion
+## SDP-085 - Partial Workflow Completion
 
 - **Failure:** Early workflow steps succeed while later steps fail.
 - **Detection:** Later step fails after earlier business commitment.
@@ -42,7 +42,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Fail each step and compensation; recovery remains possible and auditable.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-086 — Orphaned Background Job
+## SDP-086 - Orphaned Background Job
 
 - **Failure:** A crashed worker leaves a job marked as running.
 - **Detection:** Job marked running indefinitely after worker death.
@@ -50,7 +50,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Kill worker; replacement resumes and stale worker cannot corrupt state.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-087 — Infinite Retry Loop
+## SDP-087 - Infinite Retry Loop
 
 - **Failure:** A permanently failing operation is continuously retried.
 - **Detection:** All failures retried forever.
@@ -58,7 +58,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Permanent error reaches terminal state; transient error recovers within budget.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-088 — Job Starvation
+## SDP-088 - Job Starvation
 
 - **Failure:** Low-priority jobs are never executed.
 - **Detection:** Continuous high-priority work prevents low-priority execution.
@@ -66,7 +66,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Flood high priority; low priority progresses within defined bound.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-089 — Missed Scheduled Execution
+## SDP-089 - Missed Scheduled Execution
 
 - **Failure:** A scheduled task is skipped during an outage.
 - **Detection:** In-memory scheduler loses occurrence during outage.
@@ -74,7 +74,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Stop scheduler across scheduled time; catch-up or skip per documented policy.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-090 — Invalid State Transition
+## SDP-090 - Invalid State Transition
 
 - **Failure:** A business entity moves into an invalid status.
 - **Detection:** Status freely assignable without transition guard.
@@ -82,7 +82,7 @@ Signals are investigation leads, not findings. Confirm the business invariant an
 - **Verification:** Race incompatible transitions; only allowed transition commits.
 - **Decision:** Confirm reachability, existing constraints and the required guarantee before reporting a defect; document any remaining uncertainty.
 
-## SDP-091 — Duplicate External Side Effect
+## SDP-091 - Duplicate External Side Effect
 
 - **Failure:** A workflow repeats an email, payment or external submission after recovery.
 - **Detection:** Activity retry uses new external identifier each time.
