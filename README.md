@@ -6,7 +6,7 @@
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
-[Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
+[Quick start](#quick-start) · [How it works](#how-it-works) · [Adaptive context](#adaptive-context-and-token-optimization-v100-rc2) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
 > **v1.0.0-RC2 - Adaptive context and token optimization.** Knowledge is now loaded in levels: a lean core, a problem index and one file per problem. Five depth modes scale the loaded context to the task. The core instructions shrank from about 4,460 to 2,480 estimated tokens, and every previous guidance statement is still present, checked by a knowledge-preservation test. [Context levels and modes](#adaptive-context-and-token-optimization-v100-rc2).
 >
@@ -30,7 +30,7 @@ flowchart TD
     D --> E[Architectural intelligence]
     E --> F[Evidence, findings and root causes]
     F --> G[Prioritized remediation and verification]
-    G --> H[Benchmarking and context optimization]
+    G --> H[Adaptive context, benchmarking and validation]
 ```
 
 | Dimension | Approach |
@@ -41,6 +41,7 @@ flowchart TD
 | Security | Assess authorization at effects, input handling, supply chain and agent boundaries |
 | Evidence | Separate verified facts, static candidates, unknowns and residual risks |
 | Simplicity | Prefer sufficient existing mechanisms, not mandatory pattern adoption |
+| Context | Load knowledge by task depth; never cap what is read or skip a check to save tokens |
 | Verification | Test invariants under concurrency, failure, recovery and negative controls |
 | Evaluation | Matched trials, independent grading, labeled cases and actual usage metrics |
 
@@ -92,11 +93,29 @@ Apply solution-design-hardening to this feature or code review.
 Identify applicable invariants and failure boundaries; avoid unnecessary patterns.
 ```
 
+### Choose the depth (optional)
+
+The agent picks a depth from the task and escalates when it finds money movement, messaging, cross-process invariants, trust boundaries, migrations or authoritative caching. When in doubt it goes deeper. You can also ask for one explicitly:
+
+```text
+Use solution-design-hardening at Deep depth to review this payment and
+outbox change, including security and integration verification.
+```
+
+| Depth | Typical request |
+|---|---|
+| Lightweight | Routine edits with no correctness or security trigger |
+| Focused | "Check this handler for duplicate charges" |
+| Standard | Designing or implementing a feature |
+| Deep | Cross-service, security, migration or recovery changes |
+| Comprehensive | "Assess the entire codebase against the catalog" |
+
 ## How it works
 
 ```mermaid
 flowchart LR
-    A[Discover architecture] --> B[Identify invariants and failure boundaries]
+    S[Choose depth and load relevant knowledge] --> A[Discover architecture]
+    A --> B[Identify invariants and failure boundaries]
     B --> C[Assess evidence and applicability]
     C --> D[Prioritize remediation]
     D --> E{Implementation authorized?}
@@ -106,11 +125,11 @@ flowchart LR
     H --> I[Report residual risks]
 ```
 
-The agent chooses a depth (Lightweight, Focused, Standard, Deep or Comprehensive) and loads only the problem files and supporting references that depth needs. Full assessments cover the bundled baseline plus distinct project-specific problems, cross-mapping duplicates. The skill does not require all patterns to be implemented.
+The agent chooses a depth (Lightweight, Focused, Standard, Deep or Comprehensive) and loads the problem files and supporting references that depth needs, expanding to related problems whenever evidence shows a shared boundary. Nothing caps what it may read. Full assessments cover the bundled baseline plus distinct project-specific problems, cross-mapping duplicates. The skill does not require all patterns to be implemented.
 
 ## Coverage
 
-235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, 66 scenario-based agent evaluation cases and eight separate activation probes.
+235 stable problem IDs, each in its own problem file and grouped into 24 domain indexes, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, 66 scenario-based agent evaluation cases and eight separate activation probes.
 
 ![Problem catalog growth from 100 to 235](docs/assets/catalog-growth.svg)
 
@@ -140,7 +159,7 @@ The agent chooses a depth (Lightweight, Focused, Standard, Deep or Comprehensive
 | AI and agentic application security | SDP-226–235 | 10 |
 | **Total** | **SDP-001–235** | **235** |
 
-Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
+Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [problem index](skills/solution-design-hardening/references/PROBLEM-INDEX.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
 
 ### Architectural Intelligence (v0.9.0)
 
@@ -254,7 +273,7 @@ flowchart TD
 
 | Layer | Responsibility |
 |---|---|
-| Universal problems | 235 stable failure scenarios and 24 playbooks |
+| Universal problems | 235 stable failure scenarios, one file each, in 24 domain indexes |
 | Discovery | Component-specific manifest, dependency, configuration and topology evidence |
 | Capability mapping | 17 reusable technology-independent domains |
 | Product profiles | 12 optional accelerators, not prerequisites |
