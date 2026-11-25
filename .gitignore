@@ -5,3 +5,6 @@ results.json
 
 # Local candidate inventories may contain sensitive architecture metadata.
 architecture-candidates.json
+
+# Private benchmark plans, raw responses, traces and grades
+benchmark-runs/

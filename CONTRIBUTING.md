@@ -17,3 +17,7 @@ Use synthetic data, local or explicitly authorized isolated targets, and both de
 ## Architecture tooling contributions
 
 Keep candidate discovery distinct from analyst-supported evidence. Add negative controls, unresolved-link tests, scope/secret-output tests and dependency-cycle tests for any model or parser changes. Preserve schema compatibility or document migration. Never infer a root cause from proximity alone. See [architecture tooling](tools/ARCHITECTURE.md).
+
+## Benchmark contributions
+
+Follow the [evaluation protocol](evals/README.md). Keep gold labels and condition assignments private from the evaluated agent, include safe negative controls, and preserve case IDs. Publish only sanitized results with model/agent versions, settings, trial coverage, failures and grading methodology. Do not submit synthetic adapter outputs as model performance.

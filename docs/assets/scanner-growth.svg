@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 383" role="img" aria-label="Heuristic detection rules"><rect x="1" y="1" width="918" height="381" rx="14" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="28" y="36" font-size="22" font-weight="700" fill="#0f172a">Heuristic detection rules</text>
+<text x="28" y="60" font-size="14" fill="#475569">Candidate-only risk signals; semantic review still required</text>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="28" y="98" font-size="15" fill="#334155">v0.5.0</text>
+<rect x="230" y="80" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="80" width="105.6" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="98" font-size="16" font-weight="700" fill="#0f172a">5</text>
+<text x="28" y="141" font-size="15" fill="#334155">v0.6.0</text>
+<rect x="230" y="123" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="123" width="105.6" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="141" font-size="16" font-weight="700" fill="#0f172a">5</text>
+<text x="28" y="184" font-size="15" fill="#334155">v0.7.0</text>
+<rect x="230" y="166" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="166" width="358.9" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="184" font-size="16" font-weight="700" fill="#0f172a">17</text>
+<text x="28" y="227" font-size="15" fill="#334155">v0.8.0</text>
+<rect x="230" y="209" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="209" width="570.0" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="227" font-size="16" font-weight="700" fill="#0f172a">27</text>
+<text x="28" y="270" font-size="15" fill="#334155">v0.9.0</text>
+<rect x="230" y="252" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="252" width="570.0" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="270" font-size="16" font-weight="700" fill="#0f172a">27</text>
+<text x="28" y="313" font-size="15" fill="#334155">v0.10.0</text>
+<rect x="230" y="295" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="295" width="570.0" height="25" rx="4" fill="#0f766e"/>
+<text x="820" y="313" font-size="16" font-weight="700" fill="#0f172a">27</text>
+<text x="28" y="366" font-size="13" fill="#475569">Scanner coverage is not the same as the 235-problem assessment catalog.</text></g></svg>

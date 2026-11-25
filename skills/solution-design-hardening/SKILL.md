@@ -3,7 +3,7 @@ name: solution-design-hardening
 description: Assess, prevent, and remediate transactional and distributed system design failures in existing or new code. Use when designing, reviewing, testing, or changing payments, database transactions, concurrency, caches, messaging, APIs, retries, background jobs, workflows, object storage, identity, authorization, injection, cryptography, supply chain, infrastructure security, or AI/agent trust boundaries; use for architecture, security and reliability assessment, dependency and transaction mapping, root-cause correlation, remediation and verification.
 license: MIT
 metadata:
-  version: "0.9.0"
+  version: "0.10.0"
 ---
 
 # Solution Design Hardening
@@ -51,7 +51,7 @@ Use the detailed [pattern guidance](references/PATTERN-GUIDANCE.md) when assessi
 
 ## Problem-specific playbooks (load selectively)
 
-Use the catalog to select applicable IDs, then read the corresponding playbook before confirming a finding or designing a fix. For full assessments process the ranges in batches; record covered paths and unresolved evidence, not just checked boxes. For focused work load only relevant ranges. The catalog is a baseline, not an exhaustive safety guarantee.
+Use the catalog to select applicable IDs, then read the corresponding playbook before confirming a finding or designing a fix. For full assessments process the ranges in batches; record covered paths and unresolved evidence, not just checked boxes. For focused work load only relevant ranges. The catalog is a baseline, not an exhaustive safety guarantee. Follow [context strategy](references/CONTEXT-STRATEGY.md) to select and expand relevant references, checkpoint full assessments, and avoid repeated loading without losing evidence or security coverage.
 
 - SDP-001–010: [Financial](references/problems-financial.md)
 - SDP-011–022: [Caching](references/problems-caching.md)

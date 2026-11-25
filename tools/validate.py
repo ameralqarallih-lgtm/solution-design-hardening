@@ -47,3 +47,13 @@ assert (skill/'references/ARCHITECTURAL-INTELLIGENCE.md').is_file()
 from correlate import analyze
 assert not analyze(json.loads((root/'examples/architecture-model.json').read_text()),set(ids))['unassigned_findings']
 print(f'PASS: skill metadata, internal links, {len(ids)} sequential problem IDs and complete playbook coverage, {len(cases)} evaluation cases. No agent evaluations executed.')
+
+gold=json.loads((root/'evals/gold-findings.json').read_text())
+assert len(gold)==16 and sum(not v for v in gold.values())==5 and set(gold)<={c['id'] for c in cases}
+assert all(isinstance(v,list) and len(set(v))==len(v) and all(isinstance(x,str) and x for x in v) for v in gold.values())
+activation=json.loads((root/'evals/activation-cases.json').read_text())
+assert len(activation)==8 and len({c['id'] for c in activation})==8 and sum(c['relevant'] for c in activation)==4
+assert all(c['prompt'] and type(c['relevant']) is bool for c in activation)
+from context import select
+assert len(select(ids)['playbooks'])==24
+print('PASS: 16 labeled detection cases, 8 activation probes and complete reference routing.')

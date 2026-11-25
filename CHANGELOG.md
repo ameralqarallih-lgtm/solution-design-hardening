@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.10.0 — Benchmarking and Optimization
+
+- Preserve all 235 problems, 24 playbooks, 66 scenario cases, 27 scanner rules and all 67 inherited reference files.
+- Add reproducible paired benchmark plans, optional competitor snapshots, trusted adapter execution, best-effort blinded review packets and explicit attempt/missing-data accounting.
+- Add 16 labeled existing scenarios (five safe controls), eight separate activation probes, precision/recall, false-alarm and matched usage reporting.
+- Add context strategy and offline reference routing; no measured token savings claimed.
+- Add 16 local benchmark/context tests (61 total), a synthetic adapter, rich README with five SVG charts and Mermaid diagrams. Actual agent runs and real-service integration remain pending.
+
 ## v0.9.0 — Architectural Intelligence
 
 - Preserve the 235-problem catalog, all 24 playbooks, adaptive technology and security references, and 27 scanner rules.

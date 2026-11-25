@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 469" role="img" aria-label="Security expansion by domain"><rect x="1" y="1" width="918" height="467" rx="14" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="28" y="36" font-size="22" font-weight="700" fill="#0f172a">Security expansion by domain</text>
+<text x="28" y="60" font-size="14" fill="#475569">75 added scenarios (SDP-161–235); earlier catalog also includes security</text>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="28" y="98" font-size="15" fill="#334155">Identity</text>
+<rect x="230" y="80" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="80" width="407.1" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="98" font-size="16" font-weight="700" fill="#0f172a">10</text>
+<text x="28" y="141" font-size="15" fill="#334155">Access &amp; business flow</text>
+<rect x="230" y="123" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="123" width="325.7" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="141" font-size="16" font-weight="700" fill="#0f172a">8</text>
+<text x="28" y="184" font-size="15" fill="#334155">Input &amp; injection</text>
+<rect x="230" y="166" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="166" width="570.0" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="184" font-size="16" font-weight="700" fill="#0f172a">14</text>
+<text x="28" y="227" font-size="15" fill="#334155">Data &amp; cryptography</text>
+<rect x="230" y="209" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="209" width="447.9" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="227" font-size="16" font-weight="700" fill="#0f172a">11</text>
+<text x="28" y="270" font-size="15" fill="#334155">Infrastructure</text>
+<rect x="230" y="252" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="252" width="366.4" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="270" font-size="16" font-weight="700" fill="#0f172a">9</text>
+<text x="28" y="313" font-size="15" fill="#334155">Supply chain</text>
+<rect x="230" y="295" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="295" width="285.0" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="313" font-size="16" font-weight="700" fill="#0f172a">7</text>
+<text x="28" y="356" font-size="15" fill="#334155">Security operations</text>
+<rect x="230" y="338" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="338" width="244.3" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="356" font-size="16" font-weight="700" fill="#0f172a">6</text>
+<text x="28" y="399" font-size="15" fill="#334155">AI &amp; agents</text>
+<rect x="230" y="381" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="381" width="407.1" height="25" rx="4" fill="#0f766e"/>
+<text x="820" y="399" font-size="16" font-weight="700" fill="#0f172a">10</text>
+<text x="28" y="452" font-size="13" fill="#475569">Crosswalks are advisory; mapped categories do not certify compliance.</text></g></svg>

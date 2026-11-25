@@ -2,11 +2,46 @@
 
 **Build secure software that survives concurrency, failures, threats, and scale.**
 
-![Release](https://img.shields.io/badge/release-v0.9.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple)
+![Release](https://img.shields.io/badge/release-v0.10.0-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local tests](https://img.shields.io/badge/local%20tests-61%20passed-brightgreen) ![Agent benchmarks](https://img.shields.io/badge/agent%20benchmarks-not%20run-lightgrey)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
-[Quick start](#quick-start) · [Coverage](#coverage) · [Architectural Intelligence](#architectural-intelligence-v090) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
+[Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#benchmarking-and-optimization-v0100) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
+
+> **v0.10.0 — Benchmarking and Optimization.** Release candidate: all 61 local tests passed; real infrastructure tests and actual agent benchmarks are pending. No superiority or production-readiness claim is made.
+
+| 235 problems | 24 playbooks | 17 capability profiles | 12 optional product guides |
+|:---:|:---:|:---:|:---:|
+| 27 candidate scanner rules | 66 agent scenarios | 16 labeled scenarios | 8 activation probes |
+| 61 local tests passed | 15 real-service tests defined | 92 advisory security mappings | 8 security capability families |
+
+## Project at a glance
+
+This skill combines universal engineering principles, adaptive technology discovery, security hardening, architecture modeling and verification. It supports assessment, planning, authorized implementation and preventive design/review. Unlike a pattern checklist, it asks what can fail, which business invariant is affected, where evidence exists and how to prove the correction.
+
+```mermaid
+flowchart TD
+    A[Solution Design Hardening] --> B[Correctness and resilience]
+    A --> C[Security and trust]
+    B --> D[Adaptive technology intelligence]
+    C --> D
+    D --> E[Architectural intelligence]
+    E --> F[Evidence, findings and root causes]
+    F --> G[Prioritized remediation and verification]
+    G --> H[Benchmarking and context optimization]
+```
+
+| Dimension | Approach |
+|---|---|
+| Coverage | Fixed stable problem baseline plus distinct project-specific issues |
+| Technology independence | Discover actual capabilities; optional guides never define support |
+| Architecture | Trace business operations, data ownership, commit points and trust crossings |
+| Security | Assess authorization at effects, input handling, supply chain and agent boundaries |
+| Evidence | Separate verified facts, static candidates, unknowns and residual risks |
+| Simplicity | Prefer sufficient existing mechanisms, not mandatory pattern adoption |
+| Verification | Test invariants under concurrency, failure, recovery and negative controls |
+| Evaluation | Matched trials, independent grading, labeled cases and actual usage metrics |
+
 
 ## Why this skill exists
 
@@ -73,32 +108,35 @@ The agent loads only the relevant problem playbooks and technology guides for fo
 
 ## Coverage
 
-235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, and 66 scenario-based agent evaluation cases.
+235 stable problem IDs, 24 domain playbooks, 17 technology capability profiles, eight cross-cutting security capability families, 12 optional product profiles, 66 scenario-based agent evaluation cases and eight separate activation probes.
 
-| Domain | Problem IDs |
-|---|---|
-| Financial and transactional correctness | SDP-001–010, SDP-101–104 |
-| Caching | SDP-011–022 |
-| Databases and consistency | SDP-023–037 |
-| Resilience and distributed coordination | SDP-038–053, SDP-125–130 |
-| Messaging | SDP-054–068 |
-| APIs | SDP-069–080 |
-| Workflows | SDP-081–091 |
-| Object storage | SDP-092–100 |
-| Data migration | SDP-105–111 |
-| Integration and operations | SDP-112–124 |
-| Security | SDP-131–136 |
-| Deployment and resources | SDP-137–145 |
-| Observability and tenancy | SDP-146–150 |
-| Lifecycle | SDP-151–160 |
-| Authentication and identity | SDP-161–170 |
-| Authorization and business-flow security | SDP-171–178 |
-| Injection and untrusted content | SDP-179–192 |
-| Data protection and cryptography | SDP-193–203 |
-| Distributed and infrastructure security | SDP-204–212 |
-| Software supply chain | SDP-213–219 |
-| Security monitoring and operations | SDP-220–225 |
-| AI and agentic application security | SDP-226–235 |
+![Problem catalog growth from 100 to 235](docs/assets/catalog-growth.svg)
+
+| Domain | Problem IDs | Count |
+|---|---|---:|
+| Financial and transactional correctness | SDP-001–010, SDP-101–104 | 14 |
+| Caching | SDP-011–022 | 12 |
+| Databases and consistency | SDP-023–037 | 15 |
+| Resilience and distributed coordination | SDP-038–053, SDP-125–130 | 22 |
+| Messaging | SDP-054–068 | 15 |
+| APIs | SDP-069–080 | 12 |
+| Workflows | SDP-081–091 | 11 |
+| Object storage | SDP-092–100 | 9 |
+| Data migration | SDP-105–111 | 7 |
+| Integration and operations | SDP-112–124 | 13 |
+| Security | SDP-131–136 | 6 |
+| Deployment and resources | SDP-137–145 | 9 |
+| Observability and tenancy | SDP-146–150 | 5 |
+| Lifecycle | SDP-151–160 | 10 |
+| Authentication and identity | SDP-161–170 | 10 |
+| Authorization and business-flow security | SDP-171–178 | 8 |
+| Injection and untrusted content | SDP-179–192 | 14 |
+| Data protection and cryptography | SDP-193–203 | 11 |
+| Distributed and infrastructure security | SDP-204–212 | 9 |
+| Software supply chain | SDP-213–219 | 7 |
+| Security monitoring and operations | SDP-220–225 | 6 |
+| AI and agentic application security | SDP-226–235 | 10 |
+| **Total** | **SDP-001–235** | **235** |
 
 Browse the [full problem catalog](skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md), [core skill](skills/solution-design-hardening/SKILL.md), and [technology guides](skills/solution-design-hardening/references/technologies/README.md).
 
@@ -136,6 +174,23 @@ python tools/correlate.py examples/architecture-model.json
 
 The first command produces candidates, the second validates an illustrative analyst-authored model. See [architecture tooling](tools/ARCHITECTURE.md) and [architectural intelligence guidance](skills/solution-design-hardening/references/ARCHITECTURAL-INTELLIGENCE.md). Full assessments include an architecture model (or an equivalent section in the assessment); focused tasks trace only relevant paths. The skill remains technology-independent even when no automated parser exists.
 
+### Traceability and root-cause correlation
+
+```mermaid
+flowchart LR
+    CMP[Component CMP] --> OP[Operation OP]
+    FLOW[Flow FLOW] --> OP
+    OP --> INV[Invariant INV]
+    EV[Evidence EV] --> FND[Finding FND]
+    SDP[Problem SDP] --> FND
+    INV --> FND
+    FND --> RC[Root cause RC]
+    RC --> REM[Remediation REM]
+    REM --> VER[Verification VER]
+```
+
+Example: a missing atomic payment claim can produce duplicate charges, concurrent claims and duplicate API submissions. Consolidate only when the evidence proves the same failure mechanism, while retaining individual coverage and acceptance tests. A common invariant alone is insufficient to merge different root causes.
+
 ### Comprehensive Security Hardening (v0.8.0)
 
 Security is integrated into the same evidence-driven architecture assessment, not a separate plugin or a product-specific checklist. The release preserves the original 160 entries and adds 75 security scenarios. It covers authentication, resource/function/property authorization, input-to-interpreter boundaries, data and cryptographic protection, workload and network trust, software supply chain, security operations, and AI/agent permissions and data isolation.
@@ -148,6 +203,22 @@ Security is integrated into the same evidence-driven architecture assessment, no
 | Unsafe property binding | Allowlist writable fields | Attempt protected-field change; allowed field updates |
 | Supply chain integrity | Verify trusted provenance and artifact identity | Reject mismatched artifact and unapproved builder |
 | Prompt injection / excessive agency | Enforce authority outside model context | Mock untrusted instruction cannot trigger unauthorized effect |
+
+![Security expansion by domain, 75 scenarios](docs/assets/security-coverage.svg)
+
+```mermaid
+flowchart TD
+    U[User or service] --> G[Gateway and identity]
+    G --> A[Business service and resource authorization]
+    A --> Q[Broker or external integration]
+    Q --> W[Worker: re-establish delegated authority]
+    A --> DB[Authoritative data]
+    W --> DB
+    A --> P[Independent agent tool policy]
+    P --> T[Authorized tools and APIs]
+```
+
+Trust must be verified at the actual protected effect, not merely at the first API request. Use STRIDE to examine spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege. For AI applications, retrieved data and model output are untrusted inputs, not authority; enforce permissions, tenant isolation and budgets outside the model.
 
 Start with [security assessment](skills/solution-design-hardening/references/SECURITY-ASSESSMENT.md), [adaptive security capabilities](skills/solution-design-hardening/references/SECURITY-CAPABILITIES.md), [standards traceability](skills/solution-design-hardening/references/SECURITY-STANDARDS.md) and the [threat model template](skills/solution-design-hardening/assets/threat-model.md). Mappings reference OWASP Top 10:2025, API Top 10:2023 and candidate CWE IDs; ASVS 5.0.0, GenAI/Agentic 2026, SSDF, SLSA, CIS and ATT&CK are separate verification inputs. Category-level coverage does not certify compliance.
 
@@ -199,6 +270,84 @@ python tools/discover.py /path/to/repository
 
 The helper is offline and read-only. It recognizes selected manifest filenames and limited toolchain version metadata; it does not resolve dependencies, inspect deployed services or prove capabilities. Missing signals do not imply an unsupported stack.
 
+## Benchmarking and Optimization (v0.10.0)
+
+This release introduces reproducible evaluation infrastructure, not measured agent superiority. The catalog and existing scenario cases remain unchanged. Compare a baseline agent against the skill under identical prompts and settings, and optionally include another skill. Randomize condition order, start fresh sessions, and separate reviewer inputs from condition metadata.
+
+```mermaid
+flowchart TD
+    A[Fixed case, model and settings] --> P[Randomized paired plan]
+    P --> B[Baseline]
+    P --> S[Solution Design Hardening]
+    P --> C[Optional competitor]
+    B --> R[Responses and host metrics]
+    S --> R
+    C --> R
+    R --> V[Best-effort blinded human review]
+    V --> M[Paired report and missing-data accounting]
+    M --> G[Regression decision and further testing]
+```
+
+| Benchmark feature | What is available | Evidence status |
+|---|---|---|
+| Repeatable scenario trials | 66 cases, seeded order, same prompt per condition | Runner tested with synthetic adapter |
+| Precision and recall | 16 labeled cases, including 5 safe controls | Metrics tested; agent data not collected |
+| Activation | 8 separate probes (4 relevant, 4 unrelated) | Reporting tested; host activation not measured |
+| Comparative evaluation | Baseline, skill, optional competing skill | Adapter required; no competing-skill results |
+| Remediation and verification | Independent 0–2 rubric per dimension, safety override | Scoring tested; no actual grades |
+| Efficiency | Matched actual token counts (when available), elapsed time | Reporting tested; no model usage measured |
+| Regression readiness | Skill, catalog and prompt fingerprints | No cross-version benchmark results |
+
+### Release comparison
+
+| Capability | v0.9.0 | v0.10.0 |
+|---|---:|---:|
+| Design and security problems | 235 | 235 |
+| Playbooks / capability profiles | 24 / 17 | 24 / 17 |
+| Heuristic scanner rules | 27 | 27 |
+| Scenario-based evaluation cases | 66 | 66 |
+| Explicitly labeled detection cases | 0 | 16 |
+| Activation probes | 0 | 8 |
+| Executable local tests | 45 | 61 |
+| Paired human rubric scoring | Yes | Enhanced |
+| Reproducible run preparation and adapter | No | Yes |
+| Optional competing-skill condition | No | Yes |
+| Matched precision, recall and usage metrics | No | Yes |
+| Selective playbook routing helper | No | Yes |
+| Actual model benchmark results | Not run | Not run |
+
+### Run a pilot
+
+```sh
+python tools/benchmark.py prepare benchmark-runs/pilot --agent my-agent --model my-model --settings "fresh sessions; read-only" --cases duplicate-payment local-transaction outbox-crash cache-race object-scope safe-local-lock --trials 3 --seed 42
+python tools/benchmark.py run benchmark-runs/pilot --allow-external-execution --adapter python /absolute/path/to/your_adapter.py
+python tools/benchmark.py review benchmark-runs/pilot
+python tools/benchmark_report.py benchmark-runs/pilot /absolute/path/to/grades.json
+```
+
+The six-case, three-repeat pilot prepares 36 runs across two conditions. The runner requires a trusted user-provided adapter and explicit execution approval; temporary workspaces are not OS sandboxes. Review cost, credentials, process isolation and permission scope before running. No proprietary agent API integration or automated LLM judge is bundled. See the complete [evaluation protocol and adapter contract](evals/README.md), [scenario catalog](evals/cases.json), [labeled cases](evals/gold-findings.json), and [activation probes](evals/activation-cases.json).
+
+### Context optimization without sacrificing safety
+
+```mermaid
+flowchart LR
+    A[Task scope] --> B{Full or focused?}
+    B -->|Full| C[All catalog IDs in batches]
+    B -->|Focused| D[Relevant IDs and adjacent failure modes]
+    C --> E[Playbooks and capabilities]
+    D --> E
+    E --> F[Evidence checkpoint]
+    F --> G[Expand if new risk emerges]
+```
+
+Use the optional offline router:
+
+```sh
+python tools/context.py SDP-023 SDP-024 SDP-171
+```
+
+For these three example IDs, two relevant playbooks total **14,157 UTF-8 bytes**, compared with **142,906 bytes** for all 24 playbooks. This is a reference-size comparison only; core instructions, adjacent risks, capability/security references, source code, actual reads and tokenization are excluded. It is not a measured model token reduction. Full assessments still cover all 235 problems. See [context strategy](skills/solution-design-hardening/references/CONTEXT-STRATEGY.md).
+
 ## Examples
 
 ### Example finding: database and broker dual write
@@ -206,6 +355,17 @@ The helper is offline and read-only. It recognizes selected manifest filenames a
 **Evidence:** the order is committed before publishing its required event. A process interruption between these steps leaves a committed order without a durable event intent.
 
 **Proposed fix:** persist an immutable event intent in the same transaction as the order. A relay publishes the intent; a duplicate-safe consumer handles redelivery. Monitor relay backlog and reconcile failures.
+
+```mermaid
+sequenceDiagram
+    participant A as Order service
+    participant D as Database
+    participant B as Broker
+    A->>D: Commit order
+    Note over A,D: Interruption here can lose event
+    A->>B: Publish order event
+    Note over A,B: Instead: atomic order + durable event intent
+```
 
 **Verification:** interrupt before the atomic commit; verify both records roll back. Interrupt after commit; verify intent remains recoverable. Interrupt after broker acceptance but before recording delivery; verify repeated delivery has no duplicate business effect.
 
@@ -233,7 +393,15 @@ The scanner is a small read-only heuristic helper with 27 candidate rules; its r
 
 The executable suite demonstrates vulnerable and corrected outbox, inbox, cache, object access and property binding paths, plus bounded security teaching examples, and checks scanner and scoring behavior. The cache example is a deterministic model, not a Redis integration. GitHub Actions runs the local checks on pushes and pull requests.
 
-For agent comparisons, use the [evaluation protocol](evals/README.md) and `python tools/score.py results.json` to aggregate human-reviewed paired trials. Do not expose expected answers to the evaluated agent. No actual cross-agent benchmark scores have been generated yet.
+For agent comparisons, use the new benchmark runner and [evaluation protocol](evals/README.md). Legacy `python tools/score.py results.json` remains available. No actual cross-agent benchmark scores have been generated yet.
+
+![Local tests by release, reaching 61](docs/assets/local-tests.svg)
+
+![Defined agent scenario cases by release, reaching 66](docs/assets/evaluation-growth.svg)
+
+![Heuristic detection rules by release, reaching 27](docs/assets/scanner-growth.svg)
+
+The charts distinguish executable tests from scenario definitions and heuristic rules. None measures model effectiveness.
 
 ### Infrastructure integration lab (v0.7.0)
 
@@ -242,10 +410,10 @@ The repository includes an opt-in [disposable Docker Compose lab](integration/RE
 | Layer | Scope | Status at release preparation |
 |---|---|---|
 | Offline structural checks | 235 IDs, playbooks, links, 66 evaluation cases, scanner mappings | Passed |
-| Offline executable suite | 45 tests, including all 27 scanner signals and safe controls | Passed |
+| Offline executable suite | 61 tests, including 16 new benchmark/context tests, all 27 scanner signals and safe controls | Passed |
 | Default infrastructure lab | 12 tests: real database process exits, reservations, Redis stale refill, RabbitMQ redelivery, relay replay | Not run; Docker unavailable |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
-| Actual agent benchmarks | 66 candidate scenarios | Not run |
+| Actual agent benchmarks | 66 candidate scenarios and 8 activation probes | Not run |
 
 To run the default lab in a dedicated disposable project (requires Docker/Compose):
 
@@ -267,9 +435,35 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.6.0 | Adaptive Technology Intelligence | Complete |
 | v0.7.0 | Real-service integration lab, expanded detection and fault injection | Implemented; infrastructure run pending |
 | v0.8.0 | Comprehensive Security Hardening | Implemented; local checks passed |
-| v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Current release candidate; local checks passed |
-| v0.10.0 | Cross-agent benchmarks and context optimization | Planned |
+| v0.9.0 | Architectural Intelligence: dependency, transaction, invariant and trust-boundary mapping | Implemented; local checks passed |
+| v0.10.0 | Benchmark runner, paired scoring, labeled cases, activation probes, context routing | Current release candidate; local checks passed, model runs pending |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
+
+## Release readiness and v1.0.0 gates
+
+| Gate | v0.10.0 status |
+|---|---|
+| Stable catalog, playbooks, standards mappings and internal links | Passed offline structural checks |
+| Local tool and teaching-fixture regression suite | 61 tests passed |
+| Real-service integration and failure recovery | 15 tests defined; not executed here |
+| Baseline vs skill quality, precision and recall | Pending real model runs and independent grading |
+| Cross-agent activation and context cost | Pending real host traces and actual usage |
+| Competing-skill comparisons | Pending licensed, isolated, fair evaluation |
+| Community validation and compatibility | Pending |
+
+Before declaring v1.0.0, pre-register acceptance thresholds, run the infrastructure suite and multiple independent benchmark trials, publish sanitized reproducible results (including failures and negative controls), document tested host/model versions, and resolve safety regressions. No fixed score threshold has been adopted without maintainer agreement.
+
+## Repository map
+
+| Location | Purpose |
+|---|---|
+| [skills/solution-design-hardening](skills/solution-design-hardening/SKILL.md) | Installable skill, 24 playbooks, adaptive capability/security references and templates |
+| [tools](tools/ARCHITECTURE.md) | Offline scanner, discovery, architecture, correlation, context and benchmark tools |
+| [evals](evals/README.md) | Scenario catalog, gold labels, activation probes, tests and mock adapter |
+| [integration](integration/README.md) | Optional disposable infrastructure lab |
+| [examples](examples/assessment-example.md) | Illustrative assessment and architectural model |
+| [Release validation](RELEASE-VALIDATION.md) | Actual release-preparation checks and unexecuted work |
+| [Changelog](CHANGELOG.md) | Version history and milestones |
 
 ## Contributing
 

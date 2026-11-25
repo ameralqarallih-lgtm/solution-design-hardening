@@ -1,0 +1,18 @@
+{
+  "duplicate-payment": ["non-atomic idempotency claim", "unprotected external payment outcome"],
+  "local-transaction": [],
+  "outbox-crash": ["missing durable event intent"],
+  "cache-race": ["stale refill after invalidation"],
+  "retry-amplification": ["multiplicative retry attempts"],
+  "fencing": ["expired owner can write"],
+  "ack-order": ["acknowledgment before durable processing"],
+  "tenant-cache": ["tenant-local identifier used without tenant scope"],
+  "unknown-safe-local": [],
+  "safe-local-lock": [],
+  "object-scope": ["missing object-level authorization"],
+  "property-scope": ["unrestricted protected-property assignment"],
+  "safe-parameterization": [],
+  "cert-bypass": ["TLS verification disabled"],
+  "safe-internal": [],
+  "arch-flush-vs-commit": ["publish before durable commit"]
+}

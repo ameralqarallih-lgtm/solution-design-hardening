@@ -1,0 +1,10 @@
+[
+  {"id":"act-payment","prompt":"Review this payment handler for duplicate effects during concurrent retries and provider timeouts.","relevant":true},
+  {"id":"act-cache","prompt":"Design cache invalidation for an API with several replicas and a strict freshness requirement.","relevant":true},
+  {"id":"act-security","prompt":"Review authorization boundaries in an asynchronous worker that loads tenant documents.","relevant":true},
+  {"id":"act-outbox","prompt":"Plan a safe fix for a database commit followed by a broker publish that can fail independently.","relevant":true},
+  {"id":"act-translation","prompt":"Translate the heading 'Quarterly results' into French.","relevant":false},
+  {"id":"act-format","prompt":"Format these three words as a Markdown bullet list: apple, pear, peach.","relevant":false},
+  {"id":"act-arithmetic","prompt":"Calculate the sum of 17 and 28 and return only the number.","relevant":false},
+  {"id":"act-copy","prompt":"Correct the spelling of 'recieve' and return only the corrected word.","relevant":false}
+]
