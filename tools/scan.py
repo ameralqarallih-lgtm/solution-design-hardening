@@ -56,6 +56,6 @@ def scan(root):
                     if (suffixes is None or suffix in suffixes) and pattern.search(line):
                         yield {'rule_id':name,'problem_id':pid,'file':p.relative_to(root).as_posix(),'line':n,'status':'Requires Verification','hint':hint}
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('root',type=Path); a=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('root',type=Path); parser.add_argument('--compact',action='store_true',help='One line per candidate'); a=parser.parse_args()
     if not a.root.is_dir(): parser.error('root must be a directory')
-    print(json.dumps(list(scan(a.root)),indent=2))
+    from compact import emit; emit(list(scan(a.root)),a.compact)

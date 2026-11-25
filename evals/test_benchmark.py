@@ -4,7 +4,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from benchmark import make_plan,prepare,execute,review_packet,invoke,read,ROOT
 from benchmark_report import report,markdown
 from context import select
-from codex_native_adapter import activation
+from codex_native_adapter import activation, parser as native_parser
 
 CASES=read(ROOT/'evals/cases.json')
 GOLD=read(ROOT/'evals/gold-findings.json')
@@ -56,7 +56,7 @@ class BenchmarkTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             self.assertEqual(invoke([sys.executable,'-c','print("bad JSON")'],Path(d),2)['status'],'invalid_output'); self.assertEqual(invoke([sys.executable,'-c','import time; time.sleep(2)'],Path(d),0.1)['status'],'timeout'); self.assertEqual(invoke([sys.executable,'-c','raise SystemExit(4)'],Path(d),2)['status'],'adapter_error')
     def test_context_routing(self):
-        r=select(['SDP-023','SDP-024','SDP-171']); self.assertEqual(len(r['playbooks']),2); self.assertLess(r['selected_playbook_bytes'],r['all_playbook_bytes']); self.assertIn('not tokens',r['warning'])
+        r=select(['SDP-023','SDP-024','SDP-171']); self.assertEqual(len(r['playbooks']),2); self.assertEqual([p['id'] for p in r['problems']],['SDP-023','SDP-024','SDP-171']); self.assertLess(r['selected_playbook_bytes'],r['all_playbook_bytes']); self.assertIn('not model tokens',r['warning']); self.assertIn('SDP-063',r['related_ids_not_loaded'])
     def test_activation_probe_metrics(self):
         cases=read(ROOT/'evals/activation-cases.json'); p=make_plan(cases,[c['id'] for c in cases],1,99,['baseline','skill'],'a','m','s'); p.update(suite='activation',activation_labels={c['id']:c['relevant'] for c in cases}); raw=[dict(run_id=r['run_id'],status='ok',activation=('yes' if p['activation_labels'][r['case_id']] else 'no') if r['condition']=='skill' else 'unknown') for r in p['runs']]; raw[next(i for i,r in enumerate(p['runs']) if r['condition']=='skill' and p['activation_labels'][r['case_id']])]['activation']='unknown'; result=report(p,raw,[],{})['activation_evaluation']['skill']; self.assertEqual(result['tp'],3); self.assertEqual(result['tn'],4); self.assertEqual(result['unknown_or_unavailable'],1); self.assertEqual(result['false_activation_rate'],0)
     def test_invalid_context_id(self):
@@ -74,5 +74,13 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(activation([text, turn], "")[0], "no")
         self.assertEqual(activation([text, turn], denied)[0], "unknown")
         self.assertEqual(activation([read, turn], "")[0], "yes")
+
+    def test_native_adapter_timeout_is_configurable_and_validated(self):
+        self.assertEqual(native_parser().parse_args(['--model', 'm']).timeout, 180)
+        self.assertEqual(native_parser().parse_args(['--model', 'm', '--timeout', '240']).timeout, 240)
+        import contextlib, io
+        for bad in ('0', '-5', 'nan', 'inf'):
+            with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
+                native_parser().parse_args(['--model', 'm', '--timeout', bad])
 
 if __name__=='__main__': unittest.main()

@@ -7,7 +7,7 @@
 - **8 separate activation probes** in `activation-cases.json`: four relevant and four unrelated tasks.
 - Local executable tests check tools and synthetic failure fixtures, not model performance. The [infrastructure lab](../integration/README.md) is separate.
 
-Live coding-agent benchmark results are pending. The built-in runner and custom adapter protocol share the paired experiment format and evaluation rubric.
+Live fixed-prompt pilots have run on local Ollama and Codex CLI; see [benchmark results](../BENCHMARK-RESULTS.md). Human adjudication, trace-backed native activation and a paired comparison of the RC2 adaptive context remain pending. The built-in runner and custom adapter protocol share the paired experiment format and evaluation rubric.
 
 ## Built-in benchmark commands
 
@@ -42,7 +42,7 @@ python tools/benchmark.py evaluate benchmark-runs/codex-pilot --agent codex --mo
 
 `pilot` selects six cases, including two safe controls. `scenario` selects all 66 cases. Pass `--cases` to select specific IDs. For reproducibility, pin the model and CLI version where possible, choose the trial count and seed in advance, and use the same case set for each agent. `--config` accepts a JSON object with `agent`, `model`, `base_url`, `api_key_env`, `suite`, `cases`, `trials`, `seed`, `timeout`, `settings` and the optional judge fields `judge_model`, `judge_base_url` and `judge_api_key_env`. Command-line values override the config. Keep key values in environment variables.
 
-Built-in scenario runs supply the same scenario text to both conditions. The skill condition also receives `SKILL.md`, `DETECTION-GUIDANCE.md` and `PATTERN-GUIDANCE.md` from the hashed snapshot. The reference set is the same for all cases. Host-native discovery and the effects of the full reference library require separately configured custom-adapter experiments. CLI attempts use fresh temporary workspaces and restrictive tool settings. Run on a dedicated test account or isolated host when you need to control managed configuration, inherited permissions and subprocesses.
+Built-in scenario runs supply the same scenario text to both conditions. By default (`--context-mode fixed_prompt_guidance`) the skill condition also receives `SKILL.md`, `DETECTION-GUIDANCE.md` and `PATTERN-GUIDANCE.md` from the hashed snapshot, as in the RC1 pilot. `--context-mode core` sends only `SKILL.md`, the Level 1 core. Routed problem files are never added, because choosing them per case would leak the expected problem IDs. The reference set is the same for all cases, and a resumed experiment must keep its context mode. Host-native discovery and the effects of the full reference library require separately configured custom-adapter experiments. CLI attempts use fresh temporary workspaces and restrictive tool settings. Run on a dedicated test account or isolated host when you need to control managed configuration, inherited permissions and subprocesses.
 
 ### Resume and retry
 
@@ -143,16 +143,18 @@ python tools/benchmark.py run benchmark-runs/activation --allow-external-executi
 
 Use the same adapter configured for the host's normal automatic discovery, not forced skill activation. Save `[]` in an empty grade JSON file and run `benchmark_report.py` with that file to report activation metrics without quality grading. Unknown/missing activation remains separately counted. Activation results are adapter-reported and require independent trace review. Do not infer activation merely because a response mentions a pattern. The relevance labels are deliberately simple probes, not a complete production relevance taxonomy.
 
-For a signed-in Codex CLI with the model below available, use the included [native adapter](codex_native_adapter.py). It installs the snapshot under `.agents/skills` in a fresh work directory and records the CLI trace. A successful recorded read of the installed skill body counts as activation. A rejected or failed read counts as unknown. A completed turn with no matching read is reported as no observed activation under this adapter.
+For a signed-in Codex CLI with the model below available, use the included [native adapter](codex_native_adapter.py). It installs the snapshot under `.agents/skills` in a fresh work directory and records the CLI trace. A successful recorded read of the installed skill body counts as activation. A rejected or failed read counts as unknown. A completed turn with no matching read is reported as no observed activation under this adapter. Arguments after `--adapter` go to the adapter: its `--timeout` (default 180 seconds) stops the Codex probe, and the runner's own `--timeout` before `--adapter` should be longer so the adapter can report the result.
 
 ```sh
 python tools/benchmark.py prepare benchmark-runs/activation-codex --agent codex --model gpt-6.2-sol --settings "native discovery with a read-only sandbox" --suite activation --trials 1
-python tools/benchmark.py run benchmark-runs/activation-codex --timeout 180 --allow-external-execution --adapter python evals/codex_native_adapter.py --model gpt-6.2-sol --trace-dir benchmark-runs/activation-codex/trace.private
+python tools/benchmark.py run benchmark-runs/activation-codex --timeout 200 --allow-external-execution --adapter python evals/codex_native_adapter.py --model gpt-6.2-sol --timeout 180 --trace-dir benchmark-runs/activation-codex/trace.private
 python tools/benchmark_report.py benchmark-runs/activation-codex
 ```
 
 ## Release regression and context optimization
 
-Repeat a fixed suite against each tagged version using the same procedure and compare matched runs. Use `python tools/context.py SDP-023 SDP-024 SDP-171` to inspect selected playbook byte counts; bytes are not tokens and not measured model savings. Read all related references needed for correctness. The core skill must preserve full assessment coverage and safety while reducing unnecessary loading.
+Repeat a fixed suite against each tagged version using the same procedure and compare matched runs. Use `python tools/context.py --mode focused SDP-023 SDP-024 SDP-171` to inspect the routed files and their estimated tokens (characters / 4); estimates are not model tokens and not measured savings. Read all related references needed for correctness. The core skill must preserve full assessment coverage and safety while reducing unnecessary loading.
+
+To measure the RC2 adaptive context with and without optimization, run the same pilot against an RC1 snapshot and the current skill. Use the same model, settings, cases, trials and seed, and `--context-mode core` for both. Each experiment pairs a baseline with one skill snapshot. Compare the skill conditions' input tokens, scores, safety flags, safe-control false alarms and labeled recall. The activation suite checks that the unchanged description still activates on relevant tasks only. The local regression `test_context_routing.py` checks that every problem stays routable and that the guidance never limits reading, and `test_knowledge.py` fails if any pre-RC2 guidance statement disappears from the skill tree.
 
 The older `python tools/score.py results.json` paired rubric summarizer remains supported for existing evaluation records (see v0.9.0 history). It does not provide the expanded v0.10.0 metrics.

@@ -75,6 +75,20 @@ class AutomationTests(unittest.TestCase):
         packet = read(self.out / "review.json")
         self.assertTrue(all(set(row) == {"run_id", "case_id", "prompt", "response"} for row in packet))
 
+    def test_core_context_mode_sends_only_core_and_is_locked_on_resume(self):
+        with patch.object(Agent, "run", autospec=True, return_value=result()) as run:
+            self.assertEqual(self.evaluate("--context-mode", "core"), 0)
+        long = max((call.args[1] for call in run.call_args_list), key=len)
+        skill = self.out / "skill-snapshots" / "skill"
+        self.assertIn((skill / "SKILL.md").read_text(encoding="utf-8"), long)
+        self.assertNotIn((skill / "references/DETECTION-GUIDANCE.md").read_text(encoding="utf-8"), long)
+        automation = read(self.out / "plan.private.json")["automation"]
+        self.assertEqual((automation["context_mode"], automation["context_files"]), ("core", ["SKILL.md"]))
+        self.assertEqual(read(self.out / "report.json")["context_mode"], "core")
+        with self.assertRaises(SystemExit) as error:
+            self.evaluate("--resume", "--context-mode", "fixed_prompt_guidance")
+        self.assertEqual(error.exception.code, 2)
+
     def test_resume_retry_preserves_prior_attempt_and_skips_successes(self):
         with patch.object(Agent, "run", side_effect=[result("timeout"), result()]):
             self.assertEqual(self.evaluate(), 1)

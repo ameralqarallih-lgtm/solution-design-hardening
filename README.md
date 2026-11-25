@@ -2,18 +2,20 @@
 
 **Build secure software that survives concurrency, failures, threats, and scale.**
 
-![Release candidate](https://img.shields.io/badge/release_candidate-v1.0.0--RC1-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local checks](https://img.shields.io/badge/local%20checks-passing-brightgreen) ![Agent benchmark](https://img.shields.io/badge/Ollama%20pilot-provisionally%20graded-teal)
+![Release candidate](https://img.shields.io/badge/release_candidate-v1.0.0--RC2-blue) ![License](https://img.shields.io/badge/license-MIT-blue) ![Problems](https://img.shields.io/badge/failure%20scenarios-235-teal) ![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-purple) ![Local checks](https://img.shields.io/badge/local%20checks-passing-brightgreen) ![Agent benchmark](https://img.shields.io/badge/Ollama%20pilot-provisionally%20graded-teal)
 
 An open-source, evidence-driven AI coding skill for discovering, preventing, fixing and verifying architectural correctness and security problems in transactional, distributed and highly available applications. Designed for solution architects, backend engineers, platform engineers and coding agents.
 
 [Quick start](#quick-start) · [How it works](#how-it-works) · [Coverage](#coverage) · [Architecture](#architectural-intelligence-v090) · [Security](#comprehensive-security-hardening-v080) · [Benchmarks](#automated-benchmarking-and-agent-integration-v0110) · [Examples](#examples) · [Validation](#validation-and-evaluation) · [Roadmap](#roadmap)
 
+> **v1.0.0-RC2 - Adaptive context and token optimization.** Knowledge is now loaded in levels: a lean core, a problem index and one file per problem. Five depth modes scale the loaded context to the task. The core instructions shrank from about 4,460 to 2,480 estimated tokens, and every previous guidance statement is still present, checked by a knowledge-preservation test. [Context levels and modes](#adaptive-context-and-token-optimization-v100-rc2).
+>
 > **v1.0.0-RC1 - Empirical validation.** The local Ollama pilot completed 36 responses, and the default Docker lab passed 12 tests. The provisional rubric found safety flags and false alarms in both model conditions. [Read the pilot results](BENCHMARK-RESULTS.md).
 
-| 235 problems | 24 playbooks | 17 capability profiles | 12 optional product guides |
+| 235 problems | 235 problem files in 24 domains | 17 capability profiles | 12 optional product guides |
 |:---:|:---:|:---:|:---:|
 | 27 candidate scanner rules | 66 agent scenarios | 16 labeled scenarios | 8 activation probes |
-| 61 local tests passed | 15 real-service tests defined | 92 advisory security mappings | 8 security capability families |
+| 96 local tests | 15 real-service tests defined | 92 advisory security mappings | 8 security capability families |
 
 ## Project at a glance
 
@@ -104,7 +106,7 @@ flowchart LR
     H --> I[Report residual risks]
 ```
 
-The agent loads only the relevant problem playbooks and technology guides for focused work. Full assessments cover the bundled baseline plus distinct project-specific problems, cross-mapping duplicates. The skill does not require all patterns to be implemented.
+The agent chooses a depth (Lightweight, Focused, Standard, Deep or Comprehensive) and loads only the problem files and supporting references that depth needs. Full assessments cover the bundled baseline plus distinct project-specific problems, cross-mapping duplicates. The skill does not require all patterns to be implemented.
 
 ## Coverage
 
@@ -321,26 +323,40 @@ python tools/benchmark.py evaluate benchmark-runs/codex-pilot --agent codex --mo
 
 CLI adapters cover Codex, Claude Code and GitHub Copilot CLI. Chat Completions adapters cover Ollama, LiteLLM, LM Studio, OpenAI and compatible endpoints. Set `--judge-model` to use an independent grader or complete `grades.template.json` as `grades.json` for human review. The runner writes `report.md`, `report.json` and `report.svg`. See the [benchmark guide](evals/README.md) for provider setup, PowerShell model syntax, retry behavior and the custom adapter protocol.
 
-### Context optimization without sacrificing safety
+### Adaptive context and token optimization (v1.0.0-RC2)
+
+The skill separates the size of the available knowledge from the size of the loaded knowledge. The catalog can grow without increasing the context of an ordinary focused task, and no guidance is removed to save tokens.
 
 ```mermaid
-flowchart LR
-    A[Task scope] --> B{Full or focused?}
-    B -->|Full| C[All catalog IDs in batches]
-    B -->|Focused| D[Relevant IDs and adjacent failure modes]
-    C --> E[Playbooks and capabilities]
-    D --> E
-    E --> F[Evidence checkpoint]
-    F --> G[Expand if new risk emerges]
+flowchart TD
+    L0[Level 0: name and activation description] --> L1[Level 1: core rules, depth modes, routing]
+    L1 --> L2[Level 2: problem index and domain index]
+    L2 --> L3[Level 3: one file per problem with Related IDs]
+    L3 --> L4[Level 4: technology, security, architecture, verification]
 ```
 
-Use the optional offline router:
+| Depth | Use for | Loads |
+|---|---|---|
+| Lightweight | Routine edits with no trigger | Core only |
+| Focused | One named problem or risk | Problem index, domain index, 1-3 problem files |
+| Standard | Feature design and implementation | Detection and pattern guidance, all problems on the changed path |
+| Deep | Cross-component, security, migration or recovery changes | Architecture, security, technology, verification and operations references |
+| Comprehensive | Whole-solution assessment | Catalog in batches, assessment output and a coverage register |
+
+Money or external effects, durable messaging, cross-process invariants, trust boundaries, migrations and authoritative caching escalate the depth. Use the optional offline router:
 
 ```sh
-python tools/context.py SDP-023 SDP-024 SDP-171
+python tools/context.py --mode focused SDP-023 SDP-024 SDP-171
+python tools/assessment_coverage.py SOLUTION-DESIGN-ASSESSMENT.md
 ```
 
-For these three example IDs, two relevant playbooks total **14,157 UTF-8 bytes**, compared with **142,906 bytes** for all 24 playbooks. This is a reference-size comparison only; core instructions, adjacent risks, capability/security references, source code, actual reads and tokenization are excluded. It is not a measured model token reduction. Full assessments still cover all 235 problems. See [context strategy](skills/solution-design-hardening/references/CONTEXT-STRATEGY.md).
+| Context, estimated tokens (characters / 4) | RC1 | RC2 |
+|---|---:|---:|
+| Core instructions (`SKILL.md`) | 4,461 | 2,481 |
+| Focused route for SDP-023, SDP-024 and SDP-171 | 7,989 (core and two whole playbooks) | 5,027 (core, problem index, two domain indexes, three problem files) |
+| Fixed pilot context (core, detection and pattern guidance) | 7,297 | 6,701 |
+
+These are size estimates, not measured model tokens or savings; the RC1 pilot's actual skill-condition input was 5,342 tokens. The fixed pilot context shrank less because detection guidance now covers SDP-125 to 235. `evals/test_knowledge.py` checks that every pre-RC2 guidance statement is still present, and `evals/test_context_routing.py` checks that every problem stays routable. No size or token limit is enforced: completeness and correctness take precedence over context size. Full assessments still cover all 235 problems. See [context strategy](skills/solution-design-hardening/references/CONTEXT-STRATEGY.md).
 
 ## Examples
 
@@ -389,7 +405,7 @@ The executable suite demonstrates vulnerable and corrected outbox, inbox, cache,
 
 For agent comparisons, use the [benchmark runner and evaluation protocol](evals/README.md). The standalone `python tools/score.py results.json` summarizer supports older scoring records. Live fixed-prompt pilots have run on local Ollama and Codex CLI. [Pilot results](BENCHMARK-RESULTS.md).
 
-![Local tests by release, reaching 78 defined checks](docs/assets/local-tests.svg)
+![Local tests by release, reaching 96 defined checks](docs/assets/local-tests.svg)
 
 ![Defined agent scenario cases by release, reaching 66](docs/assets/evaluation-growth.svg)
 
@@ -403,8 +419,8 @@ The repository includes an opt-in [disposable Docker Compose lab](integration/RE
 
 | Layer | Scope | Status at release preparation |
 |---|---|---|
-| Offline structural checks | 235 IDs, playbooks, links, 66 evaluation cases, scanner mappings | Passed |
-| Local regression suite | 79 tests covering adapters, reporting, 27 scanner signals and safe controls | 78 passed, 1 platform-specific skip on Windows |
+| Offline structural checks | 235 IDs, per-problem files, domain indexes, detection coverage, links, 66 evaluation cases, scanner mappings | Passed |
+| Local regression suite | 96 tests covering adapters, reporting, 27 scanner signals, safe controls, knowledge preservation and context routing | 95 passed, 1 platform-specific skip on Windows |
 | Default infrastructure lab | 12 tests for database process exits, reservations, Redis stale refill, RabbitMQ redelivery and relay replay | 12 passed |
 | Optional SQL Server lab | 3 tests: atomic commit/rollback and stale rowversion rejection | Not run; requires explicit EULA acceptance |
 | Actual agent benchmarks | Six-scenario paired pilots on Ollama and Codex CLI | 36 responses per pilot, independently reviewed with provisional model grades |
@@ -433,17 +449,18 @@ See the [release validation report](RELEASE-VALIDATION.md). Follow the [lab inst
 | v0.10.0 | Benchmark runner, paired scoring, labeled cases, activation probes, context routing | Implemented |
 | v0.11.0 | Built-in adapters, preflight, retries, grading and automated reports | Local validation complete |
 | v1.0.0-RC1 | Empirical model benchmarks and infrastructure integration runs | Local pilot and default lab complete |
+| v1.0.0-RC2 | Adaptive context and token optimization (planned as v0.12.0) | Local validation complete; live with/without comparison pending |
 | v1.0.0 | Validated effectiveness, compatibility, community feedback | Planned |
 
 ## Release readiness and v1.0.0 gates
 
-| Gate | v1.0.0-RC1 status |
+| Gate | v1.0.0-RC2 status |
 |---|---|
 | Stable catalog, playbooks, standards mappings and internal links | Passed offline structural checks |
-| Local tool and teaching-fixture regression suite | 78 passed, 1 platform-specific skip on Windows |
+| Local tool and teaching-fixture regression suite | 95 passed, 1 platform-specific skip on Windows |
 | Real-service integration and failure recovery | 12 default tests passed. Optional SQL Server remains pending. |
 | Baseline vs skill quality, precision and recall | Ollama and Codex CLI pilots complete. Ollama still has unsafe remedies, and grades remain provisional. |
-| Cross-agent activation and context cost | Usage recorded on Ollama and Codex CLI. The Windows host rejected the relevant native skill reads. |
+| Cross-agent activation and context cost | Usage recorded on Ollama and Codex CLI for RC1. RC2 context reductions are estimates; a paired live comparison is pending. The Windows host rejected the relevant native skill reads. |
 | Competing-skill comparisons | Pending licensed, isolated, fair evaluation |
 | Community validation and compatibility | Pending |
 
@@ -453,8 +470,8 @@ Before declaring v1.0.0, pre-register acceptance thresholds, run the infrastruct
 
 | Location | Purpose |
 |---|---|
-| [skills/solution-design-hardening](skills/solution-design-hardening/SKILL.md) | Installable skill, 24 playbooks, adaptive capability/security references and templates |
-| [tools](tools/ARCHITECTURE.md) | Offline scanner, discovery, architecture, correlation and context tools, plus opt-in benchmark tooling |
+| [skills/solution-design-hardening](skills/solution-design-hardening/SKILL.md) | Installable skill: core instructions, problem index, 24 domain indexes, 235 problem files, adaptive capability/security references and templates |
+| [tools](tools/ARCHITECTURE.md) | Offline scanner, discovery, architecture, correlation, context, coverage and knowledge-preservation tools, plus opt-in benchmark tooling |
 | [evals](evals/README.md) | Scenario catalog, gold labels, activation probes, tests and mock adapter |
 | [integration](integration/README.md) | Optional disposable infrastructure lab |
 | [examples](examples/assessment-example.md) | Illustrative assessment and architectural model |

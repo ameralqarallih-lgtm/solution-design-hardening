@@ -77,10 +77,11 @@ def analyze(model, known):
 
 def catalog_ids():
     p=Path(__file__).resolve().parents[1]/'skills/solution-design-hardening/references/SOLUTION-DESIGN-PROBLEMS.md'
-    return set(re.findall(r'^\| (SDP-\d{3}) \|',p.read_text(),re.M))
+    return set(re.findall(r'^\| (SDP-\d{3}) \|',p.read_text(encoding='utf-8'),re.M))
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument('model',type=Path); a=p.parse_args()
-    try: print(json.dumps(analyze(json.loads(a.model.read_text(encoding='utf-8')),catalog_ids()),indent=2))
+    p=argparse.ArgumentParser(description=__doc__); p.add_argument('model',type=Path); p.add_argument('--compact',action='store_true',help='One line per item'); a=p.parse_args()
+    from compact import emit
+    try: emit(analyze(json.loads(a.model.read_text(encoding='utf-8')),catalog_ids()),a.compact)
     except (OSError,ValueError,TypeError) as e: p.error(str(e))

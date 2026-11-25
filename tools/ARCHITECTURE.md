@@ -35,3 +35,15 @@ Create a separate JSON model after validating candidate signals and tracing actu
 Use `schema_version: 1` at the top level. All IDs must be unique across the model. Model status is `candidate`, `supported`, or `unknown`; supported records require evidence references. The supported status is an analyst claim, not validated truth. Use `unknown` where evidence is missing. An optional project-specific extension can be maintained in the Markdown assessment; this initial JSON helper checks bundled SDP IDs only.
 
 The tool rejects duplicate IDs, dangling references, unsupported enumerations, missing evidence for supported records and dependency cycles. It reports shared invariant and explicit shared-root-cause groups separately, unassigned findings, unknown trust/transaction relations, and topological waves based only on declared task dependencies. Waves are not a priority decision or authorization. It never promotes a candidate to a confirmed finding, infers causation, validates evidence accuracy, or claims a fix is verified. No raw evidence locators are included in the summary.
+
+## Context routing, coverage and knowledge preservation (v1.0.0-RC2)
+
+```sh
+python tools/context.py --mode focused SDP-023 SDP-024 SDP-171   # compact route; add --json for structure
+python tools/assessment_coverage.py SOLUTION-DESIGN-ASSESSMENT.md  # assessed, missing and next batch
+python tools/knowledge.py check                                    # baseline guidance still present
+```
+
+`context.py` maps problem IDs to their domain index and `references/problems/SDP-NNN.md` file, lists Related IDs not yet loaded, and adds the references for a depth mode (lightweight, focused, standard, deep, comprehensive). Token figures are characters divided by four, not model-tokenizer counts. `assessment_coverage.py` reads table rows of an assessment or coverage register and reports invalid statuses, duplicates and missing catalog IDs; it does not judge evidence quality. `knowledge.py` normalizes every statement in the skill tree; `evals/fixtures/knowledge-baseline.json` was captured with `knowledge.py baseline` from commit `4f17361` (RC1 plus the safeguard follow-up) before the restructure, and intended wording changes must be recorded in `evals/fixtures/knowledge-edits.json`. Do not regenerate the baseline to hide a removal.
+
+`scan.py`, `discover.py`, `architecture.py` and `correlate.py` accept `--compact` for one line per item instead of indented JSON. Compact output omits empty fields but does not truncate items or limitations.

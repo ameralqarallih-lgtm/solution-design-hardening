@@ -1,32 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 426" role="img" aria-label="Local regression tests by release"><rect x="1" y="1" width="918" height="424" rx="14" fill="#f8fafc" stroke="#cbd5e1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 507" role="img" aria-label="Local regression tests by release"><rect x="1" y="1" width="918" height="505" rx="14" fill="#f8fafc" stroke="#cbd5e1"/>
 <text x="28" y="36" font-size="22" font-weight="700" fill="#0f172a">Local regression tests</text>
 <text x="28" y="60" font-size="14" fill="#475569">Test definitions by release</text>
 <g font-family="Arial, Helvetica, sans-serif">
 <text x="28" y="98" font-size="15" fill="#334155">v0.5.0</text>
 <rect x="230" y="80" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="80" width="80.4" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="80" width="65.3" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="98" font-size="16" font-weight="700" fill="#0f172a">11</text>
 <text x="28" y="141" font-size="15" fill="#334155">v0.6.0</text>
 <rect x="230" y="123" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="123" width="131.5" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="123" width="106.9" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="141" font-size="16" font-weight="700" fill="#0f172a">18</text>
 <text x="28" y="184" font-size="15" fill="#334155">v0.7.0</text>
 <rect x="230" y="166" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="166" width="160.8" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="166" width="130.6" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="184" font-size="16" font-weight="700" fill="#0f172a">22</text>
 <text x="28" y="227" font-size="15" fill="#334155">v0.8.0</text>
 <rect x="230" y="209" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="209" width="219.2" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="209" width="178.1" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="227" font-size="16" font-weight="700" fill="#0f172a">30</text>
 <text x="28" y="270" font-size="15" fill="#334155">v0.9.0</text>
 <rect x="230" y="252" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="252" width="328.8" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="252" width="267.2" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="270" font-size="16" font-weight="700" fill="#0f172a">45</text>
 <text x="28" y="313" font-size="15" fill="#334155">v0.10.0</text>
 <rect x="230" y="295" width="570" height="25" rx="4" fill="#e2e8f0"/>
-<rect x="230" y="295" width="445.8" height="25" rx="4" fill="#64748b"/>
+<rect x="230" y="295" width="362.2" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="313" font-size="16" font-weight="700" fill="#0f172a">61</text>
 <text x="28" y="356" font-size="15" fill="#334155">v0.11.0</text>
-<rect x="230" y="338" width="570" height="25" rx="4" fill="#0f766e"/>
+<rect x="230" y="338" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="338" width="463.1" height="25" rx="4" fill="#64748b"/>
 <text x="820" y="356" font-size="16" font-weight="700" fill="#0f172a">78</text>
-<text x="28" y="409" font-size="13" fill="#475569">v0.11.0 Windows validation: 77 passed and 1 skipped.</text></g></svg>
+<text x="28" y="399" font-size="15" fill="#334155">v1.0.0-RC1</text>
+<rect x="230" y="381" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="381" width="469.1" height="25" rx="4" fill="#64748b"/>
+<text x="820" y="399" font-size="16" font-weight="700" fill="#0f172a">79</text>
+<text x="28" y="442" font-size="15" fill="#334155">v1.0.0-RC2</text>
+<rect x="230" y="424" width="570" height="25" rx="4" fill="#e2e8f0"/>
+<rect x="230" y="424" width="570.0" height="25" rx="4" fill="#0f766e"/>
+<text x="820" y="442" font-size="16" font-weight="700" fill="#0f172a">96</text>
+<text x="28" y="479" font-size="13" fill="#475569">v1.0.0-RC2 Windows validation: 95 passed and 1 skipped.</text></g></svg>

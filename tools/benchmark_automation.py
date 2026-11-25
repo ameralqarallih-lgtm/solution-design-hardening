@@ -16,6 +16,9 @@ from benchmark_report import DIMS, generate, grade_rows, validate_grade
 PILOT = ("duplicate-payment", "local-transaction", "outbox-crash", "cache-race",
          "object-scope", "safe-local-lock")
 CONTEXT_FILES = ("SKILL.md", "references/DETECTION-GUIDANCE.md", "references/PATTERN-GUIDANCE.md")
+# fixed_prompt_guidance reproduces the RC1 pilot context. core sends only the Level 1 core; routed
+# problem files are never added because selecting them would leak the expected IDs into the prompt.
+CONTEXT_MODES = {"fixed_prompt_guidance": CONTEXT_FILES, "core": ("SKILL.md",)}
 DEFAULTS = {
     "agent": None, "model": None, "base_url": None, "api_key_env": None,
     "suite": "pilot", "cases": None, "trials": 1, "seed": 42, "timeout": 180,
@@ -48,6 +51,8 @@ def add_commands(subcommands):
     evaluate.add_argument("--resume", action="store_true")
     evaluate.add_argument("--retry-failed", action="store_true", help="Retry failed runs when resuming")
     evaluate.add_argument("--retries", type=int, default=0, help="Additional attempts per retryable failure")
+    evaluate.add_argument("--context-mode", choices=tuple(CONTEXT_MODES),
+                          help="Skill context sent in the prompt (default fixed_prompt_guidance)")
     comparison = subcommands.add_parser("compare", help="Summarize reports from matched experiments")
     comparison.add_argument("out", type=Path)
     comparison.add_argument("experiments", nargs="+", type=Path)
@@ -287,11 +292,12 @@ def evaluate(args):
     cases = read(ROOT / "evals" / "cases.json")
     ids = options["cases"] or (list(PILOT) if options["suite"] == "pilot" else [case["id"] for case in cases])
     options.update(agent.identity())
+    mode = args.context_mode or (automation or {}).get("context_mode", "fixed_prompt_guidance")
     current = {
         "settings": {key: options[key] for key in DEFAULTS},
         "adapter_version": info["version"],
-        "context_files": list(CONTEXT_FILES),
-        "context_mode": "fixed_prompt_guidance",
+        "context_files": list(CONTEXT_MODES[mode]),
+        "context_mode": mode,
         "synthetic": agent.name == "mock",
     }
     if automation and (current != automation or ids != plan["case_ids"]):

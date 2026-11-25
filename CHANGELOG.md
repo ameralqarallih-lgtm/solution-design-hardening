@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.0.0-RC2 - Adaptive context and token optimization
+
+Planned as v0.12.0 and delivered after RC1. Available knowledge is unchanged; less of it is loaded for each task.
+
+- Add five knowledge levels: metadata, a lean core `SKILL.md`, a problem index with domain indexes, one file per problem (`references/problems/SDP-NNN.md`, 235 files) and supporting expertise.
+- Add five depth modes (Lightweight, Focused, Standard, Deep and Comprehensive) with escalation triggers and context targets in the context strategy.
+- Move the architecture, security, technology, verification and assessment-output sections out of the core, verbatim, into their references. The core shrinks from about 4,460 to 2,480 estimated tokens. The safety, invariant, workflow, safeguard and correctness-gate text stays in the core.
+- Add Related IDs to every problem file, taken from evaluation-case co-occurrence and eleven title-matched cross-domain families. Remove the 235 repeated decision lines in favor of one shared rule per domain index.
+- Extend detection guidance to SDP-125 to 235, condensed from the playbooks' existing detection and verification text.
+- Add `tools/knowledge.py` and a knowledge-preservation test against a pre-change baseline of 3,150 statements, plus context-routing tests. Sizes are reported for information only; no size or token limit is enforced on the skill.
+- Add depth-aware routing with estimated tokens to `tools/context.py`. Add `tools/assessment_coverage.py` and a coverage register template, `--compact` output for the analysis tools, and `--context-mode core` for benchmarks.
+- Fix: make the Codex native adapter timeout configurable (default 180 seconds). Read the catalog as UTF-8 in `correlate.py`. Add the missing comma in the template list. Correct stale byte figures, test counts and benchmark status in the documentation.
+- Include the post-RC1 safeguard follow-up: operation-order and invariant-scope reasoning, scoped non-findings, and explicit commit-then-publish and stale-refill traces.
+- No live comparison of the adaptive context has been run. Token figures are estimates (characters divided by four).
+
 ## v1.0.0-RC1 - Empirical validation
 
 - Complete the six-case Ollama pilot with 36 responses and 18 provisionally graded pairs. Record safety flags, false alarms, score differences, and observed usage.

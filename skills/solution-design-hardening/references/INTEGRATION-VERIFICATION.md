@@ -2,6 +2,19 @@
 
 Use this reference for correctness-critical remediation and runtime verification. This is technology-independent; do not require Docker, a specific database or the repository's example lab if the actual application uses different infrastructure.
 
+## Verification and completion
+
+For correctness-critical changes, use [integration verification and controlled failure injection](INTEGRATION-VERIFICATION.md). Select actual infrastructure from capability evidence, establish fault boundaries, and distinguish executed tests from illustrative or blocked tests. The optional repository lab and candidate scanner are not prerequisites or proof of product correctness.
+
+For concurrency tests, coordinate competing operations using barriers or controlled scheduling rather than sleep-based timing. Exercise real database constraints and isolation in disposable environments when permitted. Test both vulnerable and corrected paths; record environment, commands and actual outcomes. A static finding can be confirmed by a demonstrable counterexample, but a proposed fix is not verified until appropriate evidence exists. Review code changes against invariants and distinguish runtime tests from static checks.
+
+- Test business invariants under concurrent execution and duplicate requests/events.
+- Test failure boundaries before and after commits, publishes, acknowledgments, cache updates, and external calls.
+- Where relevant, test multiple instances, retries under load, cache expiration, worker crashes, and recovery/replay.
+- Use isolated integration environments; mocks alone do not establish real database isolation or broker guarantees.
+- Report executed commands and results; label unexecuted tests and unknown runtime assumptions explicitly.
+- For a full assessment, reconcile counts against the catalog and ensure every unresolved applicable gap maps to a remediation or verification task. Do not implement until authorized.
+
 ## Derive a verification plan from the invariant
 
 1. State the invariant and owner, the consistency scope, allowed staleness, delivery/replay window and recovery targets. Unknown requirements are verification gaps, not invented guarantees.

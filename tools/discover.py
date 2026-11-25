@@ -44,6 +44,6 @@ def discover(root):
     return {'scope':'allowlisted manifest signals only; no deployed version or capability verification','signals':records,'warnings':errors,'limitations':['Does not parse dependency inventories or deployment configuration.','Unlisted or custom technologies require manual discovery.','Presence of a manifest does not prove active use.','Hidden directories, symlinks and common generated directories are skipped.']}
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('root',type=Path); a=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('root',type=Path); parser.add_argument('--compact',action='store_true',help='One line per signal'); a=parser.parse_args()
     if not a.root.is_dir(): parser.error('root must be a directory')
-    print(json.dumps(discover(a.root),indent=2))
+    from compact import emit; emit(discover(a.root),a.compact)

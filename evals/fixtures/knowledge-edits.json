@@ -1,0 +1,12 @@
+[
+  {
+    "statement": "assessment template remediation template, and verification template: use for full assessments",
+    "replacement": "assessment template, remediation template, and verification template: use for full assessments",
+    "reason": "Missing comma fixed; the template list moved to references/ASSESSMENT-OUTPUT.md."
+  },
+  {
+    "statement": "additional reference material",
+    "replacement": "supporting expertise (level 4)",
+    "reason": "Heading renamed; its reference list moved to references/CONTEXT-STRATEGY.md under Supporting expertise (Level 4)."
+  }
+]

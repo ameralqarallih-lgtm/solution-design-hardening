@@ -130,6 +130,7 @@ def inspect(root, max_files=20000):
 
 
 if __name__ == '__main__':
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument('root',type=Path); p.add_argument('--max-files',type=int,default=20000); a=p.parse_args()
-    try: print(json.dumps(inspect(a.root,a.max_files),indent=2))
+    p=argparse.ArgumentParser(description=__doc__); p.add_argument('root',type=Path); p.add_argument('--max-files',type=int,default=20000); p.add_argument('--compact',action='store_true',help='One line per item'); a=p.parse_args()
+    from compact import emit
+    try: emit(inspect(a.root,a.max_files),a.compact)
     except ValueError as e: p.error(str(e))
